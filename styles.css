@@ -626,6 +626,55 @@ body:hover .cursor-glow {
 .dot-3 { bottom: 5%; left: 50%; animation: float 5s ease-in-out infinite 2s; }
 .dot-4 { top: 50%; left: 2%; animation: float 6s ease-in-out infinite 0.5s; }
 
+/* Verified Badge - Photo Check */
+.verified-badge {
+    position: absolute;
+    bottom: 12%;
+    right: 12%;
+    width: 42px;
+    height: 42px;
+    background: linear-gradient(135deg, #00f0ff 0%, #7b2ffc 50%, #00f0ff 100%);
+    background-size: 200% 200%;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    border: 3px solid var(--bg-primary);
+    box-shadow: 
+        0 0 20px rgba(0, 240, 255, 0.5),
+        0 0 40px rgba(123, 47, 252, 0.3),
+        inset 0 0 8px rgba(255, 255, 255, 0.2);
+    animation: badgeGlow 3s ease-in-out infinite, badgeGradient 4s ease infinite;
+    cursor: pointer;
+    transition: var(--transition-spring);
+}
+
+.verified-badge:hover {
+    transform: scale(1.2);
+    box-shadow: 
+        0 0 30px rgba(0, 240, 255, 0.7),
+        0 0 60px rgba(123, 47, 252, 0.5),
+        inset 0 0 12px rgba(255, 255, 255, 0.3);
+}
+
+.verified-badge svg {
+    width: 22px;
+    height: 22px;
+    filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.6));
+}
+
+@keyframes badgeGlow {
+    0%, 100% { box-shadow: 0 0 20px rgba(0, 240, 255, 0.5), 0 0 40px rgba(123, 47, 252, 0.3), inset 0 0 8px rgba(255, 255, 255, 0.2); }
+    50% { box-shadow: 0 0 30px rgba(0, 240, 255, 0.7), 0 0 60px rgba(123, 47, 252, 0.5), inset 0 0 12px rgba(255, 255, 255, 0.3); }
+}
+
+@keyframes badgeGradient {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
 /* Scroll Indicator */
 .scroll-indicator {
     position: absolute;
