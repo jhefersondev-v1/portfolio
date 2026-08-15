@@ -1,122 +1,12 @@
 /* ========================================
-   NEURAL NETWORK CANVAS BACKGROUND
+   JRCF Professional Portfolio
    ======================================== */
-(function() {
-    const canvas = document.getElementById('neuralCanvas');
-    const ctx = canvas.getContext('2d');
-    let width, height;
-    let nodes = [];
-    let mouse = { x: -1000, y: -1000 };
-    let animationId;
 
-    function resize() {
-        width = canvas.width = window.innerWidth;
-        height = canvas.height = window.innerHeight;
-    }
 
-    function createNodes() {
-        nodes = [];
-        const count = Math.min(Math.floor((width * height) / 18000), 80);
-        for (let i = 0; i < count; i++) {
-            nodes.push({
-                x: Math.random() * width,
-                y: Math.random() * height,
-                vx: (Math.random() - 0.5) * 0.4,
-                vy: (Math.random() - 0.5) * 0.4,
-                radius: Math.random() * 2 + 1,
-                opacity: Math.random() * 0.5 + 0.1
-            });
-        }
-    }
 
-    function drawNodes() {
-        ctx.clearRect(0, 0, width, height);
 
-        // Draw connections
-        for (let i = 0; i < nodes.length; i++) {
-            for (let j = i + 1; j < nodes.length; j++) {
-                const dx = nodes[i].x - nodes[j].x;
-                const dy = nodes[i].y - nodes[j].y;
-                const dist = Math.sqrt(dx * dx + dy * dy);
-                if (dist < 180) {
-                    const alpha = (1 - dist / 180) * 0.12;
-                    ctx.beginPath();
-                    ctx.moveTo(nodes[i].x, nodes[i].y);
-                    ctx.lineTo(nodes[j].x, nodes[j].y);
-                    ctx.strokeStyle = `rgba(0, 240, 255, ${alpha})`;
-                    ctx.lineWidth = 0.5;
-                    ctx.stroke();
-                }
-            }
-        }
 
-        // Draw mouse connections
-        for (let i = 0; i < nodes.length; i++) {
-            const dx = nodes[i].x - mouse.x;
-            const dy = nodes[i].y - mouse.y;
-            const dist = Math.sqrt(dx * dx + dy * dy);
-            if (dist < 250) {
-                const alpha = (1 - dist / 250) * 0.25;
-                ctx.beginPath();
-                ctx.moveTo(nodes[i].x, nodes[i].y);
-                ctx.lineTo(mouse.x, mouse.y);
-                ctx.strokeStyle = `rgba(123, 47, 252, ${alpha})`;
-                ctx.lineWidth = 0.8;
-                ctx.stroke();
-            }
-        }
 
-        // Draw nodes
-        for (const node of nodes) {
-            ctx.beginPath();
-            ctx.arc(node.x, node.y, node.radius, 0, Math.PI * 2);
-            ctx.fillStyle = `rgba(0, 240, 255, ${node.opacity})`;
-            ctx.fill();
-
-            // Glow
-            ctx.beginPath();
-            ctx.arc(node.x, node.y, node.radius + 2, 0, Math.PI * 2);
-            ctx.fillStyle = `rgba(0, 240, 255, ${node.opacity * 0.2})`;
-            ctx.fill();
-        }
-    }
-
-    function updateNodes() {
-        for (const node of nodes) {
-            node.x += node.vx;
-            node.y += node.vy;
-            if (node.x < 0 || node.x > width) node.vx *= -1;
-            if (node.y < 0 || node.y > height) node.vy *= -1;
-        }
-    }
-
-    function animate() {
-        updateNodes();
-        drawNodes();
-        animationId = requestAnimationFrame(animate);
-    }
-
-    window.addEventListener('resize', () => {
-        resize();
-        createNodes();
-    });
-
-    document.addEventListener('mousemove', (e) => {
-        mouse.x = e.clientX;
-        mouse.y = e.clientY;
-
-        // Cursor glow
-        const cursorGlow = document.getElementById('cursorGlow');
-        if (cursorGlow) {
-            cursorGlow.style.left = e.clientX + 'px';
-            cursorGlow.style.top = e.clientY + 'px';
-        }
-    });
-
-    resize();
-    createNodes();
-    animate();
-})();
 
 /* ========================================
    TYPING EFFECT

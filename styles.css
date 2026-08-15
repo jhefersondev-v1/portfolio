@@ -2,48 +2,35 @@
    CSS VARIABLES & DESIGN TOKENS
    ======================================== */
 :root {
-    /* Colors */
-    --bg-primary: #0a0a0f;
-    --bg-secondary: #12121a;
-    --bg-tertiary: #1a1a2e;
-    --bg-card: rgba(20, 20, 35, 0.8);
-    --bg-glass: rgba(15, 15, 30, 0.6);
-    
-    --text-primary: #e8e8f0;
-    --text-secondary: #a0a0b8;
-    --text-muted: #6a6a80;
-    
-    --accent-primary: #00f0ff;
-    --accent-secondary: #7b2ffc;
-    --accent-tertiary: #ff00aa;
-    --accent-success: #00ff88;
-    --accent-warning: #ffaa00;
-    
-    --gradient-primary: linear-gradient(135deg, #00f0ff 0%, #7b2ffc 50%, #ff00aa 100%);
-    --gradient-accent: linear-gradient(135deg, #00f0ff 0%, #7b2ffc 100%);
-    --gradient-glow: linear-gradient(135deg, rgba(0, 240, 255, 0.2), rgba(123, 47, 252, 0.2));
-    
-    --border-color: rgba(0, 240, 255, 0.15);
-    --border-glow: rgba(0, 240, 255, 0.4);
-    
-    /* Typography */
-    --font-display: 'Orbitron', sans-serif;
-    --font-body: 'Rajdhani', sans-serif;
+    --bg-primary: #0f172a;
+    --bg-secondary: #1e293b;
+    --bg-tertiary: #334155;
+    --bg-card: rgba(30, 41, 59, 0.8);
+    --bg-glass: rgba(15, 23, 42, 0.6);
+    --text-primary: #f1f5f9;
+    --text-secondary: #94a3b8;
+    --text-muted: #64748b;
+    --accent-primary: #3b82f6;
+    --accent-secondary: #1e40af;
+    --accent-tertiary: #f59e0b;
+    --accent-success: #10b981;
+    --accent-warning: #f59e0b;
+    --gradient-primary: linear-gradient(135deg, #3b82f6 0%, #1e40af 50%, #1e3a8a 100%);
+    --gradient-accent: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    --gradient-glow: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(30, 64, 175, 0.2));
+    --border-color: rgba(59, 130, 246, 0.15);
+    --border-glow: rgba(59, 130, 246, 0.4);
+    --font-display: 'Inter', sans-serif;
+    --font-body: 'Inter', sans-serif;
     --font-mono: 'JetBrains Mono', monospace;
-    
-    /* Spacing */
     --section-padding: 6rem 2rem;
     --container-max: 1200px;
-    
-    /* Transitions */
     --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     --transition-smooth: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     --transition-spring: 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
-    
-    /* Shadows */
-    --shadow-glow: 0 0 20px rgba(0, 240, 255, 0.15);
-    --shadow-glow-intense: 0 0 40px rgba(0, 240, 255, 0.3);
-    --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.4);
+    --shadow-glow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    --shadow-glow-intense: 0 8px 40px rgba(0, 0, 0, 0.4);
+    --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.2);
 }
 
 /* ========================================
@@ -88,58 +75,6 @@ a {
     color: inherit;
 }
 
-/* ========================================
-   CURSOR GLOW
-   ======================================== */
-.cursor-glow {
-    position: fixed;
-    width: 400px;
-    height: 400px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(0, 240, 255, 0.06) 0%, transparent 70%);
-    pointer-events: none;
-    z-index: 9999;
-    transform: translate(-50%, -50%);
-    transition: opacity 0.3s;
-    opacity: 0;
-}
-
-body:hover .cursor-glow {
-    opacity: 1;
-}
-
-/* ========================================
-   NEURAL CANVAS
-   ======================================== */
-#neuralCanvas {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 0;
-    pointer-events: none;
-}
-
-/* ========================================
-   SCANLINES
-   ======================================== */
-.scanlines {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 1;
-    background: repeating-linear-gradient(
-        0deg,
-        transparent,
-        transparent 2px,
-        rgba(0, 240, 255, 0.008) 2px,
-        rgba(0, 240, 255, 0.008) 4px
-    );
-}
 
 /* ========================================
    NAVIGATION
@@ -175,16 +110,10 @@ body:hover .cursor-glow {
 .nav-logo {
     font-family: var(--font-display);
     font-size: 1.3rem;
-    font-weight: 700;
-    display: flex;
-    align-items: center;
-    gap: 2px;
-    transition: var(--transition-fast);
-}
-
-.logo-bracket {
+    font-weight: 800;
     color: var(--accent-primary);
-    opacity: 0.7;
+    text-decoration: none;
+    letter-spacing: 0.05em;
 }
 
 .logo-text {
@@ -319,45 +248,14 @@ body:hover .cursor-glow {
     text-transform: uppercase;
 }
 
-.hero-glitch {
-    position: relative;
-    animation: fadeInUp 0.8s ease-out 0.2s both;
-}
-
-.hero-glitch h1 {
+.hero-title {
     font-family: var(--font-display);
-    font-size: clamp(2.5rem, 6vw, 5rem);
-    font-weight: 900;
-    background: var(--gradient-primary);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    font-weight: 800;
+    color: var(--text-primary);
     line-height: 1.1;
-    letter-spacing: 2px;
-}
-
-.hero-glitch::before,
-.hero-glitch::after {
-    content: attr(data-text);
-    position: absolute;
-    top: 0;
-    left: 0;
-    font-family: var(--font-display);
-    font-size: clamp(2.5rem, 6vw, 5rem);
-    font-weight: 900;
-    line-height: 1.1;
-    letter-spacing: 2px;
-    opacity: 0;
-}
-
-.hero-glitch::before {
-    color: var(--accent-primary);
-    animation: glitch-1 4s infinite;
-}
-
-.hero-glitch::after {
-    color: var(--accent-tertiary);
-    animation: glitch-2 4s infinite;
+    margin-bottom: 1rem;
+    letter-spacing: -0.02em;
 }
 
 .hero-subtitle {
@@ -367,11 +265,6 @@ body:hover .cursor-glow {
     font-size: 1.1rem;
     color: var(--accent-primary);
     animation: fadeInUp 0.8s ease-out 0.4s both;
-}
-
-.typing-prefix {
-    color: var(--accent-secondary);
-    margin-right: 0.3rem;
 }
 
 .typing-cursor {
@@ -792,67 +685,21 @@ body:hover .cursor-glow {
     margin-bottom: 4rem;
 }
 
-.section-tag {
-    font-family: var(--font-mono);
-    font-size: 0.8rem;
-    color: var(--accent-primary);
-    opacity: 0.6;
-    letter-spacing: 2px;
-}
-
 .section-title {
     font-family: var(--font-display);
-    font-size: clamp(2rem, 4vw, 3rem);
+    font-size: clamp(2rem, 4vw, 2.8rem);
     font-weight: 800;
-    background: var(--gradient-primary);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    margin-top: 0.5rem;
-    letter-spacing: 3px;
+    color: var(--text-primary);
+    letter-spacing: -0.02em;
 }
 
 .section-line {
-    width: 80px;
-    height: 3px;
+    width: 60px;
+    height: 4px;
     background: var(--gradient-accent);
-    margin: 1rem auto 0;
     border-radius: 2px;
+    margin-top: 1rem;
 }
-
-.glitch-hover {
-    position: relative;
-    display: inline-block;
-}
-
-.glitch-hover:hover::before,
-.glitch-hover:hover::after {
-    content: attr(data-text);
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    font-family: var(--font-display);
-    font-size: inherit;
-    font-weight: inherit;
-    letter-spacing: inherit;
-}
-
-.glitch-hover:hover::before {
-    color: var(--accent-primary);
-    animation: glitch-1 0.3s infinite;
-    -webkit-text-fill-color: initial;
-    opacity: 0.5;
-}
-
-.glitch-hover:hover::after {
-    color: var(--accent-tertiary);
-    animation: glitch-2 0.3s infinite;
-    -webkit-text-fill-color: initial;
-    opacity: 0.5;
-}
-
 /* ========================================
    ABOUT SECTION
    ======================================== */
