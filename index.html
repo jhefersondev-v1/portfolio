@@ -85,15 +85,21 @@
     <nav class="nav" id="mainNav">
         <div class="nav-container">
             <a href="#hero" class="nav-logo">
-                <span class="logo-text">JRCF</span>
+                <span class="logo-code">&lt;/&gt;</span>
+                <span class="logo-text">JRCHOLAN</span>
             </a>
             <div class="nav-links" id="navLinks">
-                <a href="#about" class="nav-link" data-text="Sobre Mí">Sobre Mí</a>
-                <a href="#skills" class="nav-link" data-text="Skills">Skills</a>
-                <a href="#projects" class="nav-link" data-text="Proyectos">Proyectos</a>
-                <a href="#experience" class="nav-link" data-text="Experiencia">Experiencia</a>
-                <a href="#contact" class="nav-link" data-text="Contacto">Contacto</a>
+                <a href="#hero" class="nav-link">Inicio</a>
+                <a href="#about" class="nav-link">Sobre Mí</a>
+                <a href="#skills" class="nav-link">Habilidades</a>
+                <a href="#projects" class="nav-link">Proyectos</a>
+                <a href="#experience" class="nav-link">Experiencia</a>
+                <a href="#contact" class="nav-link">Contacto</a>
             </div>
+            <a href="#contact" class="btn-cv">
+                <i data-lucide="download" class="lucide-icon"></i>
+                Descargar CV
+            </a>
             <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
                 <span></span>
                 <span></span>
@@ -105,87 +111,56 @@
     <!-- Hero Section -->
     <section class="hero" id="hero">
         <div class="hero-content">
-            <div class="hero-badge">
-                <span class="badge-dot"></span>
-                <span class="badge-text">Abierto a oportunidades laborales</span>
-            </div>
-            <h1 class="hero-title">Jheferson Cholan</h1>
-            <div class="hero-subtitle">
-                <span class="typing-text" id="typingText"></span>
-                <span class="typing-cursor">|</span>
-            </div>
+            <span class="hero-greeting">Hola, soy</span>
+            <h1 class="hero-title">Jheferson Rafael<br>Cholan <span class="highlight">Fernández</span></h1>
+            <p class="hero-role"><strong>Desarrollador Full Stack</strong> e Ingeniero de Software con IA</p>
             <p class="hero-description">
-                Estudiante de <span class="highlight">Ingeniería de Software con IA</span> en SENATI, 
-                apasionado por la <span class="highlight">innovación tecnológica</span> y la creación 
-                de soluciones digitales con Java, Python y Machine Learning.
+                Creo soluciones digitales modernas, eficientes y centradas en el usuario. 
+                Apasionado por la tecnología, la inteligencia artificial y el desarrollo web.
             </p>
             <div class="hero-actions">
                 <a href="#projects" class="btn btn-primary">
                     <span class="btn-text">Ver Proyectos</span>
                     <span class="btn-icon"><i data-lucide="arrow-right" class="lucide-icon"></i></span>
-                    <div class="btn-glow"></div>
                 </a>
                 <a href="#contact" class="btn btn-secondary">
-                    <span class="btn-text">Contactar</span>
-                    <span class="btn-icon"><i data-lucide="zap" class="lucide-icon"></i></span>
+                    <span class="btn-text">Contactarme</span>
                 </a>
             </div>
-            <div class="hero-stats">
-                <div class="stat-item">
-                    <span class="stat-number" data-target="5">0</span>
-                    <span class="stat-label">Proyectos</span>
-                </div>
-                <div class="stat-divider"></div>
-                <div class="stat-item">
-                    <span class="stat-number" data-target="15">0</span>
-                    <span class="stat-label">Tecnologías</span>
-                </div>
-                <div class="stat-divider"></div>
-                <div class="stat-item">
-                    <span class="stat-number" data-target="3">0</span>
-                    <span class="stat-label">Certificaciones</span>
-                </div>
+            <div class="hero-social">
+                <a href="https://github.com/jhefersondev-v1" target="_blank" aria-label="GitHub"><i data-lucide="github" class="lucide-icon"></i></a>
+                <a href="https://www.linkedin.com/in/jheferson-cholan" target="_blank" aria-label="LinkedIn"><i data-lucide="linkedin" class="lucide-icon"></i></a>
+                <a href="https://www.instagram.com/jheferson.cholan/" target="_blank" aria-label="Instagram"><i data-lucide="instagram" class="lucide-icon"></i></a>
+                <a href="mailto:jhefersoncholan@gmail.com" aria-label="Email"><i data-lucide="mail" class="lucide-icon"></i></a>
             </div>
         </div>
         <div class="hero-visual">
-            <div class="badge-container">
-                <!-- Lanyard/String -->
-                <div class="lanyard">
-                    <div class="lanyard-string"></div>
-                    <div class="lanyard-clip">
-                        <div class="clip-top"></div>
-                        <div class="clip-hook"></div>
-                    </div>
-                </div>
-                <!-- Badge Card -->
-                <div class="badge-card">
-                    <div class="badge-header">
-                        <span class="badge-label">DEVELOPER ID</span>
-                        <div class="badge-verified">
-                            <svg viewBox="0 0 24 24" fill="none">
-                                <path d="M9 12l2 2 4-4" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </div>
-                    </div>
-                    <div class="badge-photo">
-                        <img src="profile.png" alt="Jheferson Rafael Cholan Fernandez" class="badge-img">
-                    </div>
-                    <div class="badge-info">
-                        <span class="badge-name">JHEFERSON CHOLAN</span>
-                        <span class="badge-role">Software Developer & AI</span>
-                        <div class="badge-barcode">
-                            <div class="bar"></div><div class="bar thin"></div><div class="bar"></div><div class="bar thick"></div><div class="bar thin"></div><div class="bar"></div><div class="bar thick"></div><div class="bar thin"></div><div class="bar"></div><div class="bar"></div><div class="bar thin"></div><div class="bar thick"></div>
-                        </div>
-                    </div>
-                    <div class="badge-glow"></div>
-                </div>
+            <div class="hero-photo-pro">
+                <img src="profile.png" alt="Jheferson Rafael Cholan Fernandez" class="hero-img">
+                <div class="tech-float tech-1"><span>JS</span></div>
+                <div class="tech-float tech-2"><span>Python</span></div>
+                <div class="tech-float tech-3"><span>Java</span></div>
+                <div class="tech-float tech-4"><span>MySQL</span></div>
+                <div class="tech-float tech-5"><span>React</span></div>
             </div>
         </div>
-        <div class="scroll-indicator">
-            <div class="scroll-mouse">
-                <div class="scroll-wheel"></div>
+        <div class="hero-stats">
+            <div class="stat-item">
+                <span class="stat-number" data-target="5">0</span><span class="stat-plus">+</span>
+                <span class="stat-label">Proyectos<br>Completados</span>
             </div>
-            <span>Scroll</span>
+            <div class="stat-item">
+                <span class="stat-number" data-target="3">0</span><span class="stat-plus">+</span>
+                <span class="stat-label">Años de<br>Experiencia</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number" data-target="10">0</span><span class="stat-plus">+</span>
+                <span class="stat-label">Tecnologías<br>Dominadas</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number" data-target="100">0</span><span class="stat-plus">%</span>
+                <span class="stat-label">Compromiso y<br>Calidad</span>
+            </div>
         </div>
     </section>
 

@@ -418,209 +418,192 @@ a {
 }
 
 /* ========================================
-   HANGING BADGE / PHOTO CHECK
+   HERO PROFESSIONAL PHOTO
    ======================================== */
-.badge-container {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    padding-top: 10px;
-    animation: badgeSwing 4s ease-in-out infinite;
-    transform-origin: top center;
+.hero-greeting {
+    display: block;
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+    font-weight: 400;
+    margin-bottom: 0.5rem;
 }
 
-@keyframes badgeSwing {
-    0%, 100% { transform: rotate(-2deg); }
-    50% { transform: rotate(2deg); }
+.hero-role {
+    font-size: 1.15rem;
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+    line-height: 1.6;
 }
 
-.lanyard {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    z-index: 3;
-}
-
-.lanyard-string {
-    width: 2px;
-    height: 50px;
-    background: linear-gradient(180deg, transparent 0%, rgba(0, 240, 255, 0.6) 30%, rgba(123, 47, 252, 0.6) 100%);
-    box-shadow: 0 0 8px rgba(0, 240, 255, 0.3);
-}
-
-.lanyard-clip {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.clip-top {
-    width: 24px;
-    height: 8px;
-    background: linear-gradient(135deg, #444 0%, #888 50%, #444 100%);
-    border-radius: 3px 3px 0 0;
-    box-shadow: 0 0 6px rgba(0, 240, 255, 0.2);
-}
-
-.clip-hook {
-    width: 16px;
-    height: 12px;
-    border: 2px solid #666;
-    border-top: none;
-    border-radius: 0 0 6px 6px;
-}
-
-.badge-card {
-    position: relative;
-    width: 260px;
-    background: linear-gradient(165deg, rgba(18, 18, 30, 0.95) 0%, rgba(10, 10, 20, 0.98) 100%);
-    border: 1px solid rgba(0, 240, 255, 0.25);
-    border-radius: 16px;
-    padding: 16px;
-    margin-top: -2px;
-    backdrop-filter: blur(20px);
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6), 0 0 30px rgba(0, 240, 255, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.06);
-    overflow: hidden;
-    transition: var(--transition-smooth);
-}
-
-.badge-card:hover {
-    border-color: rgba(0, 240, 255, 0.5);
-    box-shadow: 0 25px 70px rgba(0, 0, 0, 0.7), 0 0 50px rgba(0, 240, 255, 0.15);
-    transform: translateY(-4px);
-}
-
-.badge-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 12px;
-}
-
-.badge-label {
-    font-family: var(--font-mono);
-    font-size: 0.65rem;
+.hero-role strong {
     color: var(--accent-primary);
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    opacity: 0.8;
+    font-weight: 600;
 }
 
-.badge-verified {
-    width: 28px;
-    height: 28px;
-    background: linear-gradient(135deg, #00f0ff 0%, #7b2ffc 50%, #00f0ff 100%);
-    background-size: 200% 200%;
+/* Social Icons */
+.hero-social {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.hero-social a {
+    width: 42px;
+    height: 42px;
     border-radius: 50%;
+    border: 1px solid var(--border-color);
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 0 15px rgba(0, 240, 255, 0.5), 0 0 30px rgba(123, 47, 252, 0.3);
-    animation: badgeGradient 4s ease infinite, badgeGlow 3s ease-in-out infinite;
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: var(--transition-smooth);
+    background: var(--bg-secondary);
 }
 
-.badge-verified svg {
-    width: 16px;
-    height: 16px;
-    filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.6));
+.hero-social a:hover {
+    color: var(--accent-primary);
+    border-color: var(--accent-primary);
+    transform: translateY(-3px);
+    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.2);
 }
 
-.badge-photo {
+.hero-social a svg {
+    width: 18px;
+    height: 18px;
+}
+
+/* Hero Photo Pro */
+.hero-photo-pro {
+    position: relative;
     width: 100%;
+    max-width: 400px;
     aspect-ratio: 3/4;
-    border-radius: 10px;
-    overflow: hidden;
-    border: 2px solid rgba(0, 240, 255, 0.2);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    margin: 0 auto;
 }
 
-.badge-img {
+.hero-img {
     width: 100%;
     height: 100%;
-    object-fit: contain;
-    object-position: center center;
-    background: linear-gradient(180deg, #1a1a2e 0%, #0a0a0f 100%);
-    transition: var(--transition-smooth);
+    object-fit: cover;
+    object-position: center top;
+    border-radius: 20px;
     filter: contrast(1.05) saturate(1.1);
+    transition: var(--transition-smooth);
 }
 
-.badge-card:hover .badge-img {
-    filter: contrast(1.1) saturate(1.15) brightness(1.05);
-    transform: scale(1.03);
+.hero-photo-pro:hover .hero-img {
+    filter: contrast(1.1) saturate(1.15) brightness(1.03);
+    transform: scale(1.02);
 }
 
-.badge-info {
-    text-align: center;
-    padding-top: 12px;
-}
-
-.badge-name {
-    display: block;
-    font-family: var(--font-display);
-    font-size: 0.85rem;
-    font-weight: 700;
-    color: var(--text-primary);
-    letter-spacing: 2px;
-    margin-bottom: 4px;
-}
-
-.badge-role {
-    display: block;
+/* Floating Tech Icons */
+.tech-float {
+    position: absolute;
+    padding: 8px 14px;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
     font-family: var(--font-mono);
-    font-size: 0.65rem;
+    font-size: 0.75rem;
+    font-weight: 600;
     color: var(--accent-primary);
-    letter-spacing: 1px;
-    opacity: 0.7;
-    margin-bottom: 10px;
+    box-shadow: var(--shadow-card);
+    animation: techBounce 3s ease-in-out infinite;
+    z-index: 5;
 }
 
-.badge-barcode {
+.tech-1 { top: 10%; right: -15%; animation-delay: 0s; }
+.tech-2 { top: 35%; left: -18%; animation-delay: 0.5s; }
+.tech-3 { bottom: 30%; right: -20%; animation-delay: 1s; }
+.tech-4 { bottom: 10%; left: -15%; animation-delay: 1.5s; }
+.tech-5 { top: 60%; right: -12%; animation-delay: 2s; }
+
+@keyframes techBounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+}
+
+/* Hero Stats - Bottom Bar */
+.hero-stats {
     display: flex;
     justify-content: center;
-    align-items: flex-end;
-    gap: 2px;
-    height: 20px;
-    opacity: 0.3;
+    gap: 3rem;
+    padding: 2.5rem 0;
+    margin-top: 2rem;
+    border-top: 1px solid var(--border-color);
 }
 
-.badge-barcode .bar {
-    width: 3px;
+.stat-item {
+    text-align: center;
+}
+
+.stat-number {
+    font-family: var(--font-display);
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: var(--accent-primary);
+    line-height: 1;
+}
+
+.stat-plus {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--accent-primary);
+}
+
+.stat-label {
+    display: block;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    margin-top: 0.4rem;
+    line-height: 1.3;
+}
+
+/* Nav CV Button */
+.logo-code {
+    color: var(--accent-primary);
+    font-weight: 700;
+    margin-right: 0.3rem;
+}
+
+.btn-cv {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.5rem 1.2rem;
+    background: var(--accent-primary);
+    color: white;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: var(--transition-smooth);
+}
+
+.btn-cv:hover {
+    background: var(--accent-secondary);
+    transform: translateY(-2px);
+}
+
+.btn-cv svg {
+    width: 16px;
     height: 16px;
-    background: var(--text-secondary);
-    border-radius: 1px;
 }
 
-.badge-barcode .bar.thin { width: 1.5px; height: 12px; }
-.badge-barcode .bar.thick { width: 4px; height: 20px; }
 
-.badge-glow {
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle at 30% 20%, rgba(0, 240, 255, 0.06) 0%, transparent 50%);
-    pointer-events: none;
-    animation: glowShift 6s ease-in-out infinite;
-}
 
-@keyframes glowShift {
-    0%, 100% { transform: translate(0, 0); }
-    50% { transform: translate(10%, 10%); }
-}
 
-@keyframes badgeGlow {
-    0%, 100% { box-shadow: 0 0 15px rgba(0, 240, 255, 0.5), 0 0 30px rgba(123, 47, 252, 0.3); }
-    50% { box-shadow: 0 0 25px rgba(0, 240, 255, 0.7), 0 0 50px rgba(123, 47, 252, 0.5); }
-}
 
-@keyframes badgeGradient {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
+
+
+
+
+
+/* Scroll Indicator */
+
+50% { background-position: 100% 50%; }
     100% { background-position: 0% 50%; }
 }
 
