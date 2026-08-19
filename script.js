@@ -52,6 +52,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.querySelectorAll('.reveal').forEach((element) => revealObserver.observe(element));
 
+    const projectCards = [...document.querySelectorAll('.project-card')];
+    const technologies = new Set([...document.querySelectorAll('.chips span, .technology-list span')].map((item) => item.textContent.trim()));
+    const certifications = document.querySelectorAll('#certifications span:not(.card-kicker)');
+    const stats = {
+        projects: projectCards.length,
+        technologies: technologies.size,
+        certifications: certifications.length
+    };
+
+    Object.entries(stats).forEach(([name, value]) => {
+        document.querySelectorAll(`[data-stat="${name}"]`).forEach((element) => {
+            element.textContent = value;
+        });
+    });
+    document.querySelectorAll('[data-project-count]').forEach((element) => {
+        element.textContent = projectCards.length;
+    });
+
     document.querySelectorAll('.filter-btn').forEach((button) => {
         button.addEventListener('click', () => {
             const filter = button.dataset.filter;
@@ -70,17 +88,10 @@ document.addEventListener('DOMContentLoaded', () => {
         event.preventDefault();
         const submitButton = form.querySelector('button[type="submit"]');
         const buttonText = submitButton.querySelector('.btn-text');
-        const originalText = buttonText.textContent;
-
-        submitButton.disabled = true;
-        buttonText.textContent = 'Enviando...';
-        status.textContent = '';
-
-        window.setTimeout(() => {
-            status.textContent = 'Mensaje preparado. Te responderé pronto.';
-            buttonText.textContent = originalText;
-            submitButton.disabled = false;
-            form.reset();
-        }, 700);
+        const formData = new FormData(form);
+        const subject = `Contacto desde el portafolio: ${formData.get('name')}`;
+        const body = `Nombre: ${formData.get('name')}\nCorreo: ${formData.get('email')}\n\n${formData.get('message')}`;
+        window.location.href = `mailto:jheferson6666@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        status.textContent = 'Se abrirá tu cliente de correo para completar el envío.';
     });
 });
