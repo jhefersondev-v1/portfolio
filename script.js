@@ -23,6 +23,7 @@
     ];
     
     const typingElement = document.getElementById('typingText');
+    if (!typingElement) return;
     let phraseIndex = 0;
     let charIndex = 0;
     let isDeleting = false;
@@ -104,48 +105,6 @@
             navLinks.classList.remove('open');
         });
     });
-})();
-
-/* ========================================
-   COUNTER ANIMATION
-   ======================================== */
-(function() {
-    const counters = document.querySelectorAll('.stat-number');
-    let started = false;
-
-    function animateCounters() {
-        counters.forEach(counter => {
-            const target = parseInt(counter.dataset.target);
-            const increment = target / 60;
-            let current = 0;
-
-            const updateCount = () => {
-                current += increment;
-                if (current < target) {
-                    counter.textContent = Math.ceil(current);
-                    requestAnimationFrame(updateCount);
-                } else {
-                    counter.textContent = target + '+';
-                }
-            };
-
-            updateCount();
-        });
-    }
-
-    const heroSection = document.querySelector('.hero-stats');
-    if (heroSection) {
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting && !started) {
-                    started = true;
-                    animateCounters();
-                }
-            });
-        }, { threshold: 0.5 });
-
-        observer.observe(heroSection);
-    }
 })();
 
 /* ========================================
@@ -278,7 +237,7 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     document.addEventListener('mousemove', (e) => {
         const x = (e.clientX / window.innerWidth - 0.5) * 20;
         const y = (e.clientY / window.innerHeight - 0.5) * 20;
-        brain.style.transform = `translateY(-50%) translate(${x}px, ${y}px)`;
+        brain.style.transform = `translate(${x}px, ${y}px)`;
     });
 })();
 
@@ -563,7 +522,7 @@ console.log('%c> github.com/JHEFER26-NEW', 'font-size: 12px; color: #a0a0b8;');
             var easedProgress = easeOutExpo(progress);
             var value = Math.round(easedProgress * target);
 
-            el.textContent = value + (progress >= 1 ? '+' : '');
+            el.textContent = value;
 
             if (progress < 1) {
                 requestAnimationFrame(tick);

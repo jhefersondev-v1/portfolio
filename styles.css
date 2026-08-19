@@ -70,6 +70,13 @@ body {
     font-size: 16px;
 }
 
+.svg-sprite {
+    position: absolute;
+    width: 0;
+    height: 0;
+    overflow: hidden;
+}
+
 a {
     text-decoration: none;
     color: inherit;
@@ -205,6 +212,8 @@ a {
 .hero {
     min-height: 100vh;
     display: flex;
+    flex-direction: column;
+    justify-content: center;
     align-items: center;
     position: relative;
     z-index: 2;
@@ -212,10 +221,18 @@ a {
     overflow: hidden;
 }
 
-.hero-content {
+.hero-main {
+    width: 100%;
     max-width: var(--container-max);
-    margin: 0 auto;
-    flex: 1;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(320px, 400px);
+    align-items: center;
+    gap: clamp(2rem, 7vw, 7rem);
+}
+
+.hero-content {
+    max-width: 640px;
+    margin: 0;
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
@@ -408,13 +425,12 @@ a {
 
 /* Hero Visual - AI Brain */
 .hero-visual {
-    position: absolute;
-    right: 5%;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 400px;
-    height: 400px;
-    opacity: 0.6;
+    position: relative;
+    width: 100%;
+    max-width: 400px;
+    height: auto;
+    justify-self: end;
+    opacity: 1;
 }
 
 /* ========================================
@@ -526,6 +542,8 @@ a {
 
 /* Hero Stats - Bottom Bar */
 .hero-stats {
+    width: 100%;
+    max-width: var(--container-max);
     display: flex;
     justify-content: center;
     gap: 3rem;
@@ -538,7 +556,14 @@ a {
     text-align: center;
 }
 
+.stat-value {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+}
+
 .stat-number {
+    display: inline;
     font-family: var(--font-display);
     font-size: 2.2rem;
     font-weight: 800;
@@ -1853,6 +1878,15 @@ a {
    RESPONSIVE
    ======================================== */
 @media (max-width: 1024px) {
+    .hero-main {
+        grid-template-columns: 1fr;
+    }
+
+    .hero-content {
+        width: 100%;
+        margin: 0 auto;
+    }
+
     .hero-visual {
         display: none;
     }
@@ -2020,6 +2054,18 @@ a {
 }
 
 .link-icon .lucide-icon {
+    color: var(--accent-primary);
+}
+
+.brand-icon {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.link-icon .brand-icon {
     color: var(--accent-primary);
 }
 
