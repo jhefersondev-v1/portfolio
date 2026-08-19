@@ -85,10 +85,10 @@ h3 { font-size: 1.15rem; }
 .social-links { display: flex; gap: 20px; }
 .social-links a { color: var(--muted); font-size: .82rem; font-weight: 600; border-bottom: 1px solid transparent; transition: color var(--ease), border-color var(--ease); }
 .social-links a:hover { color: var(--blue); border-color: var(--blue); }
-.hero-photo-wrap { justify-self: end; width: min(100%, 390px); }
-.hero-photo-frame { position: relative; aspect-ratio: 572 / 1024; overflow: hidden; border-radius: 18px; background: #E2E8F0; box-shadow: var(--shadow-md); }
+.hero-photo-wrap { justify-self: end; width: min(100%, 520px); }
+.hero-photo-frame { position: relative; overflow: hidden; border-radius: 18px; background: #E2E8F0; box-shadow: var(--shadow-md); }
 .hero-photo-frame::after { content: ''; position: absolute; inset: 16px; border: 1px solid rgba(255,255,255,.55); border-radius: 12px; pointer-events: none; }
-.hero-photo { width: 100%; height: 100%; object-fit: contain; object-position: center; }
+.hero-photo { width: 100%; height: auto; object-fit: contain; object-position: center; }
 .photo-caption { display: flex; align-items: center; gap: 8px; margin-top: 14px; color: var(--muted); font-size: .75rem; }
 .status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--success); }
 .proof-strip { display: grid; grid-template-columns: repeat(4, 1fr); margin-top: 86px; padding-top: 25px; border-top: 1px solid var(--border); }
