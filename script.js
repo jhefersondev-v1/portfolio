@@ -53,8 +53,8 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.reveal').forEach((element) => revealObserver.observe(element));
 
     const projectCards = [...document.querySelectorAll('.project-card')];
-    const technologies = new Set([...document.querySelectorAll('.chips span, .technology-list span')].map((item) => item.textContent.trim()));
-    const certifications = document.querySelectorAll('#certifications span:not(.card-kicker)');
+    const technologies = new Set([...document.querySelectorAll('.chips span')].map((item) => item.textContent.trim()));
+    const certifications = document.querySelectorAll('#certifications .certificate-card');
     const stats = {
         projects: projectCards.length,
         technologies: technologies.size,
@@ -109,13 +109,32 @@ document.addEventListener('DOMContentLoaded', () => {
     const dialog = document.getElementById('projectDialog');
     const dialogContent = document.getElementById('dialogContent');
     if (!dialog || !dialogContent) return;
+    let activeProject = null;
+    let activeImage = 0;
     const closeDialog = () => dialog.close();
     document.getElementById('dialogClose').addEventListener('click', closeDialog);
     dialog.addEventListener('click', (event) => { if (event.target === dialog) closeDialog(); });
+    const renderProject = () => {
+        const project = projectData[activeProject];
+        const [src, alt] = project.images[activeImage];
+        dialogContent.innerHTML = `<div class="dialog-heading"><span class="project-label">${project.type}</span><h2 id="dialogTitle">${project.title}</h2><p>${project.summary}</p></div><div class="dialog-facts"><div class="dialog-fact"><span>Año</span><strong>${project.year}</strong></div><div class="dialog-fact"><span>Estado</span><strong>${project.status}</strong></div><div class="dialog-fact"><span>Tecnologías</span><strong>${project.technologies}</strong></div><div class="dialog-fact"><span>Capturas</span><strong>${project.images.length}</strong></div></div><h3 class="dialog-section-title">Solución</h3><p>${project.solution}</p><h3 class="dialog-section-title">Problema</h3><p>${project.problem}</p><h3 class="dialog-section-title">Capturas</h3><div class="dialog-main-image"><img src="${src}" alt="${alt}" loading="lazy"><span>${activeImage + 1} / ${project.images.length}</span></div><div class="dialog-gallery">${project.images.map(([imageSrc, imageAlt], index) => `<button class="dialog-thumb${index === activeImage ? ' active' : ''}" type="button" data-image-index="${index}" aria-label="Ver captura ${index + 1}"><img src="${imageSrc}" alt="${imageAlt}" loading="lazy"></button>`).join('')}</div><div class="dialog-gallery-controls"><button type="button" class="button button-outline" data-gallery-action="previous"${project.images.length < 2 ? ' disabled' : ''}>Imagen anterior</button><button type="button" class="button button-outline" data-gallery-action="next"${project.images.length < 2 ? ' disabled' : ''}>Siguiente imagen</button></div>`;
+        dialogContent.querySelectorAll('[data-image-index]').forEach((button) => button.addEventListener('click', () => { activeImage = Number(button.dataset.imageIndex); renderProject(); }));
+        dialogContent.querySelector('[data-gallery-action="previous"]')?.addEventListener('click', () => { activeImage = (activeImage - 1 + project.images.length) % project.images.length; renderProject(); });
+        dialogContent.querySelector('[data-gallery-action="next"]')?.addEventListener('click', () => { activeImage = (activeImage + 1) % project.images.length; renderProject(); });
+    };
     document.querySelectorAll('.project-detail').forEach((button) => button.addEventListener('click', () => {
-        const project = projectData[button.dataset.project];
-        if (!project) return;
-        dialogContent.innerHTML = `<div class="dialog-heading"><span class="project-label">${project.type}</span><h2 id="dialogTitle">${project.title}</h2><p>${project.summary}</p></div><div class="dialog-facts"><div class="dialog-fact"><span>Año</span><strong>${project.year}</strong></div><div class="dialog-fact"><span>Estado</span><strong>${project.status}</strong></div><div class="dialog-fact"><span>Tecnologías</span><strong>${project.technologies}</strong></div><div class="dialog-fact"><span>Capturas</span><strong>${project.images.length}</strong></div></div><h3 class="dialog-section-title">Solución</h3><p>${project.solution}</p><h3 class="dialog-section-title">Problema</h3><p>${project.problem}</p><h3 class="dialog-section-title">Capturas</h3><div class="dialog-gallery">${project.images.map(([src, alt]) => `<img src="${src}" alt="${alt}" loading="lazy">`).join('')}</div>`;
+        if (!projectData[button.dataset.project]) return;
+        activeProject = button.dataset.project;
+        activeImage = 0;
+        renderProject();
         dialog.showModal();
     }));
+    dialog.addEventListener('keydown', (event) => {
+        if (!activeProject) return;
+        if (event.key === 'ArrowRight') { activeImage = (activeImage + 1) % projectData[activeProject].images.length; renderProject(); }
+        if (event.key === 'ArrowLeft') { activeImage = (activeImage - 1 + projectData[activeProject].images.length) % projectData[activeProject].images.length; renderProject(); }
+    });
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && dialog.open) closeDialog();
+    });
 });
