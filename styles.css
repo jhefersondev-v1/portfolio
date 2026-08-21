@@ -86,7 +86,7 @@ h3 { font-size: 1.15rem; }
 .reveal-delay { transition-delay: 100ms; }
 
 /* Hero */
-.hero { position: relative; min-height: max(650px, calc(100vh - var(--header-height))); padding: 105px 0 38px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+.hero { position: relative; min-height: max(650px, calc(100vh - var(--header-height))); padding: 105px 0 38px; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; }
 .hero-grid, .proof-strip { position: relative; z-index: 1; }
 .hero-grid { display: grid; grid-template-columns: minmax(0, 1.12fr) minmax(380px, 0.88fr); align-items: center; gap: 48px; width: min(var(--container), calc(100% - 48px)); margin-inline: auto; }
 .hero-copy { max-width: 640px; justify-self: start; }
