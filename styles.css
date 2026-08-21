@@ -88,10 +88,10 @@ h3 { font-size: 1.15rem; }
 /* Hero */
 .hero { position: relative; min-height: max(650px, calc(100vh - var(--header-height))); padding: 105px 0 38px; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; }
 .hero-grid, .proof-strip { position: relative; z-index: 1; }
-.hero-grid { display: grid; grid-template-columns: minmax(0, 1.12fr) minmax(380px, 0.88fr); align-items: center; gap: 48px; width: min(var(--container), calc(100% - 48px)); margin-inline: auto; }
+.hero-grid { display: grid; grid-template-columns: minmax(0, .95fr) minmax(480px, 1.05fr); align-items: center; gap: 40px; width: min(1280px, calc(100% - 48px)); margin-inline: auto; }
 .hero-copy { max-width: 640px; justify-self: start; }
-.hero-visual { display: flex; align-items: center; justify-content: center; min-height: 460px; }
-.hero-photo-bg { width: min(100%, 540px); height: clamp(360px, 46vw, 560px); background-image: linear-gradient(90deg, rgba(248,250,252,1) 0%, rgba(248,250,252,.96) 18%, rgba(248,250,252,.88) 34%, rgba(248,250,252,.66) 48%, rgba(248,250,252,.2) 70%, rgba(248,250,252,0) 100%), url("perfil1.png"); background-size: 100% 100%, contain; background-position: left center, center; background-repeat: no-repeat; }
+.hero-visual { display: flex; align-items: center; justify-content: center; min-height: 0; }
+.hero-photo-bg { width: 100%; max-width: 720px; aspect-ratio: 1402 / 1122; background-image: linear-gradient(90deg, rgba(248,250,252,1) 0%, rgba(248,250,252,.96) 18%, rgba(248,250,252,.88) 34%, rgba(248,250,252,.66) 48%, rgba(248,250,252,.2) 70%, rgba(248,250,252,0) 100%), url("perfil1.png"); background-size: 100% 100%, 100% 100%; background-position: left center, center; background-repeat: no-repeat; }
 .hero-lead { max-width: 590px; margin-bottom: 32px; color: var(--muted); font-size: 1.17rem; line-height: 1.75; }
 .hero-name { margin-bottom: 12px; color: var(--blue-dark); font-size: 1.05rem; font-weight: 700; letter-spacing: .01em; }
 .hero-actions { display: flex; align-items: center; gap: 22px; margin-bottom: 35px; }
@@ -247,7 +247,7 @@ h3 { font-size: 1.15rem; }
     .hero { min-height: 760px; padding: 52px 0 58px; justify-content: flex-start; }
     .hero-grid { grid-template-columns: 1fr; gap: 18px; }
     .hero-visual { order: 2; min-height: 0; }
-    .hero-photo-bg { width: min(100%, 430px); height: 330px; margin: 0 auto; background-image: linear-gradient(180deg, rgba(248,250,252,.9) 0%, rgba(248,250,252,.78) 26%, rgba(248,250,252,.5) 52%, rgba(248,250,252,0) 100%), url("perfil1.png"); background-position: center top, center; background-size: 100% 100%, contain; }
+    .hero-photo-bg { width: min(92%, 720px); margin: 24px auto 0; background-image: linear-gradient(180deg, rgba(248,250,252,.9) 0%, rgba(248,250,252,.78) 26%, rgba(248,250,252,.5) 52%, rgba(248,250,252,0) 100%), url("perfil1.png"); background-position: center top, center; background-size: 100% 100%, 100% 100%; }
     .hero-copy { max-width: 650px; justify-self: stretch; }
     .hero-copy h1 { font-size: clamp(2.625rem, 7vw, 3.25rem); }
     .hero-footer { flex-direction: column; align-items: flex-start; gap: 18px; }
@@ -268,7 +268,7 @@ h3 { font-size: 1.15rem; }
 
 @media (max-width: 500px) {
     .hero { padding-top: 48px; }
-    .hero-photo-bg { background-position: 0 0, 70% bottom; background-size: 100% 100%, auto 52%; }
+    .hero-photo-bg { width: min(92%, 430px); }
     .hero-lead { font-size: 1rem; }
     .hero-actions { align-items: stretch; flex-direction: column; gap: 12px; }
     .hero-actions .button { width: fit-content; }
