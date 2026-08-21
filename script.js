@@ -55,6 +55,24 @@ document.addEventListener('DOMContentLoaded', () => {
     const projectCards = [...document.querySelectorAll('.project-card')];
     const technologies = new Set([...document.querySelectorAll('.chips span')].map((item) => item.textContent.trim()));
     const certifications = document.querySelectorAll('#certifications .certificate-card');
+    const certificatePreviews = [
+        ['certificate-iot.png', 'Certificado Introduction to IoT'],
+        ['certificate-entrepreneurship.png', 'Certificado Discovering Entrepreneurship'],
+        ['certificate-get-connected.png', 'Certificado Get Connected'],
+        ['certificate-cybersecurity.png', 'Certificado Introduction to Cybersecurity']
+    ];
+    certifications.forEach((card, index) => {
+        const preview = certificatePreviews[index];
+        if (!preview || card.querySelector('.certificate-preview')) return;
+        const image = document.createElement('img');
+        image.className = 'certificate-preview';
+        image.src = preview[0];
+        image.alt = preview[1];
+        image.loading = 'eager';
+        const body = card.querySelector(':scope > div:last-child');
+        card.insertBefore(image, card.firstElementChild);
+        body?.classList.add('certificate-body');
+    });
     const stats = {
         projects: projectCards.length,
         technologies: technologies.size,
