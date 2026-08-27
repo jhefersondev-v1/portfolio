@@ -79,10 +79,24 @@ document.addEventListener('DOMContentLoaded', () => {
         certifications: certifications.length
     };
 
-    Object.entries(stats).forEach(([name, value]) => {
-        document.querySelectorAll(`[data-stat="${name}"]`).forEach((element) => {
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const animateCounter = (element, value) => {
+        if (prefersReducedMotion || value === 0) {
             element.textContent = value;
-        });
+            return;
+        }
+        const start = performance.now();
+        const duration = 700;
+        const tick = (now) => {
+            const progress = Math.min((now - start) / duration, 1);
+            element.textContent = Math.round(progress * value);
+            if (progress < 1) window.requestAnimationFrame(tick);
+        };
+        window.requestAnimationFrame(tick);
+    };
+
+    Object.entries(stats).forEach(([name, value]) => {
+        document.querySelectorAll(`[data-stat="${name}"]`).forEach((element) => animateCounter(element, value));
     });
     document.querySelectorAll('[data-project-count]').forEach((element) => {
         element.textContent = projectCards.length;
