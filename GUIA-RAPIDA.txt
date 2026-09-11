@@ -1,0 +1,24 @@
+JRCHOLAN - PORTFOLIO PREMIUM V2
+===============================
+
+PROBAR EN WINDOWS
+1. Extrae el ZIP.
+2. Haz doble clic en ABRIR-LOCAL.bat.
+3. Se abrirá http://localhost:8000/
+
+PUBLICAR EN GITHUB PAGES
+1. Reemplaza el contenido de tu repositorio actual por TODO el contenido de esta carpeta.
+2. Haz commit y push a la rama que usa GitHub Pages.
+3. Conserva el archivo CNAME: ya contiene jrcholan.lat.
+
+IMPORTANTE
+- No borres la carpeta assets.
+- Los case studies están dentro de /work.
+- El CV y certificados están en /assets/docs.
+- Todas las imágenes optimizadas están en /assets/images.
+
+MEJORAS FUTURAS QUE NECESITAN DATOS REALES
+- Agregar enlaces exactos de cada repositorio.
+- Agregar demos online de cada proyecto.
+- Añadir métricas verificables (usuarios, rendimiento, accuracy, etc.).
+- Añadir proyectos nuevos de 2026 cuando estén listos.

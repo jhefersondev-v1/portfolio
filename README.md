@@ -1,53 +1,56 @@
-# Jheferson Cholan Portfolio
+# JRCHOLAN — Portfolio Premium V2
 
-Portfolio personal de Jheferson Cholan con enfoque en Ingeniería de Software e Inteligencia Artificial.
+Rediseño completo del portafolio de Jheferson Cholan preparado para GitHub Pages y el dominio `jrcholan.lat`.
 
-## Descripción
+## Qué cambió
 
-Sitio web estático para presentar:
-- perfil profesional
-- habilidades y tecnologías
-- proyectos reales
-- IA / Machine Learning
-- experiencia y formación
-- certificaciones
-- contacto
+- Dirección visual editorial dark / premium.
+- Navegación reducida a Work, About, Experience y Contact.
+- Hero centrado en propuesta profesional, no en una lista de habilidades.
+- Tres proyectos principales convertidos en case studies independientes.
+- Archivo secundario de proyectos para mostrar amplitud sin saturar.
+- Habilidades convertidas en capacidades y stack compacto.
+- Experiencia y formación integradas en una timeline más profesional.
+- Certificaciones relegadas a una sección de credenciales.
+- Contacto directo por correo, LinkedIn y GitHub con botón para copiar email.
+- SEO, Open Graph, Schema.org, sitemap, 404 y accesibilidad básica.
+- Imágenes convertidas a WebP y reducidas drásticamente de peso.
+- Sin framework ni proceso de build: compatible con GitHub Pages.
 
-## Tecnologías
+## Estructura
 
-- HTML5
-- CSS3
-- JavaScript
-- GitHub Pages
+```text
+/
+├── index.html
+├── 404.html
+├── CNAME
+├── sitemap.xml
+├── robots.txt
+├── assets/
+│   ├── css/styles.css
+│   ├── js/main.js
+│   ├── images/
+│   └── docs/
+└── work/
+    ├── machine-learning.html
+    ├── calzature.html
+    └── biblioteca.html
+```
 
-## Estructura principal
+## Probar localmente
 
-- `index.html` – contenido principal del sitio
-- `styles.css` – estilos y sistema visual
-- `script.js` – interacciones, filtros y galería de proyectos
-- `CV_JHEFERCHOLAN.pdf` – currículum vitae
-- archivos de imágenes y certificados en la raíz del proyecto
-
-## Ejecutar localmente
+Desde esta carpeta:
 
 ```bash
 python -m http.server 8000
 ```
 
-Luego abrir:
+Abre `http://localhost:8000/`.
 
-```text
-http://localhost:8000/
-```
+## Publicar en GitHub Pages
 
-## Despliegue
+Puedes reemplazar los archivos de tu repositorio actual con el contenido de esta carpeta, hacer commit y push. `CNAME` ya se conserva para `jrcholan.lat`.
 
-Este proyecto se despliega en GitHub Pages y mantiene el dominio personalizado:
+## Personalización recomendada a futuro
 
-```text
-https://jrcholan.lat/
-```
-
-## Autor
-
-Jheferson Rafael Cholan Fernández
+Los textos solo usan datos presentes en el portafolio original. Si cuentas con URLs específicas de repositorios, demos online, métricas reales de los proyectos o nuevos proyectos de 2026, añádelos a cada case study: elevarán aún más la credibilidad del sitio.
