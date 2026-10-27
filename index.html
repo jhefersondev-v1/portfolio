@@ -24,8 +24,8 @@
     <meta property="og:url" content="https://jrcholan.lat/">
     <meta property="og:title" content="Jheferson Cholan | Software Engineering &amp; AI">
     <meta property="og:description" content="Portafolio profesional de Jheferson Cholan: desarrollo de software, sistemas web, bases de datos e inteligencia artificial aplicada.">
-    <meta property="og:image" content="https://jrcholan.lat/assets/images/perfil1.webp">
-    <meta property="og:image:alt" content="Jheferson Cholan - Estudiante de Ingeniería de Software e Inteligencia Artificial">
+    <meta property="og:image" content="https://jrcholan.lat/assets/images/og-jrcholan.webp">
+    <meta property="og:image:alt" content="Jheferson Cholan - Software Engineering &amp; Artificial Intelligence">
     <meta property="og:locale" content="es_PE">
     <meta property="og:site_name" content="JRCHOLAN - Jheferson Cholan">
 
@@ -33,7 +33,7 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Jheferson Cholan | Software Engineering &amp; AI">
     <meta name="twitter:description" content="Portafolio profesional de Jheferson Cholan: desarrollo de software, sistemas web y modelos de inteligencia artificial.">
-    <meta name="twitter:image" content="https://jrcholan.lat/assets/images/perfil1.webp">
+    <meta name="twitter:image" content="https://jrcholan.lat/assets/images/og-jrcholan.webp">
 
     <!-- Prevent Theme Flash (FOUC) -->
     <script>
@@ -60,7 +60,7 @@
                 "name": "Jheferson Rafael Cholan Fernández",
                 "alternateName": "JRCHOLAN",
                 "url": "https://jrcholan.lat/",
-                "image": "https://jrcholan.lat/assets/images/perfil1.webp",
+                "image": "https://jrcholan.lat/assets/images/jheferson-portrait.webp",
                 "jobTitle": "Estudiante de Ingeniería de Software con Inteligencia Artificial",
                 "worksFor": {
                     "@type": "EducationalOrganization",
@@ -82,7 +82,7 @@
                 },
                 "email": "jheferson6666@gmail.com",
                 "sameAs": [
-                    "https://github.com/JHEFER26-NEW",
+                    "https://github.com/jhefersondev-v1",
                     "https://www.linkedin.com/in/jheferson-rafael-cholan-fernandez-62269840a",
                     "https://instagram.com/jheferson.r26",
                     "https://twitter.com/jhefer2606"
@@ -106,13 +106,13 @@
     }
     </script>
 
-    <!-- Fonts: Inter (SF Pro equivalent) + DM Sans + Space Grotesk -->
+    <!-- Typography: Inter + Space Grotesk -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
 
-    <!-- Core Stylesheet -->
-    <link rel="stylesheet" href="styles.css?v=20261027-apple">
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="styles.css?v=20261027-v2">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css">
     <script src="https://unpkg.com/lucide@latest" defer></script>
 </head>
@@ -125,7 +125,7 @@
         <span id="toastMessage">Correo copiado al portapapeles</span>
     </div>
 
-    <!-- Floating Capsule Header (Apple / macOS Tahoe Style) -->
+    <!-- Floating Capsule Header (Apple macOS Tahoe Style) -->
     <header class="site-header" id="mainNav" role="banner">
         <nav class="nav-capsule liquid-glass" aria-label="Navegación principal">
             <!-- Brand -->
@@ -137,18 +137,43 @@
                 </span>
             </a>
 
-            <!-- Navigation Links -->
+            <!-- Primary Navigation Links (macOS Apple Hierarchy) -->
             <div class="nav-links" id="navLinks" role="menubar">
                 <a class="nav-link active" href="#hero" role="menuitem">Inicio</a>
                 <a class="nav-link" href="#about" role="menuitem">Sobre mí</a>
-                <a class="nav-link" href="#skills" role="menuitem">Habilidades</a>
-                <a class="nav-link" href="#technologies" role="menuitem">Tecnologías</a>
                 <a class="nav-link" href="#projects" role="menuitem">Proyectos</a>
-                <a class="nav-link" href="#ai" role="menuitem">IA</a>
                 <a class="nav-link" href="#experience" role="menuitem">Experiencia</a>
-                <a class="nav-link" href="#formation" role="menuitem">Formación</a>
-                <a class="nav-link" href="#certifications" role="menuitem">Certificados</a>
                 <a class="nav-link" href="#contact" role="menuitem">Contacto</a>
+
+                <!-- Subnavigation Dropdown: Más ▾ -->
+                <div class="nav-dropdown-wrapper">
+                    <button class="nav-link nav-dropdown-btn" id="navDropdownBtn" type="button" aria-expanded="false" aria-haspopup="true" aria-controls="navDropdownMenu">
+                        <span>Más</span>
+                        <i data-lucide="chevron-down" class="dropdown-chevron" aria-hidden="true"></i>
+                    </button>
+                    <div class="nav-dropdown-menu liquid-glass" id="navDropdownMenu" role="menu" aria-labelledby="navDropdownBtn">
+                        <a class="dropdown-link" href="#skills" role="menuitem">
+                            <i data-lucide="sparkles" aria-hidden="true"></i>
+                            <span>Habilidades</span>
+                        </a>
+                        <a class="dropdown-link" href="#technologies" role="menuitem">
+                            <i data-lucide="cpu" aria-hidden="true"></i>
+                            <span>Tecnologías</span>
+                        </a>
+                        <a class="dropdown-link" href="#ai" role="menuitem">
+                            <i data-lucide="brain-circuit" aria-hidden="true"></i>
+                            <span>IA y Datos</span>
+                        </a>
+                        <a class="dropdown-link" href="#formation" role="menuitem">
+                            <i data-lucide="graduation-cap" aria-hidden="true"></i>
+                            <span>Formación</span>
+                        </a>
+                        <a class="dropdown-link" href="#certifications" role="menuitem">
+                            <i data-lucide="award" aria-hidden="true"></i>
+                            <span>Certificados</span>
+                        </a>
+                    </div>
+                </div>
             </div>
 
             <!-- Header Controls & Actions -->
@@ -166,13 +191,45 @@
                 </a>
 
                 <!-- Mobile Menu Hamburger -->
-                <button class="nav-toggle" id="navToggle" type="button" aria-expanded="false" aria-controls="navLinks" aria-label="Abrir menú de navegación">
+                <button class="nav-toggle" id="navToggle" type="button" aria-expanded="false" aria-controls="mobileDrawer" aria-label="Abrir menú de navegación">
                     <span class="toggle-bar"></span>
                     <span class="toggle-bar"></span>
                     <span class="toggle-bar"></span>
                 </button>
             </div>
         </nav>
+
+        <!-- Mobile Drawer Sheet (Apple Liquid Glass) -->
+        <div class="mobile-drawer liquid-glass" id="mobileDrawer" hidden>
+            <div class="mobile-drawer-inner">
+                <div class="mobile-nav-group">
+                    <span class="mobile-nav-heading">Navegación</span>
+                    <a class="mobile-nav-link" href="#hero">Inicio</a>
+                    <a class="mobile-nav-link" href="#about">Sobre mí</a>
+                    <a class="mobile-nav-link" href="#projects">Proyectos</a>
+                    <a class="mobile-nav-link" href="#experience">Experiencia</a>
+                    <a class="mobile-nav-link" href="#contact">Contacto</a>
+                </div>
+                <div class="mobile-nav-group">
+                    <span class="mobile-nav-heading">Especialidades</span>
+                    <a class="mobile-nav-link" href="#skills">Habilidades</a>
+                    <a class="mobile-nav-link" href="#technologies">Tecnologías</a>
+                    <a class="mobile-nav-link" href="#ai">IA y Datos</a>
+                    <a class="mobile-nav-link" href="#formation">Formación</a>
+                    <a class="mobile-nav-link" href="#certifications">Certificaciones</a>
+                </div>
+                <div class="mobile-drawer-footer">
+                    <a class="button button-primary button-pill" href="assets/docs/CV_JHEFERCHOLAN.pdf" download>
+                        <i data-lucide="download" aria-hidden="true"></i>
+                        <span>Descargar CV</span>
+                    </a>
+                    <a class="button button-glass button-pill" href="https://github.com/jhefersondev-v1" target="_blank" rel="noopener noreferrer">
+                        <i data-lucide="github" aria-hidden="true"></i>
+                        <span>GitHub</span>
+                    </a>
+                </div>
+            </div>
+        </div>
     </header>
 
     <!-- Main Content -->
@@ -194,10 +251,10 @@
                         <span>Disponible para nuevos proyectos e innovación en IA</span>
                     </div>
 
-                    <p class="hero-kicker">SOFTWARE ENGINEERING · ARTIFICIAL INTELLIGENCE</p>
+                    <p class="hero-kicker">JHEFERSON CHOLAN · SOFTWARE ENGINEERING &amp; AI</p>
                     <p class="hero-name">Jheferson Cholan</p>
                     <h1>Ingeniería de Software con <span class="text-gradient">Inteligencia Artificial</span></h1>
-                    <p class="hero-lead">Desarrollo arquitecturas de software estructuradas, aplicaciones web modernas y modelos de aprendizaje automático y visión por computadora orientados a resolver problemas del mundo real.</p>
+                    <p class="hero-lead">Desarrollo arquitecturas de software estructuradas, plataformas web modernas y modelos de aprendizaje automático y visión por computadora orientados a resolver problemas del mundo real.</p>
 
                     <!-- Hero Call to Actions -->
                     <div class="hero-actions">
@@ -209,6 +266,10 @@
                             <i data-lucide="download" aria-hidden="true"></i>
                             <span>Descargar CV</span>
                         </a>
+                        <a class="button button-glass button-pill" href="https://github.com/jhefersondev-v1" target="_blank" rel="noopener noreferrer" aria-label="Visitar perfil de GitHub">
+                            <i data-lucide="github" aria-hidden="true"></i>
+                            <span>GitHub</span>
+                        </a>
                         <button class="button button-glass-subtle button-pill" type="button" data-copy-email="jheferson6666@gmail.com" aria-label="Copiar correo al portapapeles">
                             <i data-lucide="copy" aria-hidden="true"></i>
                             <span class="copy-text">Copiar correo</span>
@@ -218,7 +279,7 @@
                     <!-- Hero Social Links -->
                     <div class="hero-footer">
                         <div class="social-links" aria-label="Redes profesionales">
-                            <a href="https://github.com/JHEFER26-NEW" target="_blank" rel="noopener noreferrer" aria-label="Perfil de GitHub de Jheferson Cholan" class="social-pill liquid-glass-subtle">
+                            <a href="https://github.com/jhefersondev-v1" target="_blank" rel="noopener noreferrer" aria-label="Perfil de GitHub de Jheferson Cholan" class="social-pill liquid-glass-subtle">
                                 <i data-lucide="github" aria-hidden="true"></i>
                                 <span>GitHub</span>
                             </a>
@@ -234,14 +295,16 @@
                     </div>
                 </div>
 
-                <!-- Hero Visual: Liquid Glass Portrait Card -->
+                <!-- Hero Visual: Cinematic Portrait Card (3:4 / 4:5 Vertical Framing) -->
                 <div class="hero-visual reveal">
-                    <div class="portrait-card liquid-glass">
+                    <div class="portrait-card">
                         <div class="portrait-glow" aria-hidden="true"></div>
-                        <div class="hero-photo-bg" role="img" aria-label="Fotografía de Jheferson Cholan"></div>
+                        <div class="portrait-image-inner">
+                            <img class="hero-portrait-img" src="assets/images/jheferson-portrait.webp" alt="Fotografía profesional de Jheferson Rafael Cholan Fernández" width="1024" height="1536" fetchpriority="high">
+                        </div>
                         <div class="portrait-badge liquid-glass-subtle">
                             <i data-lucide="sparkles" aria-hidden="true"></i>
-                            <span>6to Ciclo · SENATI Cajamarca</span>
+                            <span>SENATI · 6to Ciclo</span>
                         </div>
                     </div>
                 </div>
@@ -282,7 +345,7 @@
             </div>
         </section>
 
-        <!-- About Section -->
+        <!-- About Section (Editorial & Professional Presentation) -->
         <section class="section section-anchor" id="about">
             <div class="container split-heading reveal">
                 <div>
@@ -293,12 +356,24 @@
             </div>
 
             <div class="container about-grid">
-                <div class="about-copy reveal">
-                    <p>Soy <strong>Jheferson Rafael Cholan Fernández</strong>, estudiante de <strong>Ingeniería de Software con Inteligencia Artificial</strong> en SENATI, Cajamarca. Actualmente curso el sexto ciclo y desarrollo proyectos académicos y prácticos para seguir fortaleciendo mi criterio técnico y profesional.</p>
-                    <p>Me interesa crear aplicaciones web y de escritorio, diseñar y optimizar bases de datos, y explorar cómo la inteligencia artificial, el machine learning y la visión artificial pueden aportar soluciones concretas a necesidades reales de las organizaciones.</p>
+                <div class="about-main reveal">
+                    <div class="about-portrait-row card-solid">
+                        <div class="about-avatar-card">
+                            <img class="about-avatar-img" src="assets/images/jheferson-portrait.webp" alt="Jheferson Cholan" width="160" height="160" loading="lazy">
+                        </div>
+                        <div class="about-badge-info">
+                            <h3>Jheferson Rafael Cholan Fernández</h3>
+                            <span>Estudiante de Ingeniería de Software con Inteligencia Artificial · SENATI Cajamarca</span>
+                        </div>
+                    </div>
+
+                    <div class="about-copy">
+                        <p>Soy estudiante de <strong>Ingeniería de Software con Inteligencia Artificial</strong> en SENATI, Cajamarca. Actualmente curso el sexto ciclo y desarrollo proyectos académicos y prácticos para seguir fortaleciendo mi criterio técnico y profesional.</p>
+                        <p>Me interesa crear aplicaciones web y de escritorio, diseñar y optimizar bases de datos relacionales, y explorar cómo la inteligencia artificial, el aprendizaje supervisado y la visión artificial pueden aportar soluciones concretas a necesidades reales de las organizaciones.</p>
+                    </div>
                 </div>
 
-                <aside class="focus-card liquid-glass reveal reveal-delay" aria-label="Áreas de interés técnico">
+                <aside class="focus-card card-solid reveal reveal-delay" aria-label="Áreas de interés técnico">
                     <p class="card-kicker">Áreas de especialización</p>
                     <ul>
                         <li><i data-lucide="code" aria-hidden="true"></i> Software Engineering</li>
@@ -322,73 +397,73 @@
             </div>
 
             <div class="container abilities-grid">
-                <article class="ability-card liquid-glass reveal">
+                <article class="ability-card card-solid reveal">
                     <div class="ability-icon"><i data-lucide="code-2" aria-hidden="true"></i></div>
                     <h3>Desarrollo de Software</h3>
                     <p>Diseño y desarrollo de aplicaciones y sistemas de software estructurados.</p>
                 </article>
 
-                <article class="ability-card liquid-glass reveal reveal-delay">
+                <article class="ability-card card-solid reveal reveal-delay">
                     <div class="ability-icon"><i data-lucide="globe-2" aria-hidden="true"></i></div>
                     <h3>Desarrollo Web</h3>
                     <p>Creación de interfaces y aplicaciones web funcionales, fluidas y responsive.</p>
                 </article>
 
-                <article class="ability-card liquid-glass reveal">
+                <article class="ability-card card-solid reveal">
                     <div class="ability-icon"><i data-lucide="server" aria-hidden="true"></i></div>
                     <h3>Desarrollo Backend</h3>
                     <p>Diseño de lógica de negocio, servicios e integración eficiente con bases de datos.</p>
                 </article>
 
-                <article class="ability-card liquid-glass reveal reveal-delay">
+                <article class="ability-card card-solid reveal reveal-delay">
                     <div class="ability-icon"><i data-lucide="database" aria-hidden="true"></i></div>
                     <h3>Bases de Datos</h3>
                     <p>Diseño, modelado entidad-relación, consultas SQL y gestión de bases relacionales.</p>
                 </article>
 
-                <article class="ability-card liquid-glass reveal">
+                <article class="ability-card card-solid reveal">
                     <div class="ability-icon"><i data-lucide="boxes" aria-hidden="true"></i></div>
                     <h3>Programación Orientada a Objetos</h3>
                     <p>Aplicación de principios de POO para construir código modular, desacoplado y mantenible.</p>
                 </article>
 
-                <article class="ability-card liquid-glass reveal reveal-delay">
+                <article class="ability-card card-solid reveal reveal-delay">
                     <div class="ability-icon ai-icon"><i data-lucide="brain" aria-hidden="true"></i></div>
                     <h3>Machine Learning</h3>
                     <p>Preparación de datos, entrenamiento, evaluación y análisis comparativo de modelos.</p>
                 </article>
 
-                <article class="ability-card liquid-glass reveal">
+                <article class="ability-card card-solid reveal">
                     <div class="ability-icon ai-icon"><i data-lucide="scan-eye" aria-hidden="true"></i></div>
                     <h3>Computer Vision</h3>
                     <p>Procesamiento y análisis de imágenes mediante visión por computadora y modelos YOLO.</p>
                 </article>
 
-                <article class="ability-card liquid-glass reveal reveal-delay">
+                <article class="ability-card card-solid reveal reveal-delay">
                     <div class="ability-icon"><i data-lucide="bar-chart-3" aria-hidden="true"></i></div>
                     <h3>Análisis de Datos</h3>
                     <p>Exploración, depuración y visualización de datasets para extraer conclusiones útiles.</p>
                 </article>
 
-                <article class="ability-card liquid-glass reveal">
+                <article class="ability-card card-solid reveal">
                     <div class="ability-icon"><i data-lucide="lightbulb" aria-hidden="true"></i></div>
                     <h3>Resolución de Problemas</h3>
                     <p>Análisis estructurado de requerimientos y desarrollo de soluciones algorítmicas.</p>
                 </article>
 
-                <article class="ability-card liquid-glass reveal reveal-delay">
+                <article class="ability-card card-solid reveal reveal-delay">
                     <div class="ability-icon"><i data-lucide="git-branch" aria-hidden="true"></i></div>
                     <h3>Control de Versiones</h3>
                     <p>Gestión de versiones, ramas y flujo colaborativo de código mediante Git y GitHub.</p>
                 </article>
 
-                <article class="ability-card liquid-glass reveal">
+                <article class="ability-card card-solid reveal">
                     <div class="ability-icon"><i data-lucide="workflow" aria-hidden="true"></i></div>
                     <h3>Metodologías Ágiles</h3>
                     <p>Trabajo organizado y entregas iterativas mediante marcos Scrum y tableros Kanban.</p>
                 </article>
 
-                <article class="ability-card liquid-glass reveal reveal-delay">
+                <article class="ability-card card-solid reveal reveal-delay">
                     <div class="ability-icon"><i data-lucide="users" aria-hidden="true"></i></div>
                     <h3>Trabajo en Equipo</h3>
                     <p>Comunicación clara, colaboración técnica y adaptabilidad en proyectos multidisciplinarios.</p>
@@ -407,61 +482,61 @@
             </div>
 
             <div class="container technology-grid">
-                <article class="technology-card liquid-glass reveal">
+                <article class="technology-card card-solid reveal">
                     <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/java/java-original.svg" alt="Logotipo de Java" class="tech-logo" width="36" height="36" loading="lazy">
                     <strong>Java</strong>
                     <span>Software · Desktop</span>
                 </article>
 
-                <article class="technology-card liquid-glass reveal reveal-delay">
+                <article class="technology-card card-solid reveal reveal-delay">
                     <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg" alt="Logotipo de Python" class="tech-logo" width="36" height="36" loading="lazy">
                     <strong>Python</strong>
                     <span>Software · IA · Datos</span>
                 </article>
 
-                <article class="technology-card liquid-glass reveal">
+                <article class="technology-card card-solid reveal">
                     <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg" alt="Logotipo de JavaScript" class="tech-logo" width="36" height="36" loading="lazy">
                     <strong>JavaScript</strong>
                     <span>Web Frontend &amp; Lógica</span>
                 </article>
 
-                <article class="technology-card liquid-glass reveal reveal-delay">
+                <article class="technology-card card-solid reveal reveal-delay">
                     <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/php/php-original.svg" alt="Logotipo de PHP" class="tech-logo" width="36" height="36" loading="lazy">
                     <strong>PHP</strong>
                     <span>Backend &amp; Sistemas</span>
                 </article>
 
-                <article class="technology-card liquid-glass reveal">
+                <article class="technology-card card-solid reveal">
                     <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/html5/html5-original.svg" alt="Logotipo de HTML5" class="tech-logo" width="36" height="36" loading="lazy">
                     <strong>HTML5</strong>
                     <span>Estructura semántica</span>
                 </article>
 
-                <article class="technology-card liquid-glass reveal reveal-delay">
+                <article class="technology-card card-solid reveal reveal-delay">
                     <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/css3/css3-original.svg" alt="Logotipo de CSS3" class="tech-logo" width="36" height="36" loading="lazy">
                     <strong>CSS3</strong>
                     <span>Estilos &amp; Responsive</span>
                 </article>
 
-                <article class="technology-card liquid-glass reveal">
+                <article class="technology-card card-solid reveal">
                     <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mysql/mysql-original.svg" alt="Logotipo de MySQL" class="tech-logo" width="36" height="36" loading="lazy">
                     <strong>MySQL</strong>
                     <span>Gestión de datos</span>
                 </article>
 
-                <article class="technology-card liquid-glass reveal reveal-delay">
+                <article class="technology-card card-solid reveal reveal-delay">
                     <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/git/git-original.svg" alt="Logotipo de Git" class="tech-logo" width="36" height="36" loading="lazy">
                     <strong>Git</strong>
                     <span>Control de versiones</span>
                 </article>
 
-                <article class="technology-card liquid-glass reveal">
+                <article class="technology-card card-solid reveal">
                     <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/github/github-original.svg" alt="Logotipo de GitHub" class="tech-logo" width="36" height="36" loading="lazy">
                     <strong>GitHub</strong>
                     <span>Colaboración &amp; CI/CD</span>
                 </article>
 
-                <article class="technology-card technology-card-ai liquid-glass reveal reveal-delay">
+                <article class="technology-card technology-card-ai card-solid reveal reveal-delay">
                     <div class="ai-logos">
                         <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/numpy/numpy-original.svg" alt="NumPy" class="ai-logo" width="22" height="22" loading="lazy">
                         <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/pandas/pandas-original.svg" alt="Pandas" class="ai-logo" width="22" height="22" loading="lazy">
@@ -499,7 +574,7 @@
             <!-- Bento Grid of Projects -->
             <div class="container projects-grid bento-grid">
                 <!-- Project 1: Machine Learning (Featured Card) -->
-                <article class="project-card project-card-wide liquid-glass reveal" data-type="ai">
+                <article class="project-card project-card-wide card-solid reveal" data-type="ai">
                     <div class="project-image-wrap">
                         <img class="project-image" src="assets/images/ml-dataset.webp" alt="Dataset real del proyecto de Machine Learning" width="1536" height="1024" loading="lazy">
                         <div class="project-badge">Destacado · IA</div>
@@ -522,7 +597,7 @@
                 </article>
 
                 <!-- Project 2: YOLO -->
-                <article class="project-card liquid-glass reveal" data-type="ai">
+                <article class="project-card card-solid reveal" data-type="ai">
                     <div class="project-image-wrap">
                         <img class="project-image" src="assets/images/ia-yolo.webp" alt="Resultado visual real de Computer Vision con YOLO" width="1536" height="1024" loading="lazy">
                         <div class="project-badge">Visión por Computadora</div>
@@ -545,7 +620,7 @@
                 </article>
 
                 <!-- Project 3: Ecommerce -->
-                <article class="project-card liquid-glass reveal" data-type="web">
+                <article class="project-card card-solid reveal" data-type="web">
                     <div class="project-image-wrap">
                         <img class="project-image" src="assets/images/ecommerce-home.webp" alt="Página principal real de CALZATURE D’VIDALE" width="1536" height="1024" loading="lazy">
                     </div>
@@ -567,7 +642,7 @@
                 </article>
 
                 <!-- Project 4: Votacion -->
-                <article class="project-card liquid-glass reveal" data-type="web">
+                <article class="project-card card-solid reveal" data-type="web">
                     <div class="project-image-wrap">
                         <img class="project-image" src="assets/images/votacion-inicio.webp" alt="Pantalla inicial real del Sistema de Votación" width="1536" height="1024" loading="lazy">
                     </div>
@@ -589,7 +664,7 @@
                 </article>
 
                 <!-- Project 5: Biblioteca -->
-                <article class="project-card liquid-glass reveal" data-type="desktop">
+                <article class="project-card card-solid reveal" data-type="desktop">
                     <div class="project-image-wrap">
                         <img class="project-image" src="assets/images/biblioteca-dashboard.webp" alt="Dashboard real del Sistema de Gestión de Biblioteca" width="1536" height="1024" loading="lazy">
                     </div>
@@ -611,7 +686,7 @@
                 </article>
 
                 <!-- Project 6: Task Manager -->
-                <article class="project-card liquid-glass reveal" data-type="desktop">
+                <article class="project-card card-solid reveal" data-type="desktop">
                     <div class="project-image-wrap">
                         <img class="project-image" src="assets/images/taskmanager-dashboard.webp" alt="Dashboard real del Task Manager" width="1536" height="1024" loading="lazy">
                     </div>
@@ -633,7 +708,7 @@
                 </article>
 
                 <!-- Project 7: Cajero -->
-                <article class="project-card liquid-glass reveal" data-type="desktop">
+                <article class="project-card card-solid reveal" data-type="desktop">
                     <div class="project-image-wrap">
                         <img class="project-image" src="assets/images/cajero-login.webp" alt="Pantalla de acceso real del Sistema de Cajero Automático" width="1536" height="1024" loading="lazy">
                     </div>
@@ -655,7 +730,7 @@
                 </article>
 
                 <!-- Project 8: Cooperativa -->
-                <article class="project-card liquid-glass reveal" data-type="desktop">
+                <article class="project-card card-solid reveal" data-type="desktop">
                     <div class="project-image-wrap project-placeholder" aria-hidden="true">
                         <i data-lucide="landmark"></i>
                         <span>Captura no disponible</span>
@@ -670,7 +745,8 @@
                         <div class="project-tags">
                             <span>Java</span><span>SQL Server</span><span>Oracle</span>
                         </div>
-                        <a class="button button-glass button-pill" href="https://github.com/JHEFER26-NEW" target="_blank" rel="noopener noreferrer">
+                        <a class="button button-glass button-pill" href="https://github.com/jhefersondev-v1" target="_blank" rel="noopener noreferrer">
+                            <i data-lucide="github" aria-hidden="true"></i>
                             <span>Ver en GitHub</span>
                             <i data-lucide="arrow-up-right" aria-hidden="true"></i>
                         </a>
@@ -690,7 +766,7 @@
             </div>
 
             <div class="container ai-gallery">
-                <article class="ai-feature liquid-glass reveal">
+                <article class="ai-feature card-solid reveal">
                     <img src="assets/images/ia-ml-grafico.png" alt="Gráfico real de análisis de Machine Learning" width="1536" height="1024" loading="lazy">
                     <div class="ai-feature-content">
                         <span class="project-label">MACHINE LEARNING</span>
@@ -699,21 +775,21 @@
                     </div>
                 </article>
 
-                <article class="ai-small liquid-glass reveal reveal-delay">
+                <article class="ai-small card-solid reveal reveal-delay">
                     <img src="assets/images/ml-grafico.webp" alt="Gráfico real del proyecto de Machine Learning" width="1536" height="1024" loading="lazy">
                     <div class="ai-small-content">
                         <h3>Análisis y resultados</h3>
                     </div>
                 </article>
 
-                <article class="ai-small liquid-glass reveal">
+                <article class="ai-small card-solid reveal">
                     <img src="assets/images/ml-resultado.webp" alt="Resultado real del modelo de Machine Learning" width="1536" height="1024" loading="lazy">
                     <div class="ai-small-content">
                         <h3>Evaluación de modelos</h3>
                     </div>
                 </article>
 
-                <article class="ai-small liquid-glass reveal reveal-delay">
+                <article class="ai-small card-solid reveal reveal-delay">
                     <img src="assets/images/ia-datos.png.png" alt="Análisis de datos con IA" width="1536" height="1024" loading="lazy">
                     <div class="ai-small-content">
                         <h3>Análisis de datos con IA</h3>
@@ -733,7 +809,7 @@
             </div>
 
             <div class="container timeline">
-                <article class="timeline-item liquid-glass reveal">
+                <article class="timeline-item card-solid reveal">
                     <span class="timeline-marker" aria-hidden="true"></span>
                     <div class="timeline-date">2025 — Presente</div>
                     <h3>Practicante de Desarrollo Web</h3>
@@ -757,7 +833,7 @@
             </div>
 
             <div class="container timeline">
-                <article class="timeline-item liquid-glass reveal">
+                <article class="timeline-item card-solid reveal">
                     <span class="timeline-marker" aria-hidden="true"></span>
                     <div class="timeline-date">2022 — Presente</div>
                     <h3>Ingeniería de Software con Inteligencia Artificial</h3>
@@ -781,7 +857,7 @@
             </div>
 
             <div class="container certifications-grid">
-                <article class="certificate-card liquid-glass reveal">
+                <article class="certificate-card card-solid reveal">
                     <div class="certificate-image-wrap">
                         <img class="certificate-preview" src="assets/images/certificate-iot.webp" alt="Certificado Introduction to IoT emitido por Cisco Networking Academy" width="1581" height="1071" loading="lazy">
                     </div>
@@ -795,7 +871,7 @@
                     </div>
                 </article>
 
-                <article class="certificate-card liquid-glass reveal reveal-delay">
+                <article class="certificate-card card-solid reveal reveal-delay">
                     <div class="certificate-image-wrap">
                         <img class="certificate-preview" src="assets/images/certificate-entrepreneurship.webp" alt="Certificado Discovering Entrepreneurship emitido por Cisco Networking Academy" width="1581" height="1071" loading="lazy">
                     </div>
@@ -809,7 +885,7 @@
                     </div>
                 </article>
 
-                <article class="certificate-card liquid-glass reveal">
+                <article class="certificate-card card-solid reveal">
                     <div class="certificate-image-wrap">
                         <img class="certificate-preview" src="assets/images/certificate-get-connected.webp" alt="Certificado Get Connected emitido por Cisco Networking Academy" width="1581" height="1071" loading="lazy">
                     </div>
@@ -823,7 +899,7 @@
                     </div>
                 </article>
 
-                <article class="certificate-card liquid-glass reveal reveal-delay">
+                <article class="certificate-card card-solid reveal reveal-delay">
                     <div class="certificate-image-wrap">
                         <img class="certificate-preview" src="assets/images/certificate-cybersecurity.webp" alt="Certificado Introduction to Cybersecurity emitido por Cisco Networking Academy" width="1581" height="1071" loading="lazy">
                     </div>
@@ -848,7 +924,7 @@
                     <p class="contact-lead">Estoy disponible para oportunidades profesionales, pasantías y colaboraciones en ingeniería de software e inteligencia artificial.</p>
 
                     <div class="contact-list">
-                        <div class="contact-item liquid-glass-subtle">
+                        <div class="contact-item card-solid">
                             <i data-lucide="mail" aria-hidden="true"></i>
                             <div class="contact-item-text">
                                 <span>Correo electrónico</span>
@@ -859,16 +935,16 @@
                             </button>
                         </div>
 
-                        <a href="https://github.com/JHEFER26-NEW" target="_blank" rel="noopener noreferrer" aria-label="Visitar perfil de GitHub" class="contact-item liquid-glass-subtle">
+                        <a href="https://github.com/jhefersondev-v1" target="_blank" rel="noopener noreferrer" aria-label="Visitar perfil de GitHub" class="contact-item card-solid">
                             <i data-lucide="github" aria-hidden="true"></i>
                             <div class="contact-item-text">
                                 <span>GitHub</span>
-                                <strong>JHEFER26-NEW</strong>
+                                <strong>jhefersondev-v1</strong>
                             </div>
                             <i data-lucide="arrow-up-right" class="contact-arrow" aria-hidden="true"></i>
                         </a>
 
-                        <a href="https://www.linkedin.com/in/jheferson-rafael-cholan-fernandez-62269840a" target="_blank" rel="noopener noreferrer" aria-label="Visitar perfil de LinkedIn" class="contact-item liquid-glass-subtle">
+                        <a href="https://www.linkedin.com/in/jheferson-rafael-cholan-fernandez-62269840a" target="_blank" rel="noopener noreferrer" aria-label="Visitar perfil de LinkedIn" class="contact-item card-solid">
                             <i data-lucide="linkedin" aria-hidden="true"></i>
                             <div class="contact-item-text">
                                 <span>LinkedIn</span>
@@ -879,8 +955,8 @@
                     </div>
                 </div>
 
-                <!-- Contact Form with Apple-Style Liquid Glass -->
-                <form class="contact-form liquid-glass" id="contactForm" novalidate>
+                <!-- Contact Form with Apple-Style Surface -->
+                <form class="contact-form card-solid" id="contactForm" novalidate>
                     <div class="form-row">
                         <div class="form-group">
                             <label for="name">Nombre <span class="required" aria-hidden="true">*</span></label>
@@ -956,7 +1032,7 @@
                 <a href="#projects">Proyectos</a>
                 <a href="privacidad.html">Privacidad</a>
                 <a href="terminos.html">Términos</a>
-                <a href="https://github.com/JHEFER26-NEW" target="_blank" rel="noopener noreferrer">GitHub</a>
+                <a href="https://github.com/jhefersondev-v1" target="_blank" rel="noopener noreferrer">GitHub</a>
                 <a href="https://www.linkedin.com/in/jheferson-rafael-cholan-fernandez-62269840a" target="_blank" rel="noopener noreferrer">LinkedIn</a>
             </nav>
 
@@ -967,6 +1043,6 @@
         </div>
     </footer>
 
-    <script src="script.js?v=20261027-apple"></script>
+    <script src="script.js?v=20261027-v2"></script>
 </body>
 </html>
