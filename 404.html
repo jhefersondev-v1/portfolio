@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,32 +11,60 @@
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="48x48" href="favicon-48x48.png">
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <meta name="theme-color" content="#FFFFFF" id="themeColorMeta">
 
+    <!-- Prevent Theme Flash -->
+    <script>
+        (function() {
+            try {
+                var savedTheme = localStorage.getItem('theme');
+                var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                var theme = savedTheme ? savedTheme : (prefersDark ? 'dark' : 'light');
+                document.documentElement.setAttribute('data-theme', theme);
+                var meta = document.getElementById('themeColorMeta');
+                if (meta) meta.setAttribute('content', theme === 'dark' ? '#050507' : '#FFFFFF');
+            } catch (e) {}
+        })();
+    </script>
+
+    <!-- Fonts: Inter + DM Sans + Space Grotesk -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css?v=20261001-v2">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css?v=20261027-apple">
     <script src="https://unpkg.com/lucide@latest" defer></script>
 </head>
 <body class="legal-page">
-    <header class="site-header" id="mainNav">
-        <nav class="nav container" aria-label="Navegación">
+    <a href="#main" class="skip-link">Saltar al contenido principal</a>
+
+    <!-- Floating Capsule Header -->
+    <header class="site-header" id="mainNav" role="banner">
+        <nav class="nav-capsule liquid-glass" aria-label="Navegación">
             <a class="brand" href="index.html#hero" aria-label="Ir al inicio del portafolio">
-                <img class="brand-logo" src="assets/images/naslogo.webp" alt="JRCHOLAN - Logotipo" width="40" height="40">
+                <img class="brand-logo" src="assets/images/naslogo.webp" alt="JRCHOLAN - Logotipo" width="36" height="36">
                 <span class="brand-copy">
                     <span class="brand-name">JRCHOLAN</span>
-                    <span class="brand-subtitle">Software Engineering · AI</span>
+                    <span class="brand-subtitle">Software · AI</span>
                 </span>
             </a>
+
             <div class="nav-links legal-nav-links">
                 <a class="nav-link" href="index.html#hero">Inicio</a>
                 <a class="nav-link" href="index.html#projects">Proyectos</a>
                 <a class="nav-link" href="index.html#contact">Contacto</a>
             </div>
-            <a class="button button-small button-outline nav-cv" href="index.html">
-                <i data-lucide="arrow-left" aria-hidden="true"></i>
-                <span>Volver al portafolio</span>
-            </a>
+
+            <div class="nav-actions">
+                <button class="theme-toggle" id="themeToggle" type="button" aria-label="Cambiar entre modo claro y oscuro" title="Cambiar tema">
+                    <i data-lucide="sun" class="icon-sun" aria-hidden="true"></i>
+                    <i data-lucide="moon" class="icon-moon" aria-hidden="true"></i>
+                </button>
+
+                <a class="button button-small button-pill button-glass" href="index.html">
+                    <i data-lucide="arrow-left" aria-hidden="true"></i>
+                    <span>Volver</span>
+                </a>
+            </div>
         </nav>
     </header>
 
@@ -44,15 +72,15 @@
         <section class="container section" style="text-align: center; max-width: 680px; padding: 120px 20px;">
             <p class="eyebrow" style="justify-content: center;"><span class="eyebrow-dot"></span> ERROR 404</p>
             <h1 style="font-size: clamp(2.5rem, 6vw, 4rem); margin-bottom: 16px;">Página no encontrada</h1>
-            <p style="color: var(--muted); font-size: 1.1rem; line-height: 1.6; margin-bottom: 32px;">
+            <p style="color: var(--text-secondary); font-size: 1.1rem; line-height: 1.6; margin-bottom: 32px;">
                 La página o recurso que buscas no existe o ha sido reubicada dentro del portafolio.
             </p>
             <div style="display: flex; justify-content: center; gap: 16px; flex-wrap: wrap;">
-                <a class="button button-primary" href="index.html#hero">
+                <a class="button button-primary button-pill" href="index.html#hero">
                     <i data-lucide="home" aria-hidden="true"></i>
                     <span>Ir a la página principal</span>
                 </a>
-                <a class="button button-outline" href="index.html#projects">
+                <a class="button button-glass button-pill" href="index.html#projects">
                     <i data-lucide="layout-grid" aria-hidden="true"></i>
                     <span>Explorar proyectos</span>
                 </a>
@@ -62,8 +90,11 @@
 
     <footer class="site-footer">
         <div class="container footer-inner">
-            <div>
-                <strong>Jheferson Cholan</strong>
+            <div class="footer-brand">
+                <div class="footer-brand-title">
+                    <img src="assets/images/naslogo.webp" alt="JRCHOLAN" width="24" height="24">
+                    <strong>Jheferson Cholan</strong>
+                </div>
                 <span>Ingeniería de Software con Inteligencia Artificial · Cajamarca, Perú</span>
             </div>
             <div class="footer-links">
@@ -81,12 +112,6 @@
         </div>
     </footer>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            if (window.lucide) {
-                window.lucide.createIcons();
-            }
-        });
-    </script>
+    <script src="script.js?v=20261027-apple"></script>
 </body>
 </html>

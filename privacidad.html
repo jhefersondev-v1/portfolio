@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,11 +7,16 @@
     <meta name="description" content="Política de Privacidad del portafolio profesional de Jheferson Rafael Cholan Fernández (JRCHOLAN). Información sobre tratamiento de datos conforme a la normativa peruana.">
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://jrcholan.lat/privacidad.html">
+    <meta name="theme-color" content="#FFFFFF" id="themeColorMeta">
+
+    <!-- Favicons -->
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="48x48" href="favicon-48x48.png">
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+
+    <!-- Open Graph -->
     <meta property="og:type" content="article">
     <meta property="og:url" content="https://jrcholan.lat/privacidad.html">
     <meta property="og:title" content="Política de Privacidad | Jheferson Cholan">
@@ -23,33 +28,58 @@
     <meta name="twitter:description" content="Información general sobre privacidad y datos personales en jrcholan.lat.">
     <meta name="twitter:image" content="https://jrcholan.lat/assets/images/perfil1.webp">
 
+    <!-- Prevent Theme Flash -->
+    <script>
+        (function() {
+            try {
+                var savedTheme = localStorage.getItem('theme');
+                var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                var theme = savedTheme ? savedTheme : (prefersDark ? 'dark' : 'light');
+                document.documentElement.setAttribute('data-theme', theme);
+                var meta = document.getElementById('themeColorMeta');
+                if (meta) meta.setAttribute('content', theme === 'dark' ? '#050507' : '#FFFFFF');
+            } catch (e) {}
+        })();
+    </script>
+
+    <!-- Fonts: Inter + DM Sans + Space Grotesk -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css?v=20261001-v2">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css?v=20261027-apple">
     <script src="https://unpkg.com/lucide@latest" defer></script>
 </head>
 <body class="legal-page">
     <a href="#main" class="skip-link">Saltar al contenido principal</a>
 
-    <header class="site-header" id="mainNav">
-        <nav class="nav container" aria-label="Navegación principal">
+    <!-- Floating Capsule Header -->
+    <header class="site-header" id="mainNav" role="banner">
+        <nav class="nav-capsule liquid-glass" aria-label="Navegación principal">
             <a class="brand" href="index.html#hero" aria-label="Ir al inicio del portafolio">
-                <img class="brand-logo" src="assets/images/naslogo.webp" alt="JRCHOLAN - Logotipo" width="40" height="40">
+                <img class="brand-logo" src="assets/images/naslogo.webp" alt="JRCHOLAN - Logotipo" width="36" height="36">
                 <span class="brand-copy">
                     <span class="brand-name">JRCHOLAN</span>
-                    <span class="brand-subtitle">Software Engineering · AI</span>
+                    <span class="brand-subtitle">Software · AI</span>
                 </span>
             </a>
+
             <div class="nav-links legal-nav-links">
                 <a class="nav-link" href="index.html#hero">Inicio</a>
                 <a class="nav-link" href="index.html#projects">Proyectos</a>
                 <a class="nav-link" href="index.html#contact">Contacto</a>
             </div>
-            <a class="button button-small button-outline nav-cv" href="index.html">
-                <i data-lucide="arrow-left" aria-hidden="true"></i>
-                <span>Volver al portafolio</span>
-            </a>
+
+            <div class="nav-actions">
+                <button class="theme-toggle" id="themeToggle" type="button" aria-label="Cambiar entre modo claro y oscuro" title="Cambiar tema">
+                    <i data-lucide="sun" class="icon-sun" aria-hidden="true"></i>
+                    <i data-lucide="moon" class="icon-moon" aria-hidden="true"></i>
+                </button>
+
+                <a class="button button-small button-pill button-glass" href="index.html">
+                    <i data-lucide="arrow-left" aria-hidden="true"></i>
+                    <span>Volver</span>
+                </a>
+            </div>
         </nav>
     </header>
 
@@ -152,11 +182,11 @@
             </div>
 
             <div class="legal-actions">
-                <a class="button button-primary" href="index.html#contact">
+                <a class="button button-primary button-pill" href="index.html#contact">
                     <i data-lucide="mail" aria-hidden="true"></i>
                     <span>Contactar a Jheferson Cholan</span>
                 </a>
-                <a class="button button-outline" href="terminos.html">
+                <a class="button button-glass button-pill" href="terminos.html">
                     <span>Ver Términos de Uso y Aviso Legal</span>
                     <i data-lucide="arrow-right" aria-hidden="true"></i>
                 </a>
@@ -166,8 +196,11 @@
 
     <footer class="site-footer">
         <div class="container footer-inner">
-            <div>
-                <strong>Jheferson Cholan</strong>
+            <div class="footer-brand">
+                <div class="footer-brand-title">
+                    <img src="assets/images/naslogo.webp" alt="JRCHOLAN" width="24" height="24">
+                    <strong>Jheferson Cholan</strong>
+                </div>
                 <span>Ingeniería de Software con Inteligencia Artificial · Cajamarca, Perú</span>
             </div>
             <div class="footer-links">
@@ -185,12 +218,6 @@
         </div>
     </footer>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            if (window.lucide) {
-                window.lucide.createIcons();
-            }
-        });
-    </script>
+    <script src="script.js?v=20261027-apple"></script>
 </body>
 </html>

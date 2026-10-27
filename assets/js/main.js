@@ -1,28 +1,133 @@
 /**
  * PORTAFOLIO PROFESIONAL - JRCHOLAN (Jheferson Cholan)
  * https://jrcholan.lat/
- * Script principal: interacciones, animaciones accesibles, filtros y modal
+ * Apple Liquid Glass Design System - Scripts & Interactions
  */
 
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. Inicialización de iconos Lucide
-    if (window.lucide && typeof window.lucide.createIcons === 'function') {
-        window.lucide.createIcons();
+    // -------------------------------------------------------------------------
+    // 1. INICIALIZACIÓN DE ICONOS LUCIDE
+    // -------------------------------------------------------------------------
+    const refreshIcons = () => {
+        if (window.lucide && typeof window.lucide.createIcons === 'function') {
+            window.lucide.createIcons();
+        }
+    };
+    refreshIcons();
+
+    // -------------------------------------------------------------------------
+    // 2. SISTEMA DE TEMA APPLE (LIGHT / DARK THEME SWITCHER)
+    // -------------------------------------------------------------------------
+    const themeToggle = document.getElementById('themeToggle');
+    const themeColorMeta = document.getElementById('themeColorMeta');
+
+    const getPreferredTheme = () => {
+        const saved = localStorage.getItem('theme');
+        if (saved === 'dark' || saved === 'light') return saved;
+        return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    };
+
+    const applyTheme = (theme) => {
+        document.documentElement.setAttribute('data-theme', theme);
+        if (themeColorMeta) {
+            themeColorMeta.setAttribute('content', theme === 'dark' ? '#050507' : '#FFFFFF');
+        }
+        if (themeToggle) {
+            themeToggle.setAttribute(
+                'aria-label',
+                theme === 'dark' ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'
+            );
+            themeToggle.setAttribute(
+                'title',
+                theme === 'dark' ? 'Activar modo claro' : 'Activar modo oscuro'
+            );
+        }
+        refreshIcons();
+    };
+
+    // Aplicar tema inicial
+    applyTheme(getPreferredTheme());
+
+    // Botón de alternancia de tema
+    if (themeToggle) {
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            localStorage.setItem('theme', newTheme);
+            applyTheme(newTheme);
+        });
     }
 
-    // 2. Control de navegación y menú móvil accesible
-    const header = document.getElementById('mainNav');
+    // Escuchar cambios de preferencia del sistema si el usuario no tiene guardado un tema fijo
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+        if (!localStorage.getItem('theme')) {
+            applyTheme(e.matches ? 'dark' : 'light');
+        }
+    });
+
+    // -------------------------------------------------------------------------
+    // 3. TOAST NOTIFICATION & COPIAR CORREO (QUICK ACTIONS)
+    // -------------------------------------------------------------------------
+    const toast = document.getElementById('toast');
+    const toastMessage = document.getElementById('toastMessage');
+    let toastTimer = null;
+
+    const showToast = (message = 'Correo copiado al portapapeles') => {
+        if (!toast || !toastMessage) return;
+        toastMessage.textContent = message;
+        toast.hidden = false;
+        toast.classList.add('show');
+
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => {
+            toast.classList.remove('show');
+            setTimeout(() => {
+                toast.hidden = true;
+            }, 300);
+        }, 3200);
+    };
+
+    document.querySelectorAll('[data-copy-email]').forEach((btn) => {
+        btn.addEventListener('click', async (e) => {
+            e.preventDefault();
+            const email = btn.dataset.copyEmail || 'jheferson6666@gmail.com';
+            try {
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    await navigator.clipboard.writeText(email);
+                } else {
+                    // Fallback para navegadores antiguos
+                    const textarea = document.createElement('textarea');
+                    textarea.value = email;
+                    textarea.style.position = 'fixed';
+                    textarea.style.opacity = '0';
+                    document.body.appendChild(textarea);
+                    textarea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textarea);
+                }
+                showToast(`¡Copiado!: ${email}`);
+
+                // Feedback visual en el botón
+                const copyText = btn.querySelector('.copy-text');
+                if (copyText) {
+                    const originalText = copyText.textContent;
+                    copyText.textContent = '¡Copiado!';
+                    setTimeout(() => {
+                        copyText.textContent = originalText;
+                    }, 2000);
+                }
+            } catch (err) {
+                showToast('No se pudo copiar automáticamente.');
+            }
+        });
+    });
+
+    // -------------------------------------------------------------------------
+    // 4. FLOATING CAPSULE NAVBAR & MENÚ MÓVIL ACCESIBLE
+    // -------------------------------------------------------------------------
     const navToggle = document.getElementById('navToggle');
     const navLinks = document.getElementById('navLinks');
     const links = [...document.querySelectorAll('.nav-link')];
-
-    // Sombra del header al hacer scroll
-    const handleScrollHeader = () => {
-        if (!header) return;
-        header.classList.toggle('scrolled', window.scrollY > 20);
-    };
-    window.addEventListener('scroll', handleScrollHeader, { passive: true });
-    handleScrollHeader();
 
     const closeMenu = () => {
         if (!navToggle || !navLinks) return;
@@ -40,17 +145,17 @@ document.addEventListener('DOMContentLoaded', () => {
             navToggle.setAttribute('aria-label', isOpen ? 'Cerrar menú de navegación' : 'Abrir menú de navegación');
         });
 
-        // Cerrar al hacer clic en enlaces
+        // Cerrar al pulsar cualquier enlace
         links.forEach((link) => link.addEventListener('click', closeMenu));
 
-        // Cerrar al hacer clic fuera del menú
+        // Cerrar al pulsar fuera del menú
         document.addEventListener('click', (event) => {
-            if (navLinks.classList.contains('open') && !header.contains(event.target)) {
+            if (navLinks.classList.contains('open') && !event.target.closest('#mainNav')) {
                 closeMenu();
             }
         });
 
-        // Cerrar con tecla Escape
+        // Cerrar con Escape
         document.addEventListener('keydown', (event) => {
             if (event.key === 'Escape' && navLinks.classList.contains('open')) {
                 closeMenu();
@@ -59,7 +164,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 3. Resaltado de enlace activo mediante IntersectionObserver
+    // -------------------------------------------------------------------------
+    // 5. RESALTADO DE SECCIÓN ACTIVA EN NAVBAR (INTERSECTION OBSERVER)
+    // -------------------------------------------------------------------------
     const sections = [...document.querySelectorAll('.section-anchor')];
     const setActiveLink = (id) => {
         links.forEach((link) => {
@@ -80,17 +187,19 @@ document.addEventListener('DOMContentLoaded', () => {
                     setActiveLink(entry.target.id);
                 }
             });
-        }, { rootMargin: '-30% 0px -50% 0px', threshold: 0 });
+        }, { rootMargin: '-25% 0px -55% 0px', threshold: 0 });
 
         sections.forEach((section) => sectionObserver.observe(section));
     }
 
-    // 4. Animaciones de revelado (Scroll Reveal) respetando prefers-reduced-motion
+    // -------------------------------------------------------------------------
+    // 6. ANIMACIONES DE REVELADO (SCROLL REVEAL)
+    // -------------------------------------------------------------------------
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const revealElements = document.querySelectorAll('.reveal');
 
     if (prefersReducedMotion) {
-        revealElements.forEach((element) => element.classList.add('visible'));
+        revealElements.forEach((el) => el.classList.add('visible'));
     } else if ('IntersectionObserver' in window) {
         const revealObserver = new IntersectionObserver((entries, observer) => {
             entries.forEach((entry) => {
@@ -99,22 +208,24 @@ document.addEventListener('DOMContentLoaded', () => {
                     observer.unobserve(entry.target);
                 }
             });
-        }, { threshold: 0.1, rootMargin: '0px 0px -30px' });
+        }, { threshold: 0.08, rootMargin: '0px 0px -40px' });
 
-        revealElements.forEach((element) => revealObserver.observe(element));
+        revealElements.forEach((el) => revealObserver.observe(el));
     } else {
-        revealElements.forEach((element) => element.classList.add('visible'));
+        revealElements.forEach((el) => el.classList.add('visible'));
     }
 
-    // 5. Cálculo dinámico y animación robusta de contadores (Stat Counters)
+    // -------------------------------------------------------------------------
+    // 7. CÁLCULO DINÁMICO Y ANIMACIÓN DE CONTADORES (PREVINIENDO EL PROBLEMA DE 0)
+    // -------------------------------------------------------------------------
     const projectCards = [...document.querySelectorAll('.projects-grid .project-card')];
     const certificationCards = [...document.querySelectorAll('#certifications .certificate-card')];
 
-    // Extracción dinámica de tecnologías únicas presentes en el DOM
+    // Recolectar tecnologías presentes en el DOM de forma dinámica
     const techSet = new Set();
     document.querySelectorAll('#technologies .technology-card strong').forEach((el) => {
         const text = el.textContent.trim();
-        if (text && text !== 'AI / ML') techSet.add(text);
+        if (text && text !== 'AI / ML' && text !== 'AI / ML Stack') techSet.add(text);
     });
 
     document.querySelectorAll('#technologies .technology-card span').forEach((el) => {
@@ -133,12 +244,11 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     const stats = {
-        projects: projectCards.length || 8,
-        technologies: techSet.size > 0 ? techSet.size : 15,
-        certifications: certificationCards.length || 4
+        projects: Math.max(projectCards.length, 8),
+        technologies: Math.max(techSet.size, 15),
+        certifications: Math.max(certificationCards.length, 4)
     };
 
-    // Actualizar indicador de cantidad de proyectos
     const projectCountEl = document.querySelector('[data-project-count]');
     if (projectCountEl) {
         projectCountEl.textContent = stats.projects;
@@ -150,16 +260,15 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        const duration = 1100;
+        const duration = 1200;
         const start = performance.now();
-        const startValue = 0;
 
         const tick = (now) => {
             const elapsed = now - start;
             const progress = Math.min(elapsed / duration, 1);
-            // Función de suavizado cubic ease-out
+            // Cubic ease-out curve
             const easeOutProgress = 1 - Math.pow(1 - progress, 3);
-            const current = Math.round(startValue + (targetValue - startValue) * easeOutProgress);
+            const current = Math.round(targetValue * easeOutProgress);
 
             element.textContent = (isPlus && progress >= 1) ? `${current}+` : current;
 
@@ -194,14 +303,16 @@ document.addEventListener('DOMContentLoaded', () => {
                     observer.unobserve(entry.target);
                 }
             });
-        }, { threshold: 0.2 });
+        }, { threshold: 0.15 });
 
         counterObserver.observe(proofStrip);
     } else {
         triggerCounters();
     }
 
-    // 6. Filtrado de proyectos accesible
+    // -------------------------------------------------------------------------
+    // 8. FILTRADO ACCESIBLE DE PROYECTOS (BENTO TABS)
+    // -------------------------------------------------------------------------
     const filterButtons = document.querySelectorAll('.filter-btn');
     filterButtons.forEach((button) => {
         button.addEventListener('click', () => {
@@ -214,7 +325,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 item.setAttribute('aria-pressed', String(isActive));
             });
 
-            // Filtrar cards
+            // Filtrar tarjetas
             let visibleCount = 0;
             projectCards.forEach((card) => {
                 const shouldShow = filter === 'all' || card.dataset.type === filter;
@@ -222,14 +333,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (shouldShow) visibleCount++;
             });
 
-            // Actualizar texto del contador con feedback accesible
+            // Actualizar contador
             if (projectCountEl) {
                 projectCountEl.textContent = visibleCount;
             }
         });
     });
 
-    // 7. Validación profesional del formulario de contacto y consentimiento de privacidad
+    // -------------------------------------------------------------------------
+    // 9. VALIDACIÓN DEL FORMULARIO DE CONTACTO Y PRIVACIDAD
+    // -------------------------------------------------------------------------
     const contactForm = document.getElementById('contactForm');
     const formStatus = document.getElementById('formStatus');
 
@@ -323,10 +436,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            // Envío seguro mediante cliente de correo con codificación URI
+            // Generar correo mediante mailto seguro
             const subject = `Contacto desde jrcholan.lat: ${nameVal}`;
             const body = `Hola Jheferson,\n\nMi nombre es: ${nameVal}\nCorreo de contacto: ${emailVal}\n\nMensaje:\n${messageVal}\n\n---\nHe aceptado los términos y la política de privacidad de jrcholan.lat`;
-
             const mailtoUri = `mailto:jheferson6666@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 
             formStatus.textContent = 'Abriendo tu cliente de correo para completar el envío...';
@@ -336,7 +448,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 8. Modal de detalles de proyectos accesible (WCAG 2.2 Compliant)
+    // -------------------------------------------------------------------------
+    // 10. MODAL DE PROYECTOS ACCESIBLE (WCAG 2.2 COMPLIANT)
+    // -------------------------------------------------------------------------
     const projectData = {
         library: {
             title: 'Sistema de Gestión de Biblioteca',
@@ -456,7 +570,7 @@ document.addEventListener('DOMContentLoaded', () => {
             dialog.close();
             activeProjectKey = null;
             activeImageIndex = 0;
-            // Devolver foco al elemento disparador para accesibilidad WCAG
+            // Devolver foco al elemento disparador
             if (lastFocusedElement && typeof lastFocusedElement.focus === 'function') {
                 lastFocusedElement.focus();
             }
@@ -531,11 +645,11 @@ document.addEventListener('DOMContentLoaded', () => {
                         `).join('')}
                     </div>
                     <div class="dialog-gallery-controls">
-                        <button type="button" class="button button-outline" data-gallery-action="previous" aria-label="Ver imagen anterior">
+                        <button type="button" class="button button-glass button-pill" data-gallery-action="previous" aria-label="Ver imagen anterior">
                             <i data-lucide="arrow-left" aria-hidden="true"></i>
                             <span>Anterior</span>
                         </button>
-                        <button type="button" class="button button-outline" data-gallery-action="next" aria-label="Ver imagen siguiente">
+                        <button type="button" class="button button-glass button-pill" data-gallery-action="next" aria-label="Ver imagen siguiente">
                             <span>Siguiente</span>
                             <i data-lucide="arrow-right" aria-hidden="true"></i>
                         </button>
@@ -543,10 +657,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 ` : ''}
             `;
 
-            // Refrescar iconos en el contenido dinámico
-            if (window.lucide && typeof window.lucide.createIcons === 'function') {
-                window.lucide.createIcons();
-            }
+            refreshIcons();
 
             // Eventos de miniaturas
             dialogContent.querySelectorAll('[data-image-index]').forEach((btn) => {
@@ -581,7 +692,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 if (typeof dialog.showModal === 'function') {
                     dialog.showModal();
-                    // Colocar foco accesible en el botón de cerrar
                     dialogClose.focus();
                 }
             });
