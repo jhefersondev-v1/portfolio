@@ -1,0 +1,11 @@
+# Large original 4K video footage (local master files only - not for deployment)
+assets/videos/Video Project 1.mp4
+assets/videos/Video Project 2.mp4
+assets/videos/*original*
+assets/videos/*Original*
+
+# OS and Editor artifacts
+.DS_Store
+Thumbs.db
+*.tmp
+*.log

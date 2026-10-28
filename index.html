@@ -180,6 +180,11 @@
 
             <!-- Header Controls & Actions -->
             <div class="nav-actions">
+                <!-- Motion / Video Background Toggle Button -->
+                <button class="motion-toggle" id="motionToggle" type="button" aria-label="Pausar animaciones de fondo" title="Pausar animaciones de fondo">
+                    <i data-lucide="pause" class="icon-pause" aria-hidden="true"></i>
+                    <i data-lucide="play" class="icon-play" aria-hidden="true"></i>
+                </button>
                 <!-- Theme Switcher Pill -->
                 <button class="theme-toggle" id="themeToggle" type="button" aria-label="Cambiar entre modo claro y oscuro" title="Cambiar tema">
                     <i data-lucide="sun" class="icon-sun" aria-hidden="true"></i>
@@ -245,6 +250,13 @@
     <main class="site-main" id="main" tabindex="-1">
         <!-- Hero Section: Apple Keynote & Cinematic Style -->
         <section class="hero section-anchor" id="hero">
+            <!-- Hero Cinematic Video Background (Apple Keynote Aesthetic) -->
+            <div class="hero-video-wrap" aria-hidden="true">
+                <video class="hero-video" id="heroVideo" autoplay muted loop playsinline preload="metadata" poster="assets/images/hero-video-poster.webp">
+                    <source src="assets/videos/hero-cinematic.mp4" type="video/mp4">
+                </video>
+                <div class="hero-video-overlay"></div>
+            </div>
             <!-- Ambient Lighting Effects -->
             <div class="hero-ambient" aria-hidden="true">
                 <div class="ambient-glow ambient-glow-primary"></div>
@@ -351,6 +363,12 @@
         <!-- About Section (Editorial & Professional Presentation) -->
         <!-- Readable chapters remain available independently of Canvas. -->
         <section class="world-journey" id="portfolioWorld" aria-labelledby="worldTitle">
+            <!-- Scroll World Cinematic Entrance Background (Lazy loaded) -->
+            <div class="world-intro-cinematic" aria-hidden="true">
+                <video class="world-intro-video" id="scrollworldVideo" muted loop playsinline preload="none" poster="assets/images/scrollworld-video-poster.webp" data-video-src="assets/videos/scrollworld-cinematic.mp4">
+                </video>
+                <div class="world-intro-overlay"></div>
+            </div>
             <div class="container world-heading">
                 <p class="eyebrow">SOFTWARE · DATOS · INTELIGENCIA ARTIFICIAL</p>
                 <h2 id="worldTitle">De una idea.<br>A una solución real.</h2>
