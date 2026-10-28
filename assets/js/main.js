@@ -312,12 +312,16 @@
             const desktopLinkFocused = document.getElementById('navLinks')?.contains(document.activeElement);
             closeDropdown();
             if (!event.matches) {
+                navDroplet?.classList.remove('is-ready');
                 if (desktopLinkFocused) navToggle.focus({ preventScroll: true });
                 return;
             }
             const moveFocus = mobileDrawer.contains(document.activeElement);
             closeMobileDrawer();
             if (moveFocus) primaryNavLinks[0]?.focus({ preventScroll: true });
+            if (currentDropletTarget) {
+                updateDroplet(currentDropletTarget, true);
+            }
         });
     }
 
@@ -362,17 +366,84 @@
     }
 
     // -------------------------------------------------------------------------
-    // 5. RESALTADO DE SECCIÓN ACTIVA EN NAVBAR (INTERSECTION OBSERVER)
+    // 5. RESALTADO DE SECCIÓN ACTIVA & LIQUID GLASS WATER DROPLET (APPLE V6)
     // -------------------------------------------------------------------------
     const sections = [...document.querySelectorAll('.section-anchor')];
     const subNavIds = ['skills', 'technologies', 'ai', 'formation', 'certifications'];
 
+    const navDroplet = document.getElementById('navDroplet');
+    const navLinksContainer = document.getElementById('navLinks');
+    let lastDropletX = null;
+    let stretchTimer = null;
+    let currentDropletTarget = null;
+
+    const updateDroplet = (targetEl, immediate = false) => {
+        if (!navDroplet || !navLinksContainer || !targetEl) return;
+        if (!desktopNavigation.matches) {
+            navDroplet.classList.remove('is-ready');
+            return;
+        }
+
+        const containerRect = navLinksContainer.getBoundingClientRect();
+        const targetRect = targetEl.getBoundingClientRect();
+
+        const left = Math.round(targetRect.left - containerRect.left + navLinksContainer.scrollLeft);
+        const top = Math.round(targetRect.top - containerRect.top + navLinksContainer.scrollTop);
+        const width = Math.round(targetRect.width);
+        const height = Math.round(targetRect.height);
+
+        if (width === 0 || height === 0) return;
+
+        currentDropletTarget = targetEl;
+
+        const isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (immediate || lastDropletX === null || isReducedMotion) {
+            navDroplet.style.transition = 'none';
+            navDroplet.style.left = `${left}px`;
+            navDroplet.style.top = `${top}px`;
+            navDroplet.style.width = `${width}px`;
+            navDroplet.style.height = `${height}px`;
+            navDroplet.style.transform = 'scale(1, 1)';
+            void navDroplet.offsetHeight;
+            navDroplet.style.transition = '';
+            navDroplet.classList.add('is-ready');
+            lastDropletX = left;
+            return;
+        }
+
+        const deltaX = left - lastDropletX;
+        if (Math.abs(deltaX) > 6) {
+            const stretch = Math.min(Math.abs(deltaX) / 180, 0.28);
+            if (deltaX > 0) {
+                navDroplet.style.transformOrigin = 'left center';
+            } else {
+                navDroplet.style.transformOrigin = 'right center';
+            }
+            navDroplet.style.transform = `scaleX(${1 + stretch}) scaleY(${1 - stretch * 0.35})`;
+        }
+
+        navDroplet.style.left = `${left}px`;
+        navDroplet.style.top = `${top}px`;
+        navDroplet.style.width = `${width}px`;
+        navDroplet.style.height = `${height}px`;
+        navDroplet.classList.add('is-ready');
+        lastDropletX = left;
+
+        clearTimeout(stretchTimer);
+        stretchTimer = setTimeout(() => {
+            navDroplet.style.transform = 'scale(1, 1)';
+        }, 220);
+    };
+
     const setActiveLink = (id) => {
+        let activeEl = null;
+
         primaryNavLinks.forEach((link) => {
             const isActive = link.getAttribute('href') === `#${id}`;
             link.classList.toggle('active', isActive);
             if (isActive) {
                 link.setAttribute('aria-current', 'true');
+                activeEl = link;
             } else {
                 link.removeAttribute('aria-current');
             }
@@ -391,6 +462,9 @@
         if (navDropdownBtn) {
             const isSubActive = subNavIds.includes(id);
             navDropdownBtn.classList.toggle('active', isSubActive);
+            if (isSubActive) {
+                activeEl = navDropdownBtn;
+            }
         }
 
         mobileNavLinks.forEach((link) => {
@@ -402,7 +476,37 @@
                 link.removeAttribute('aria-current');
             }
         });
+
+        if (activeEl) {
+            updateDroplet(activeEl);
+        }
     };
+
+    primaryNavLinks.forEach((link) => {
+        link.addEventListener('click', () => {
+            updateDroplet(link);
+        });
+    });
+
+    if (navDropdownBtn) {
+        navDropdownBtn.addEventListener('click', () => {
+            updateDroplet(navDropdownBtn);
+        });
+    }
+
+    window.addEventListener('resize', () => {
+        if (currentDropletTarget) {
+            updateDroplet(currentDropletTarget, true);
+        }
+    }, { passive: true });
+
+    if (document.fonts && document.fonts.ready) {
+        document.fonts.ready.then(() => {
+            if (currentDropletTarget) {
+                updateDroplet(currentDropletTarget, true);
+            }
+        });
+    }
 
     if ('IntersectionObserver' in window && sections.length > 0) {
         const sectionObserver = new IntersectionObserver((entries) => {
@@ -414,6 +518,13 @@
         }, { rootMargin: '-25% 0px -55% 0px', threshold: 0 });
 
         sections.forEach((section) => sectionObserver.observe(section));
+    }
+
+    const initialTarget = primaryNavLinks.find((link) => link.classList.contains('active')) || primaryNavLinks[0];
+    if (initialTarget) {
+        requestAnimationFrame(() => {
+            updateDroplet(initialTarget, true);
+        });
     }
 
     // -------------------------------------------------------------------------

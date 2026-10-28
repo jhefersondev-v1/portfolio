@@ -65,6 +65,14 @@
     --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.06);
     --shadow-lg: 0 20px 48px rgba(0, 0, 0, 0.08);
 
+    /* Dynamic Wallpapers - Apple Light */
+    --hero-bg-overlay: linear-gradient(180deg, rgba(255, 255, 255, 0.72) 0%, rgba(245, 245, 247, 0.88) 100%);
+    --hero-background: var(--hero-bg-overlay), url("assets/images/backgrounds/8.webp");
+    --projects-bg-overlay: linear-gradient(180deg, rgba(255, 255, 255, 0.90) 0%, rgba(245, 245, 247, 0.95) 100%);
+    --projects-background: var(--projects-bg-overlay), url("assets/images/backgrounds/9.webp");
+    --scrollworld-bg-overlay: linear-gradient(180deg, rgba(255, 255, 255, 0.75) 0%, rgba(245, 245, 247, 0.90) 100%);
+    --scrollworld-background: var(--scrollworld-bg-overlay), url("assets/images/backgrounds/10.webp");
+
     /* Solid Card Tokens - Apple Light */
     --card-bg: #FFFFFF;
     --card-border: rgba(0, 0, 0, 0.08);
@@ -124,6 +132,14 @@
     --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.5);
     --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.65);
     --shadow-lg: 0 24px 60px rgba(0, 0, 0, 0.8);
+
+    /* Dynamic Wallpapers - Apple Dark */
+    --hero-bg-overlay: linear-gradient(180deg, rgba(5, 5, 7, 0.45) 0%, rgba(5, 5, 7, 0.82) 100%);
+    --hero-background: var(--hero-bg-overlay), url("assets/images/backgrounds/5.webp");
+    --projects-bg-overlay: linear-gradient(180deg, rgba(5, 5, 7, 0.78) 0%, rgba(13, 13, 17, 0.92) 100%);
+    --projects-background: var(--projects-bg-overlay), url("assets/images/backgrounds/6.webp");
+    --scrollworld-bg-overlay: linear-gradient(180deg, rgba(5, 5, 7, 0.65) 0%, rgba(9, 14, 24, 0.88) 100%);
+    --scrollworld-background: var(--scrollworld-bg-overlay), url("assets/images/backgrounds/7.webp");
 
     /* Solid Card Tokens - Apple Dark */
     --card-bg: #1C1C20;
@@ -520,6 +536,7 @@ h3 {
 }
 
 .nav-links {
+    position: relative;
     display: flex;
     align-items: center;
     gap: 2px;
@@ -527,24 +544,107 @@ h3 {
 
 .nav-link {
     position: relative;
-    padding: 7px 12px;
+    z-index: 2;
+    padding: 7px 14px;
     color: var(--text-secondary);
     font-size: 0.84rem;
     font-weight: 550;
     border-radius: var(--radius-pill);
-    transition: color var(--duration-fast) var(--ease-apple),
-                background-color var(--duration-fast) var(--ease-apple);
+    background: transparent;
+    transition: color var(--duration-fast) var(--ease-apple);
 }
 
 .nav-link:hover {
     color: var(--text-primary);
-    background-color: var(--accent-blue-subtle);
 }
 
 .nav-link.active {
     color: var(--accent-blue);
-    background-color: var(--accent-blue-subtle);
     font-weight: 650;
+}
+
+/* --------------------------------------------------------------------------
+   LIQUID GLASS WATER DROPLET (GUGHI GIANNATTASIO INSPIRATION)
+   -------------------------------------------------------------------------- */
+.nav-droplet {
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-radius: var(--radius-pill);
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0;
+    will-change: left, top, width, height, transform, opacity;
+    transform-origin: center center;
+    transition: left 380ms cubic-bezier(0.34, 1.56, 0.64, 1),
+                top 380ms cubic-bezier(0.34, 1.56, 0.64, 1),
+                width 380ms cubic-bezier(0.34, 1.56, 0.64, 1),
+                height 380ms cubic-bezier(0.34, 1.56, 0.64, 1),
+                transform 240ms cubic-bezier(0.34, 1.56, 0.64, 1),
+                opacity var(--duration-fast) var(--ease-apple);
+}
+
+.nav-droplet.is-ready {
+    opacity: 1;
+}
+
+/* Light Theme Droplet: high-surface-tension fluid glass bubble */
+[data-theme="light"] .nav-droplet {
+    background: rgba(255, 255, 255, 0.76);
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.80);
+    box-shadow:
+        inset 0 1.5px 2px 0 rgba(255, 255, 255, 0.95),
+        inset 0 -1.5px 2px 0 rgba(0, 0, 0, 0.05),
+        0 4px 14px -1px var(--accent-blue-glow),
+        0 2px 6px -1px rgba(0, 0, 0, 0.04);
+}
+
+/* Dark Theme Droplet: deep refractive liquid glass bubble with subtle neon edge */
+[data-theme="dark"] .nav-droplet {
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    box-shadow:
+        inset 0 1.5px 2px 0 rgba(255, 255, 255, 0.40),
+        inset 0 -1px 2px 0 rgba(0, 0, 0, 0.45),
+        0 4px 18px -2px var(--accent-blue-glow),
+        0 0 10px 1px rgba(41, 151, 255, 0.14);
+}
+
+/* Droplet Specular Reflection Arc */
+.nav-droplet::before {
+    content: "";
+    position: absolute;
+    top: 2px;
+    left: 12%;
+    right: 12%;
+    height: 38%;
+    border-radius: var(--radius-pill);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.55) 0%, rgba(255, 255, 255, 0) 100%);
+    pointer-events: none;
+    opacity: 0.8;
+}
+
+[data-theme="dark"] .nav-droplet::before {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.35) 0%, rgba(255, 255, 255, 0) 100%);
+    opacity: 0.6;
+}
+
+.nav-droplet.stretch-right {
+    transform-origin: left center;
+}
+
+.nav-droplet.stretch-left {
+    transform-origin: right center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .nav-droplet {
+        transition: none !important;
+    }
 }
 
 /* Subnavigation Dropdown: Más ▾ */
@@ -750,6 +850,12 @@ h3 {
     flex-direction: column;
     justify-content: center;
     overflow: hidden;
+    background-image: var(--hero-background);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    transition: background-image var(--duration-normal) var(--ease-apple),
+                background-color var(--duration-normal) var(--ease-apple);
 }
 
 .hero-ambient {
@@ -2771,4 +2877,30 @@ h3 {
     color: var(--accent-blue);
     font-size: 0.82rem;
     font-weight: 600;
+}
+
+/* --------------------------------------------------------------------------
+   DYNAMIC WALLPAPER INTEGRATION (PROJECTS & SCROLL WORLD)
+   -------------------------------------------------------------------------- */
+#projects {
+    position: relative;
+    background-image: var(--projects-background);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: scroll;
+    transition: background-image var(--duration-normal) var(--ease-apple);
+}
+
+.world-journey {
+    --world-progress: 0;
+    position: relative;
+    background-image: var(--scrollworld-background) !important;
+    background-size: cover !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    color: var(--world-text);
+    padding: 88px 0 32px;
+    isolation: isolate;
+    transition: background-image var(--duration-normal) var(--ease-apple);
 }
