@@ -2,7 +2,7 @@
 <html lang="es" data-theme="light">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Jheferson Cholan | Software Engineering &amp; AI Portfolio</title>
     <meta name="description" content="Portafolio profesional de Jheferson Rafael Cholan Fernández (JRCHOLAN). Desarrollo de software, plataformas web, bases de datos y soluciones de inteligencia artificial aplicada en Cajamarca, Perú.">
     <meta name="keywords" content="Jheferson Cholan, JRCHOLAN, ingeniería de software, inteligencia artificial, machine learning, desarrollo web, Java, Python, PHP, SENATI Cajamarca, Apple design, portfolio">
@@ -39,9 +39,10 @@
     <script>
         (function() {
             try {
-                var savedTheme = localStorage.getItem('theme');
+                var savedTheme;
+                try { savedTheme = localStorage.getItem('theme'); } catch (e) {}
                 var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-                var theme = savedTheme ? savedTheme : (prefersDark ? 'dark' : 'light');
+                var theme = savedTheme === 'dark' || savedTheme === 'light' ? savedTheme : (prefersDark ? 'dark' : 'light');
                 document.documentElement.setAttribute('data-theme', theme);
                 var meta = document.getElementById('themeColorMeta');
                 if (meta) meta.setAttribute('content', theme === 'dark' ? '#050507' : '#FFFFFF');
@@ -113,6 +114,7 @@
 
     <!-- Stylesheet -->
     <link rel="stylesheet" href="styles.css?v=20261027-v2">
+    <link rel="stylesheet" href="assets/css/premium.css?v=20261027">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css">
     <script src="https://unpkg.com/lucide@latest" defer></script>
 </head>
@@ -138,37 +140,37 @@
             </a>
 
             <!-- Primary Navigation Links (macOS Apple Hierarchy) -->
-            <div class="nav-links" id="navLinks" role="menubar">
-                <a class="nav-link active" href="#hero" role="menuitem">Inicio</a>
-                <a class="nav-link" href="#about" role="menuitem">Sobre mí</a>
-                <a class="nav-link" href="#projects" role="menuitem">Proyectos</a>
-                <a class="nav-link" href="#experience" role="menuitem">Experiencia</a>
-                <a class="nav-link" href="#contact" role="menuitem">Contacto</a>
+            <div class="nav-links" id="navLinks">
+                <a class="nav-link active" href="#hero">Inicio</a>
+                <a class="nav-link" href="#about">Sobre mí</a>
+                <a class="nav-link" href="#projects">Proyectos</a>
+                <a class="nav-link" href="#experience">Experiencia</a>
+                <a class="nav-link" href="#contact">Contacto</a>
 
                 <!-- Subnavigation Dropdown: Más ▾ -->
                 <div class="nav-dropdown-wrapper">
-                    <button class="nav-link nav-dropdown-btn" id="navDropdownBtn" type="button" aria-expanded="false" aria-haspopup="true" aria-controls="navDropdownMenu">
+                    <button class="nav-link nav-dropdown-btn" id="navDropdownBtn" type="button" aria-expanded="false" aria-controls="navDropdownMenu">
                         <span>Más</span>
                         <i data-lucide="chevron-down" class="dropdown-chevron" aria-hidden="true"></i>
                     </button>
-                    <div class="nav-dropdown-menu liquid-glass" id="navDropdownMenu" role="menu" aria-labelledby="navDropdownBtn">
-                        <a class="dropdown-link" href="#skills" role="menuitem">
+                    <div class="nav-dropdown-menu liquid-glass" id="navDropdownMenu" aria-labelledby="navDropdownBtn">
+                        <a class="dropdown-link" href="#skills">
                             <i data-lucide="sparkles" aria-hidden="true"></i>
                             <span>Habilidades</span>
                         </a>
-                        <a class="dropdown-link" href="#technologies" role="menuitem">
+                        <a class="dropdown-link" href="#technologies">
                             <i data-lucide="cpu" aria-hidden="true"></i>
                             <span>Tecnologías</span>
                         </a>
-                        <a class="dropdown-link" href="#ai" role="menuitem">
+                        <a class="dropdown-link" href="#ai">
                             <i data-lucide="brain-circuit" aria-hidden="true"></i>
                             <span>IA y Datos</span>
                         </a>
-                        <a class="dropdown-link" href="#formation" role="menuitem">
+                        <a class="dropdown-link" href="#formation">
                             <i data-lucide="graduation-cap" aria-hidden="true"></i>
                             <span>Formación</span>
                         </a>
-                        <a class="dropdown-link" href="#certifications" role="menuitem">
+                        <a class="dropdown-link" href="#certifications">
                             <i data-lucide="award" aria-hidden="true"></i>
                             <span>Certificados</span>
                         </a>
@@ -232,6 +234,13 @@
         </div>
     </header>
 
+    <noscript>
+        <nav class="container no-js-nav" aria-label="Navegación sin JavaScript">
+            <a href="#about">Sobre mí</a><a href="#projects">Proyectos</a><a href="#contact">Contacto</a>
+            <a href="work/machine-learning.html">Caso de Machine Learning</a>
+        </nav>
+    </noscript>
+
     <!-- Main Content -->
     <main class="site-main" id="main">
         <!-- Hero Section: Apple Keynote & Cinematic Style -->
@@ -251,8 +260,8 @@
                         <span>Disponible para nuevos proyectos e innovación en IA</span>
                     </div>
 
-                    <p class="hero-kicker">JHEFERSON CHOLAN · SOFTWARE ENGINEERING &amp; AI</p>
-                    <p class="hero-name">Jheferson Cholan</p>
+                    <p class="hero-kicker">SOFTWARE ENGINEERING &amp; AI · CAJAMARCA, PERÚ</p>
+                    <p class="hero-name">Jheferson <span>Cholan.</span></p>
                     <h1>Ingeniería de Software con <span class="text-gradient">Inteligencia Artificial</span></h1>
                     <p class="hero-lead">Desarrollo arquitecturas de software estructuradas, plataformas web modernas y modelos de aprendizaje automático y visión por computadora orientados a resolver problemas del mundo real.</p>
 
@@ -346,6 +355,50 @@
         </section>
 
         <!-- About Section (Editorial & Professional Presentation) -->
+        <!-- Scroll World local prototype; readable copy is independent of Canvas. -->
+        <section class="world-journey" id="portfolioWorld" aria-labelledby="worldTitle">
+            <div class="container world-heading">
+                <p class="eyebrow">SOFTWARE · DATOS · INTELIGENCIA ARTIFICIAL</p>
+                <h2 id="worldTitle">De una idea.<br>A una solución real.</h2>
+                <p>Explora las áreas que conectan mi trabajo.</p>
+                <a class="world-skip" href="#about">Continuar al perfil <span aria-hidden="true">↗</span></a>
+            </div>
+            <div class="container world-body">
+                <div class="world-visual" aria-hidden="true">
+                    <div class="world-orbit world-orbit-one"></div>
+                    <div class="world-orbit world-orbit-two"></div>
+                    <div class="world-core"></div>
+                    <canvas id="worldCanvas" aria-hidden="true"></canvas>
+                    <div class="world-visual-header"><span>JR / EXPLORACIÓN</span><span>SOFTWARE + AI</span></div>
+                    <div class="world-visual-footer"><span>Un recorrido por mi enfoque</span><span>↓</span></div>
+                    <div class="world-progress"><span></span></div>
+                </div>
+                <div class="world-chapters">
+                    <article class="world-chapter" data-world-scene="software">
+                        <span class="world-number">01 / SOFTWARE</span>
+                        <h3>Estructura que<br>da forma a las ideas.</h3>
+                        <p>Aplicaciones web y de escritorio, código modular y bases de datos conectadas con necesidades reales.</p>
+                        <div class="world-tags"><span>Java</span><span>JavaScript</span><span>PHP</span></div>
+                        <a href="#projects">Explorar proyectos <span aria-hidden="true">↗</span></a>
+                    </article>
+                    <article class="world-chapter" data-world-scene="data">
+                        <span class="world-number">02 / DATOS</span>
+                        <h3>Encontrar patrones.<br>Construir criterio.</h3>
+                        <p>Preparación de datos, entrenamiento y evaluación de modelos de aprendizaje automático con datasets reales.</p>
+                        <div class="world-tags"><span>Python</span><span>Pandas</span><span>Scikit-learn</span></div>
+                        <a href="#ai">Explorar IA y datos <span aria-hidden="true">↗</span></a>
+                    </article>
+                    <article class="world-chapter" data-world-scene="vision">
+                        <span class="world-number">03 / VISIÓN ARTIFICIAL</span>
+                        <h3>Otra forma<br>de ver posibilidades.</h3>
+                        <p>Procesamiento y análisis de imágenes con OpenCV y modelos YOLO para explorar soluciones de visión por computadora.</p>
+                        <div class="world-tags"><span>OpenCV</span><span>YOLO</span><span>Computer Vision</span></div>
+                        <a href="#contact">Conectemos <span aria-hidden="true">↗</span></a>
+                    </article>
+                </div>
+            </div>
+        </section>
+
         <section class="section section-anchor" id="about">
             <div class="container split-heading reveal">
                 <div>
@@ -767,7 +820,7 @@
 
             <div class="container ai-gallery">
                 <article class="ai-feature card-solid reveal">
-                    <img src="assets/images/ia-ml-grafico.png" alt="Gráfico real de análisis de Machine Learning" width="1536" height="1024" loading="lazy">
+                    <img src="assets/images/ia-ml-grafico.webp" alt="Gráfico real de análisis de Machine Learning" width="1536" height="1024" loading="lazy">
                     <div class="ai-feature-content">
                         <span class="project-label">MACHINE LEARNING</span>
                         <h3>Modelos, datos y visualización</h3>
@@ -790,7 +843,7 @@
                 </article>
 
                 <article class="ai-small card-solid reveal reveal-delay">
-                    <img src="assets/images/ia-datos.png.png" alt="Análisis de datos con IA" width="1536" height="1024" loading="lazy">
+                    <img src="assets/images/ia-datos.webp" alt="Análisis de datos con IA" width="1536" height="1024" loading="lazy">
                     <div class="ai-small-content">
                         <h3>Análisis de datos con IA</h3>
                     </div>
@@ -960,27 +1013,27 @@
                     <div class="form-row">
                         <div class="form-group">
                             <label for="name">Nombre <span class="required" aria-hidden="true">*</span></label>
-                            <input type="text" id="name" name="name" placeholder="Tu nombre y apellido" autocomplete="name" required aria-required="true">
+                            <input type="text" id="name" name="name" placeholder="Tu nombre y apellido" autocomplete="name" required aria-required="true" aria-describedby="nameError">
                             <span class="field-error" id="nameError" aria-live="polite"></span>
                         </div>
 
                         <div class="form-group">
                             <label for="email">Correo electrónico <span class="required" aria-hidden="true">*</span></label>
-                            <input type="email" id="email" name="email" placeholder="ejemplo@correo.com" autocomplete="email" required aria-required="true">
+                            <input type="email" id="email" name="email" placeholder="ejemplo@correo.com" autocomplete="email" required aria-required="true" aria-describedby="emailError">
                             <span class="field-error" id="emailError" aria-live="polite"></span>
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label for="message">Mensaje <span class="required" aria-hidden="true">*</span></label>
-                        <textarea id="message" name="message" rows="5" placeholder="Cuéntame brevemente sobre tu proyecto o consulta..." required aria-required="true"></textarea>
+                        <textarea id="message" name="message" rows="5" placeholder="Cuéntame brevemente sobre tu proyecto o consulta..." required aria-required="true" aria-describedby="messageError"></textarea>
                         <span class="field-error" id="messageError" aria-live="polite"></span>
                     </div>
 
                     <!-- Privacy Acceptance Checkbox (Required) -->
                     <div class="form-privacy">
                         <div class="checkbox-container">
-                            <input type="checkbox" id="privacyConsent" name="privacyConsent" required aria-required="true">
+                            <input type="checkbox" id="privacyConsent" name="privacyConsent" required aria-required="true" aria-describedby="privacyError">
                             <label for="privacyConsent" class="checkbox-label">
                                 He leído y acepto la <a href="privacidad.html" target="_blank" rel="noopener noreferrer">Política de Privacidad</a> y autorizo el tratamiento de mis datos para responder a mi consulta.
                             </label>
@@ -1044,5 +1097,6 @@
     </footer>
 
     <script src="script.js?v=20261027-v2"></script>
+    <script src="assets/js/scroll-world.js?v=20261027" defer></script>
 </body>
 </html>

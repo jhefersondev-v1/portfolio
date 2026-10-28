@@ -20,11 +20,19 @@ document.addEventListener('DOMContentLoaded', () => {
     // -------------------------------------------------------------------------
     const themeToggle = document.getElementById('themeToggle');
     const themeColorMeta = document.getElementById('themeColorMeta');
+    const colorScheme = window.matchMedia('(prefers-color-scheme: dark)');
+    const readSavedTheme = () => {
+        try {
+            const saved = localStorage.getItem('theme');
+            return saved === 'dark' || saved === 'light' ? saved : null;
+        } catch (error) {
+            return null;
+        }
+    };
+    let selectedTheme = readSavedTheme();
 
     const getPreferredTheme = () => {
-        const saved = localStorage.getItem('theme');
-        if (saved === 'dark' || saved === 'light') return saved;
-        return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        return selectedTheme || (colorScheme.matches ? 'dark' : 'light');
     };
 
     const applyTheme = (theme) => {
@@ -53,14 +61,19 @@ document.addEventListener('DOMContentLoaded', () => {
         themeToggle.addEventListener('click', () => {
             const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
             const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-            localStorage.setItem('theme', newTheme);
+            selectedTheme = newTheme;
+            try {
+                localStorage.setItem('theme', newTheme);
+            } catch (error) {
+                // El tema sigue funcionando si el navegador bloquea el almacenamiento.
+            }
             applyTheme(newTheme);
         });
     }
 
     // Escuchar cambios de preferencia del sistema si el usuario no tiene guardado un tema fijo
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-        if (!localStorage.getItem('theme')) {
+    colorScheme.addEventListener('change', (e) => {
+        if (!selectedTheme) {
             applyTheme(e.matches ? 'dark' : 'light');
         }
     });
@@ -133,6 +146,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const navToggle = document.getElementById('navToggle');
     const mobileDrawer = document.getElementById('mobileDrawer');
     const mobileNavLinks = [...document.querySelectorAll('.mobile-nav-link')];
+    const desktopNavigation = window.matchMedia('(min-width: 861px)');
+
+    const containNavigationFocus = (event, toggle, panel) => {
+        if (event.key !== 'Tab') return;
+        const focusable = [toggle, ...panel.querySelectorAll('a[href], button:not([disabled])')];
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (event.shiftKey && document.activeElement === first) {
+            event.preventDefault();
+            last.focus();
+        } else if (!event.shiftKey && document.activeElement === last) {
+            event.preventDefault();
+            first.focus();
+        }
+    };
 
     const closeDropdown = () => {
         if (!navDropdownBtn || !navDropdownMenu) return;
@@ -199,6 +227,7 @@ document.addEventListener('DOMContentLoaded', () => {
         navToggle.classList.add('active');
         navToggle.setAttribute('aria-expanded', 'true');
         navToggle.setAttribute('aria-label', 'Cerrar menú de navegación');
+        mobileNavLinks[0]?.focus({ preventScroll: true });
     };
 
     if (navToggle && mobileDrawer) {
@@ -224,11 +253,52 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         document.addEventListener('keydown', (event) => {
-            if (event.key === 'Escape' && mobileDrawer.classList.contains('open')) {
+            if (!mobileDrawer.classList.contains('open')) return;
+            if (event.key === 'Escape') {
+                event.preventDefault();
                 closeMobileDrawer();
                 navToggle.focus();
             }
+            containNavigationFocus(event, navToggle, mobileDrawer);
         });
+
+        desktopNavigation.addEventListener('change', (event) => {
+            if (!event.matches) return;
+            const moveFocus = mobileDrawer.contains(document.activeElement);
+            closeMobileDrawer();
+            if (moveFocus) primaryNavLinks[0]?.focus({ preventScroll: true });
+        });
+    }
+
+    // Las páginas de casos conservan una cabecera compacta sin duplicar el menú principal.
+    const caseToggle = document.querySelector('.case-page .nav-toggle');
+    const caseMenu = document.querySelector('.case-page #main-nav');
+    if (caseToggle && caseMenu) {
+        const setCaseMenu = (open) => {
+            const isOpen = open && !desktopNavigation.matches;
+            caseMenu.classList.toggle('open', isOpen);
+            caseMenu.hidden = !desktopNavigation.matches && !isOpen;
+            caseToggle.classList.toggle('active', isOpen);
+            caseToggle.setAttribute('aria-expanded', String(isOpen));
+            caseToggle.setAttribute('aria-label', isOpen ? 'Cerrar menú de navegación' : 'Abrir menú de navegación');
+            if (isOpen) caseMenu.querySelector('a')?.focus({ preventScroll: true });
+        };
+        setCaseMenu(false);
+        caseToggle.addEventListener('click', () => setCaseMenu(!caseMenu.classList.contains('open')));
+        caseMenu.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => setCaseMenu(false)));
+        document.addEventListener('keydown', (event) => {
+            if (!caseMenu.classList.contains('open')) return;
+            if (event.key === 'Escape') {
+                event.preventDefault();
+                setCaseMenu(false);
+                caseToggle.focus();
+            }
+            containNavigationFocus(event, caseToggle, caseMenu);
+        });
+        document.addEventListener('click', (event) => {
+            if (caseMenu.classList.contains('open') && !event.target.closest('.case-page .site-header')) setCaseMenu(false);
+        });
+        desktopNavigation.addEventListener('change', () => setCaseMenu(false));
     }
 
     // -------------------------------------------------------------------------
@@ -289,13 +359,19 @@ document.addEventListener('DOMContentLoaded', () => {
     // -------------------------------------------------------------------------
     // 6. ANIMACIONES DE REVELADO (SCROLL REVEAL)
     // -------------------------------------------------------------------------
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)');
+    let prefersReducedMotion = motionPreference.matches;
     const revealElements = document.querySelectorAll('.reveal');
+    let revealObserver = null;
+    const revealAll = () => {
+        revealObserver?.disconnect();
+        revealElements.forEach((el) => el.classList.add('visible'));
+    };
 
     if (prefersReducedMotion) {
-        revealElements.forEach((el) => el.classList.add('visible'));
+        revealAll();
     } else if ('IntersectionObserver' in window) {
-        const revealObserver = new IntersectionObserver((entries, observer) => {
+        revealObserver = new IntersectionObserver((entries, observer) => {
             entries.forEach((entry) => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('visible');
@@ -304,10 +380,15 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }, { threshold: 0.08, rootMargin: '0px 0px -40px' });
 
+        document.documentElement.classList.add('reveal-ready');
         revealElements.forEach((el) => revealObserver.observe(el));
     } else {
-        revealElements.forEach((el) => el.classList.add('visible'));
+        revealAll();
     }
+    motionPreference.addEventListener('change', (event) => {
+        prefersReducedMotion = event.matches;
+        if (prefersReducedMotion) revealAll();
+    });
 
     // -------------------------------------------------------------------------
     // 7. CÁLCULO DINÁMICO Y ANIMACIÓN DE CONTADORES (PREVINIENDO EL PROBLEMA DE 0)
@@ -358,6 +439,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const start = performance.now();
 
         const tick = (now) => {
+            if (prefersReducedMotion) {
+                element.textContent = isPlus ? `${targetValue}+` : targetValue;
+                return;
+            }
             const elapsed = now - start;
             const progress = Math.min(elapsed / duration, 1);
             // Cubic ease-out curve
