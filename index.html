@@ -107,14 +107,14 @@
     }
     </script>
 
-    <!-- Typography: Inter + Space Grotesk -->
+    <!-- Inter with native system fallbacks -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;650;700&display=swap" rel="stylesheet">
 
     <!-- Stylesheet -->
-    <link rel="stylesheet" href="styles.css?v=20261027-v2">
-    <link rel="stylesheet" href="assets/css/premium.css?v=20261027">
+    <link rel="stylesheet" href="styles.css?v=20261028-v3">
+    <link rel="stylesheet" href="assets/css/premium.css?v=20261028-v3">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css">
     <script src="https://unpkg.com/lucide@latest" defer></script>
 </head>
@@ -226,7 +226,7 @@
                         <span>Descargar CV</span>
                     </a>
                     <a class="button button-glass button-pill" href="https://github.com/jhefersondev-v1" target="_blank" rel="noopener noreferrer">
-                        <i data-lucide="github" aria-hidden="true"></i>
+                        <i data-lucide="code-2" aria-hidden="true"></i>
                         <span>GitHub</span>
                     </a>
                 </div>
@@ -242,7 +242,7 @@
     </noscript>
 
     <!-- Main Content -->
-    <main class="site-main" id="main">
+    <main class="site-main" id="main" tabindex="-1">
         <!-- Hero Section: Apple Keynote & Cinematic Style -->
         <section class="hero section-anchor" id="hero">
             <!-- Ambient Lighting Effects -->
@@ -254,16 +254,13 @@
 
             <div class="container hero-grid">
                 <div class="hero-copy reveal">
-                    <!-- Status Badge -->
-                    <div class="status-pill liquid-glass-subtle">
-                        <span class="status-dot" aria-hidden="true"></span>
-                        <span>Disponible para nuevos proyectos e innovación en IA</span>
-                    </div>
-
                     <p class="hero-kicker">SOFTWARE ENGINEERING &amp; AI · CAJAMARCA, PERÚ</p>
-                    <p class="hero-name">Jheferson <span>Cholan.</span></p>
-                    <h1>Ingeniería de Software con <span class="text-gradient">Inteligencia Artificial</span></h1>
-                    <p class="hero-lead">Desarrollo arquitecturas de software estructuradas, plataformas web modernas y modelos de aprendizaje automático y visión por computadora orientados a resolver problemas del mundo real.</p>
+                    <h1 class="hero-name">Jheferson <span>Cholan.</span></h1>
+                    <p class="hero-specialty">Ingeniería de Software con <span class="text-gradient">Inteligencia Artificial</span></p>
+                </div>
+
+                <div class="hero-details reveal">
+                    <p class="hero-lead">Creo aplicaciones web y de escritorio. Conecto software, datos e inteligencia artificial para resolver problemas reales.</p>
 
                     <!-- Hero Call to Actions -->
                     <div class="hero-actions">
@@ -275,32 +272,29 @@
                             <i data-lucide="download" aria-hidden="true"></i>
                             <span>Descargar CV</span>
                         </a>
-                        <a class="button button-glass button-pill" href="https://github.com/jhefersondev-v1" target="_blank" rel="noopener noreferrer" aria-label="Visitar perfil de GitHub">
-                            <i data-lucide="github" aria-hidden="true"></i>
-                            <span>GitHub</span>
-                        </a>
-                        <button class="button button-glass-subtle button-pill" type="button" data-copy-email="jheferson6666@gmail.com" aria-label="Copiar correo al portapapeles">
-                            <i data-lucide="copy" aria-hidden="true"></i>
-                            <span class="copy-text">Copiar correo</span>
-                        </button>
                     </div>
 
                     <!-- Hero Social Links -->
                     <div class="hero-footer">
                         <div class="social-links" aria-label="Redes profesionales">
                             <a href="https://github.com/jhefersondev-v1" target="_blank" rel="noopener noreferrer" aria-label="Perfil de GitHub de Jheferson Cholan" class="social-pill liquid-glass-subtle">
-                                <i data-lucide="github" aria-hidden="true"></i>
+                                <i data-lucide="arrow-up-right" aria-hidden="true"></i>
                                 <span>GitHub</span>
                             </a>
                             <a href="https://www.linkedin.com/in/jheferson-rafael-cholan-fernandez-62269840a" target="_blank" rel="noopener noreferrer" aria-label="Perfil de LinkedIn de Jheferson Cholan" class="social-pill liquid-glass-subtle">
-                                <i data-lucide="linkedin" aria-hidden="true"></i>
+                                <i data-lucide="arrow-up-right" aria-hidden="true"></i>
                                 <span>LinkedIn</span>
                             </a>
                             <a href="mailto:jheferson6666@gmail.com" aria-label="Enviar correo electrónico a Jheferson Cholan" class="social-pill liquid-glass-subtle">
                                 <i data-lucide="mail" aria-hidden="true"></i>
                                 <span>Correo</span>
                             </a>
+                            <button class="social-pill copy-email" type="button" data-copy-email="jheferson6666@gmail.com" aria-label="Copiar correo al portapapeles">
+                                <i data-lucide="copy" aria-hidden="true"></i>
+                                <span class="copy-text">Copiar correo</span>
+                            </button>
                         </div>
+                        <p class="status-pill"><span class="status-dot" aria-hidden="true"></span>Disponible para nuevos proyectos</p>
                     </div>
                 </div>
 
@@ -321,7 +315,7 @@
 
             <!-- Proof Strip / Bento Metric Strip -->
             <div class="container proof-container reveal">
-                <div class="proof-strip liquid-glass">
+                <div class="proof-strip">
                     <div class="proof-item">
                         <div class="proof-header">
                             <i data-lucide="layers" class="proof-icon" aria-hidden="true"></i>
@@ -332,9 +326,9 @@
                     <div class="proof-item">
                         <div class="proof-header">
                             <i data-lucide="cpu" class="proof-icon" aria-hidden="true"></i>
-                            <strong data-stat="technologies">15+</strong>
+                            <strong data-stat="technologies">19</strong>
                         </div>
-                        <span>tecnologías en el stack</span>
+                        <span>tecnologías y herramientas</span>
                     </div>
                     <div class="proof-item">
                         <div class="proof-header">
@@ -355,13 +349,13 @@
         </section>
 
         <!-- About Section (Editorial & Professional Presentation) -->
-        <!-- Scroll World local prototype; readable copy is independent of Canvas. -->
+        <!-- Readable chapters remain available independently of Canvas. -->
         <section class="world-journey" id="portfolioWorld" aria-labelledby="worldTitle">
             <div class="container world-heading">
                 <p class="eyebrow">SOFTWARE · DATOS · INTELIGENCIA ARTIFICIAL</p>
                 <h2 id="worldTitle">De una idea.<br>A una solución real.</h2>
                 <p>Explora las áreas que conectan mi trabajo.</p>
-                <a class="world-skip" href="#about">Continuar al perfil <span aria-hidden="true">↗</span></a>
+                <a class="world-skip" href="#projects">Ir a los proyectos <span aria-hidden="true">↗</span></a>
             </div>
             <div class="container world-body">
                 <div class="world-visual" aria-hidden="true">
@@ -783,11 +777,7 @@
                 </article>
 
                 <!-- Project 8: Cooperativa -->
-                <article class="project-card card-solid reveal" data-type="desktop">
-                    <div class="project-image-wrap project-placeholder" aria-hidden="true">
-                        <i data-lucide="landmark"></i>
-                        <span>Captura no disponible</span>
-                    </div>
+                <article class="project-card project-card-text card-solid reveal" data-type="desktop">
                     <div class="project-body">
                         <div class="project-meta">
                             <span>2024</span>
@@ -799,7 +789,7 @@
                             <span>Java</span><span>SQL Server</span><span>Oracle</span>
                         </div>
                         <a class="button button-glass button-pill" href="https://github.com/jhefersondev-v1" target="_blank" rel="noopener noreferrer">
-                            <i data-lucide="github" aria-hidden="true"></i>
+                            <i data-lucide="code-2" aria-hidden="true"></i>
                             <span>Ver en GitHub</span>
                             <i data-lucide="arrow-up-right" aria-hidden="true"></i>
                         </a>
@@ -989,7 +979,7 @@
                         </div>
 
                         <a href="https://github.com/jhefersondev-v1" target="_blank" rel="noopener noreferrer" aria-label="Visitar perfil de GitHub" class="contact-item card-solid">
-                            <i data-lucide="github" aria-hidden="true"></i>
+                            <i data-lucide="code-2" aria-hidden="true"></i>
                             <div class="contact-item-text">
                                 <span>GitHub</span>
                                 <strong>jhefersondev-v1</strong>
@@ -998,7 +988,7 @@
                         </a>
 
                         <a href="https://www.linkedin.com/in/jheferson-rafael-cholan-fernandez-62269840a" target="_blank" rel="noopener noreferrer" aria-label="Visitar perfil de LinkedIn" class="contact-item card-solid">
-                            <i data-lucide="linkedin" aria-hidden="true"></i>
+                            <i data-lucide="briefcase-business" aria-hidden="true"></i>
                             <div class="contact-item-text">
                                 <span>LinkedIn</span>
                                 <strong>Jheferson Cholan Fernandez</strong>
@@ -1061,11 +1051,11 @@
 
     <!-- Accessible Project Dialog Modal (Apple Liquid Glass) -->
     <dialog class="project-dialog" id="projectDialog" aria-labelledby="dialogTitle" aria-modal="true">
-        <div class="dialog-inner liquid-glass">
+        <div class="dialog-inner">
             <button class="dialog-close" id="dialogClose" type="button" aria-label="Cerrar ventana de detalles">
                 <i data-lucide="x" aria-hidden="true"></i>
             </button>
-            <div id="dialogContent" tabindex="-1"></div>
+            <div id="dialogContent" tabindex="-1"><h2 id="dialogTitle">Detalles del proyecto</h2></div>
         </div>
     </dialog>
 
@@ -1096,7 +1086,7 @@
         </div>
     </footer>
 
-    <script src="script.js?v=20261027-v2"></script>
-    <script src="assets/js/scroll-world.js?v=20261027" defer></script>
+    <script src="assets/js/main.js?v=20261028-v3" defer></script>
+    <script src="assets/js/scroll-world.js?v=20261028-v3" defer></script>
 </body>
 </html>

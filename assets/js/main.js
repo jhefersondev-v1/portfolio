@@ -4,7 +4,13 @@
  * Apple Liquid Glass Design System - Scripts & Interactions
  */
 
-document.addEventListener('DOMContentLoaded', () => {
+(function whenPortfolioReady(initialize) {
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initialize, { once: true });
+    } else {
+        initialize();
+    }
+})(() => {
     // -------------------------------------------------------------------------
     // 1. INICIALIZACIÓN DE ICONOS LUCIDE
     // -------------------------------------------------------------------------
@@ -21,6 +27,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const themeToggle = document.getElementById('themeToggle');
     const themeColorMeta = document.getElementById('themeColorMeta');
     const colorScheme = window.matchMedia('(prefers-color-scheme: dark)');
+    const observeMedia = (query, listener) => {
+        if (typeof query.addEventListener === 'function') {
+            query.addEventListener('change', listener);
+        } else if (typeof query.addListener === 'function') {
+            query.addListener(listener);
+        }
+    };
     const readSavedTheme = () => {
         try {
             const saved = localStorage.getItem('theme');
@@ -50,7 +63,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 theme === 'dark' ? 'Activar modo claro' : 'Activar modo oscuro'
             );
         }
-        refreshIcons();
     };
 
     // Aplicar tema inicial
@@ -72,10 +84,16 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Escuchar cambios de preferencia del sistema si el usuario no tiene guardado un tema fijo
-    colorScheme.addEventListener('change', (e) => {
+    observeMedia(colorScheme, (e) => {
         if (!selectedTheme) {
             applyTheme(e.matches ? 'dark' : 'light');
         }
+    });
+
+    window.addEventListener('storage', (event) => {
+        if (event.key !== 'theme' && event.key !== null) return;
+        selectedTheme = readSavedTheme();
+        applyTheme(getPreferredTheme());
     });
 
     // -------------------------------------------------------------------------
@@ -84,6 +102,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const toast = document.getElementById('toast');
     const toastMessage = document.getElementById('toastMessage');
     let toastTimer = null;
+    let toastHideTimer = null;
 
     const showToast = (message = 'Correo copiado al portapapeles') => {
         if (!toast || !toastMessage) return;
@@ -92,9 +111,10 @@ document.addEventListener('DOMContentLoaded', () => {
         toast.classList.add('show');
 
         clearTimeout(toastTimer);
+        clearTimeout(toastHideTimer);
         toastTimer = setTimeout(() => {
             toast.classList.remove('show');
-            setTimeout(() => {
+            toastHideTimer = setTimeout(() => {
                 toast.hidden = true;
             }, 300);
         }, 3200);
@@ -115,8 +135,14 @@ document.addEventListener('DOMContentLoaded', () => {
                     textarea.style.opacity = '0';
                     document.body.appendChild(textarea);
                     textarea.select();
-                    document.execCommand('copy');
-                    document.body.removeChild(textarea);
+                    let copied = false;
+                    try {
+                        copied = document.execCommand('copy');
+                    } finally {
+                        textarea.remove();
+                        btn.focus({ preventScroll: true });
+                    }
+                    if (!copied) throw new Error('Clipboard unavailable');
                 }
                 showToast(`¡Copiado!: ${email}`);
 
@@ -148,33 +174,22 @@ document.addEventListener('DOMContentLoaded', () => {
     const mobileNavLinks = [...document.querySelectorAll('.mobile-nav-link')];
     const desktopNavigation = window.matchMedia('(min-width: 861px)');
 
-    const containNavigationFocus = (event, toggle, panel) => {
-        if (event.key !== 'Tab') return;
-        const focusable = [toggle, ...panel.querySelectorAll('a[href], button:not([disabled])')];
-        const first = focusable[0];
-        const last = focusable[focusable.length - 1];
-        if (event.shiftKey && document.activeElement === first) {
-            event.preventDefault();
-            last.focus();
-        } else if (!event.shiftKey && document.activeElement === last) {
-            event.preventDefault();
-            first.focus();
-        }
-    };
-
     const closeDropdown = () => {
         if (!navDropdownBtn || !navDropdownMenu) return;
         navDropdownMenu.classList.remove('open');
+        navDropdownMenu.inert = true;
         navDropdownBtn.setAttribute('aria-expanded', 'false');
     };
 
     const openDropdown = () => {
         if (!navDropdownBtn || !navDropdownMenu) return;
+        navDropdownMenu.inert = false;
         navDropdownMenu.classList.add('open');
         navDropdownBtn.setAttribute('aria-expanded', 'true');
     };
 
     if (navDropdownBtn && navDropdownMenu) {
+        closeDropdown();
         navDropdownBtn.addEventListener('click', (event) => {
             event.stopPropagation();
             const isOpen = navDropdownMenu.classList.contains('open');
@@ -183,6 +198,31 @@ document.addEventListener('DOMContentLoaded', () => {
             } else {
                 openDropdown();
             }
+        });
+
+        navDropdownBtn.addEventListener('keydown', (event) => {
+            if (event.key !== 'ArrowDown' && event.key !== 'ArrowUp') return;
+            event.preventDefault();
+            openDropdown();
+            const link = event.key === 'ArrowUp' ? dropdownLinks.at(-1) : dropdownLinks[0];
+            link?.focus();
+        });
+
+        navDropdownMenu.addEventListener('keydown', (event) => {
+            const index = dropdownLinks.indexOf(document.activeElement);
+            if (index < 0) return;
+            let nextIndex = index;
+            if (event.key === 'ArrowDown') nextIndex = (index + 1) % dropdownLinks.length;
+            else if (event.key === 'ArrowUp') nextIndex = (index - 1 + dropdownLinks.length) % dropdownLinks.length;
+            else if (event.key === 'Home') nextIndex = 0;
+            else if (event.key === 'End') nextIndex = dropdownLinks.length - 1;
+            else return;
+            event.preventDefault();
+            dropdownLinks[nextIndex]?.focus();
+        });
+
+        navDropdownBtn.closest('.nav-dropdown-wrapper')?.addEventListener('focusout', (event) => {
+            if (!event.currentTarget.contains(event.relatedTarget)) closeDropdown();
         });
 
         dropdownLinks.forEach((link) => {
@@ -211,6 +251,7 @@ document.addEventListener('DOMContentLoaded', () => {
         navToggle.setAttribute('aria-expanded', 'false');
         navToggle.setAttribute('aria-label', 'Abrir menú de navegación');
         mobileDrawer.classList.remove('open');
+        mobileDrawer.inert = true;
         setTimeout(() => {
             if (!mobileDrawer.classList.contains('open')) {
                 mobileDrawer.setAttribute('hidden', '');
@@ -222,6 +263,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!navToggle || !mobileDrawer) return;
         closeDropdown();
         mobileDrawer.removeAttribute('hidden');
+        mobileDrawer.inert = false;
         void mobileDrawer.offsetHeight;
         mobileDrawer.classList.add('open');
         navToggle.classList.add('active');
@@ -231,6 +273,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     if (navToggle && mobileDrawer) {
+        mobileDrawer.inert = true;
         navToggle.addEventListener('click', () => {
             const isOpen = mobileDrawer.classList.contains('open');
             if (isOpen) {
@@ -259,11 +302,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 closeMobileDrawer();
                 navToggle.focus();
             }
-            containNavigationFocus(event, navToggle, mobileDrawer);
         });
 
-        desktopNavigation.addEventListener('change', (event) => {
-            if (!event.matches) return;
+        document.getElementById('mainNav')?.addEventListener('focusout', (event) => {
+            if (!event.currentTarget.contains(event.relatedTarget)) closeMobileDrawer();
+        });
+
+        observeMedia(desktopNavigation, (event) => {
+            const desktopLinkFocused = document.getElementById('navLinks')?.contains(document.activeElement);
+            closeDropdown();
+            if (!event.matches) {
+                if (desktopLinkFocused) navToggle.focus({ preventScroll: true });
+                return;
+            }
             const moveFocus = mobileDrawer.contains(document.activeElement);
             closeMobileDrawer();
             if (moveFocus) primaryNavLinks[0]?.focus({ preventScroll: true });
@@ -276,12 +327,15 @@ document.addEventListener('DOMContentLoaded', () => {
     if (caseToggle && caseMenu) {
         const setCaseMenu = (open) => {
             const isOpen = open && !desktopNavigation.matches;
+            const restoreToggleFocus = !isOpen && !desktopNavigation.matches && caseMenu.contains(document.activeElement);
             caseMenu.classList.toggle('open', isOpen);
             caseMenu.hidden = !desktopNavigation.matches && !isOpen;
+            caseMenu.inert = caseMenu.hidden;
             caseToggle.classList.toggle('active', isOpen);
             caseToggle.setAttribute('aria-expanded', String(isOpen));
             caseToggle.setAttribute('aria-label', isOpen ? 'Cerrar menú de navegación' : 'Abrir menú de navegación');
             if (isOpen) caseMenu.querySelector('a')?.focus({ preventScroll: true });
+            else if (restoreToggleFocus) caseToggle.focus({ preventScroll: true });
         };
         setCaseMenu(false);
         caseToggle.addEventListener('click', () => setCaseMenu(!caseMenu.classList.contains('open')));
@@ -293,12 +347,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 setCaseMenu(false);
                 caseToggle.focus();
             }
-            containNavigationFocus(event, caseToggle, caseMenu);
+        });
+        caseToggle.closest('.site-header')?.addEventListener('focusout', (event) => {
+            if (!event.currentTarget.contains(event.relatedTarget)) setCaseMenu(false);
         });
         document.addEventListener('click', (event) => {
             if (caseMenu.classList.contains('open') && !event.target.closest('.case-page .site-header')) setCaseMenu(false);
         });
-        desktopNavigation.addEventListener('change', () => setCaseMenu(false));
+        observeMedia(desktopNavigation, () => {
+            const moveFocus = desktopNavigation.matches && document.activeElement === caseToggle;
+            setCaseMenu(false);
+            if (moveFocus) caseMenu.querySelector('a')?.focus({ preventScroll: true });
+        });
     }
 
     // -------------------------------------------------------------------------
@@ -385,43 +445,30 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
         revealAll();
     }
-    motionPreference.addEventListener('change', (event) => {
+    observeMedia(motionPreference, (event) => {
         prefersReducedMotion = event.matches;
         if (prefersReducedMotion) revealAll();
     });
 
     // -------------------------------------------------------------------------
-    // 7. CÁLCULO DINÁMICO Y ANIMACIÓN DE CONTADORES (PREVINIENDO EL PROBLEMA DE 0)
+    // 7. CIFRAS INMEDIATAS BASADAS EN EL CONTENIDO DOCUMENTADO
     // -------------------------------------------------------------------------
     const projectCards = [...document.querySelectorAll('.projects-grid .project-card')];
     const certificationCards = [...document.querySelectorAll('#certifications .certificate-card')];
 
-    // Recolectar tecnologías presentes en el DOM de forma dinámica
+    // Contar herramientas y tecnologías, sin categorías ni conceptos de programación.
     const techSet = new Set();
-    document.querySelectorAll('#technologies .technology-card strong').forEach((el) => {
-        const text = el.textContent.trim();
-        if (text && text !== 'AI / ML' && text !== 'AI / ML Stack') techSet.add(text);
-    });
-
-    document.querySelectorAll('#technologies .technology-card span').forEach((el) => {
-        const text = el.textContent.trim();
-        if (text.includes('·')) {
-            text.split('·').forEach((item) => {
-                const cleaned = item.trim();
-                if (cleaned) techSet.add(cleaned);
-            });
-        }
-    });
-
-    document.querySelectorAll('.project-tags span').forEach((el) => {
-        const text = el.textContent.trim();
-        if (text) techSet.add(text);
+    const technologyAliases = { HTML: 'HTML5', CSS: 'CSS3' };
+    document.querySelectorAll('#technologies .technology-card strong, #technologies img.ai-logo, .project-card .project-tags span').forEach((element) => {
+        const text = (element.tagName === 'IMG' ? element.alt : element.textContent).trim();
+        if (!text || ['AI / ML', 'AI / ML Stack', 'POO'].includes(text)) return;
+        techSet.add(technologyAliases[text] || text);
     });
 
     const stats = {
-        projects: Math.max(projectCards.length, 8),
-        technologies: Math.max(techSet.size, 15),
-        certifications: Math.max(certificationCards.length, 4)
+        projects: projectCards.length,
+        technologies: techSet.size,
+        certifications: certificationCards.length
     };
 
     const projectCountEl = document.querySelector('[data-project-count]');
@@ -429,65 +476,11 @@ document.addEventListener('DOMContentLoaded', () => {
         projectCountEl.textContent = stats.projects;
     }
 
-    const animateCounter = (element, targetValue, isPlus = false) => {
-        if (prefersReducedMotion || targetValue <= 0) {
-            element.textContent = isPlus ? `${targetValue}+` : targetValue;
-            return;
-        }
-
-        const duration = 1200;
-        const start = performance.now();
-
-        const tick = (now) => {
-            if (prefersReducedMotion) {
-                element.textContent = isPlus ? `${targetValue}+` : targetValue;
-                return;
-            }
-            const elapsed = now - start;
-            const progress = Math.min(elapsed / duration, 1);
-            // Cubic ease-out curve
-            const easeOutProgress = 1 - Math.pow(1 - progress, 3);
-            const current = Math.round(targetValue * easeOutProgress);
-
-            element.textContent = (isPlus && progress >= 1) ? `${current}+` : current;
-
-            if (progress < 1) {
-                window.requestAnimationFrame(tick);
-            }
-        };
-
-        window.requestAnimationFrame(tick);
-    };
-
-    const proofStrip = document.querySelector('.proof-strip');
-    let countersAnimated = false;
-
-    const triggerCounters = () => {
-        if (countersAnimated) return;
-        countersAnimated = true;
-
-        Object.entries(stats).forEach(([name, value]) => {
-            document.querySelectorAll(`[data-stat="${name}"]`).forEach((element) => {
-                const hasPlus = name === 'technologies';
-                animateCounter(element, value, hasPlus);
-            });
+    Object.entries(stats).forEach(([name, value]) => {
+        document.querySelectorAll(`[data-stat="${name}"]`).forEach((element) => {
+            element.textContent = value;
         });
-    };
-
-    if ('IntersectionObserver' in window && proofStrip) {
-        const counterObserver = new IntersectionObserver((entries, observer) => {
-            entries.forEach((entry) => {
-                if (entry.isIntersecting) {
-                    triggerCounters();
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.15 });
-
-        counterObserver.observe(proofStrip);
-    } else {
-        triggerCounters();
-    }
+    });
 
     // -------------------------------------------------------------------------
     // 8. FILTRADO ACCESIBLE DE PROYECTOS (BENTO TABS)
@@ -537,7 +530,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const privacyError = document.getElementById('privacyError');
 
         const clearErrors = () => {
-            [nameInput, emailInput, messageInput].forEach((input) => {
+            [nameInput, emailInput, messageInput, privacyCheckbox].forEach((input) => {
                 input?.classList.remove('field-invalid');
                 input?.removeAttribute('aria-invalid');
             });
@@ -553,14 +546,17 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         // Limpiar errores en tiempo real al escribir
-        [nameInput, emailInput, messageInput].forEach((input) => {
+        [[nameInput, nameError], [emailInput, emailError], [messageInput, messageError]].forEach(([input, error]) => {
             input?.addEventListener('input', () => {
                 input.classList.remove('field-invalid');
                 input.removeAttribute('aria-invalid');
+                if (error) error.textContent = '';
             });
         });
 
         privacyCheckbox?.addEventListener('change', () => {
+            privacyCheckbox.classList.remove('field-invalid');
+            privacyCheckbox.removeAttribute('aria-invalid');
             if (privacyError) privacyError.textContent = '';
         });
 
@@ -604,6 +600,8 @@ document.addEventListener('DOMContentLoaded', () => {
             // Validación Consentimiento de Privacidad (OBLIGATORIO)
             if (!privacyCheckbox || !privacyCheckbox.checked) {
                 isValid = false;
+                privacyCheckbox?.classList.add('field-invalid');
+                privacyCheckbox?.setAttribute('aria-invalid', 'true');
                 if (privacyError) privacyError.textContent = 'Debes aceptar la Política de Privacidad para continuar.';
                 if (!firstInvalidField) firstInvalidField = privacyCheckbox;
             }
@@ -744,32 +742,36 @@ document.addEventListener('DOMContentLoaded', () => {
         let activeProjectKey = null;
         let activeImageIndex = 0;
         let lastFocusedElement = null;
+        let backdropPointerDown = false;
 
         const closeDialog = () => {
-            dialog.close();
+            if (dialog.open) dialog.close();
+        };
+
+        dialog.addEventListener('close', () => {
             activeProjectKey = null;
             activeImageIndex = 0;
             // Devolver foco al elemento disparador
-            if (lastFocusedElement && typeof lastFocusedElement.focus === 'function') {
-                lastFocusedElement.focus();
+            if (lastFocusedElement?.isConnected) {
+                lastFocusedElement.focus({ preventScroll: true });
             }
-        };
+            lastFocusedElement = null;
+        });
 
         dialogClose.addEventListener('click', closeDialog);
 
         // Cerrar al hacer clic en el backdrop
+        dialog.addEventListener('pointerdown', (event) => {
+            backdropPointerDown = event.target === dialog;
+        });
         dialog.addEventListener('click', (event) => {
-            if (event.target === dialog) {
+            if (event.target === dialog && backdropPointerDown) {
                 closeDialog();
             }
+            backdropPointerDown = false;
         });
 
-        // Cerrar con Escape
-        dialog.addEventListener('keydown', (event) => {
-            if (event.key === 'Escape') {
-                closeDialog();
-            }
-        });
+        // Escape usa el evento nativo cancel; close limpia también ese camino.
 
         const renderProject = () => {
             const project = projectData[activeProjectKey];
@@ -812,13 +814,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 <h3 class="dialog-section-title">Capturas del proyecto</h3>
                 <div class="dialog-main-image">
                     <img src="${src}" alt="${alt}" loading="lazy">
-                    <span>${activeImageIndex + 1} / ${project.images.length}</span>
+                    <span aria-live="polite" aria-atomic="true">${activeImageIndex + 1} / ${project.images.length}</span>
                 </div>
 
                 ${project.images.length > 1 ? `
                     <div class="dialog-gallery">
                         ${project.images.map(([imageSrc, imageAlt], index) => `
-                            <button class="dialog-thumb${index === activeImageIndex ? ' active' : ''}" type="button" data-image-index="${index}" aria-label="Ver imagen ${index + 1}: ${imageAlt}">
+                            <button class="dialog-thumb${index === activeImageIndex ? ' active' : ''}" type="button" data-image-index="${index}" aria-pressed="${index === activeImageIndex}" aria-label="Ver imagen ${index + 1}: ${imageAlt}">
                                 <img src="${imageSrc}" alt="${imageAlt}" loading="lazy">
                             </button>
                         `).join('')}
@@ -837,26 +839,37 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
 
             refreshIcons();
+        };
 
-            // Eventos de miniaturas
-            dialogContent.querySelectorAll('[data-image-index]').forEach((btn) => {
-                btn.addEventListener('click', () => {
-                    activeImageIndex = Number(btn.dataset.imageIndex);
-                    renderProject();
-                });
-            });
-
-            // Controles Anterior / Siguiente
-            dialogContent.querySelector('[data-gallery-action="previous"]')?.addEventListener('click', () => {
-                activeImageIndex = (activeImageIndex - 1 + project.images.length) % project.images.length;
-                renderProject();
-            });
-
-            dialogContent.querySelector('[data-gallery-action="next"]')?.addEventListener('click', () => {
-                activeImageIndex = (activeImageIndex + 1) % project.images.length;
-                renderProject();
+        // Conservar los controles evita perder el foco y la posición al cambiar de captura.
+        const updateGallery = () => {
+            const project = projectData[activeProjectKey];
+            if (!project) return;
+            const [src, alt] = project.images[activeImageIndex];
+            const image = dialogContent.querySelector('.dialog-main-image img');
+            image.src = src;
+            image.alt = alt;
+            dialogContent.querySelector('.dialog-main-image > span').textContent = `${activeImageIndex + 1} / ${project.images.length}`;
+            dialogContent.querySelectorAll('[data-image-index]').forEach((button) => {
+                const isActive = Number(button.dataset.imageIndex) === activeImageIndex;
+                button.classList.toggle('active', isActive);
+                button.setAttribute('aria-pressed', String(isActive));
             });
         };
+
+        dialogContent.addEventListener('click', (event) => {
+            const project = projectData[activeProjectKey];
+            const button = event.target.closest('button');
+            if (!project || !button) return;
+            if (button.hasAttribute('data-image-index')) {
+                activeImageIndex = Number(button.dataset.imageIndex);
+            } else if (button.dataset.galleryAction === 'previous') {
+                activeImageIndex = (activeImageIndex - 1 + project.images.length) % project.images.length;
+            } else if (button.dataset.galleryAction === 'next') {
+                activeImageIndex = (activeImageIndex + 1) % project.images.length;
+            } else return;
+            updateGallery();
+        });
 
         // Disparadores de apertura del modal
         document.querySelectorAll('.project-detail').forEach((button) => {
@@ -883,11 +896,13 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!project || project.images.length < 2) return;
 
             if (event.key === 'ArrowRight') {
+                event.preventDefault();
                 activeImageIndex = (activeImageIndex + 1) % project.images.length;
-                renderProject();
+                updateGallery();
             } else if (event.key === 'ArrowLeft') {
+                event.preventDefault();
                 activeImageIndex = (activeImageIndex - 1 + project.images.length) % project.images.length;
-                renderProject();
+                updateGallery();
             }
         });
 

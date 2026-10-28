@@ -19,17 +19,19 @@ function eventTarget(extra = {}) {
   });
 }
 
-function fixture({ reduced = false, touch = false, width = 1440, canvasAvailable = true } = {}) {
+function fixture({ reduced = false, touch = false, width = 1440, canvasAvailable = true, canvasThrows = false, namedWindowElement = false } = {}) {
   const motion = eventTarget({ matches: reduced });
   const callbacks = new Map();
-  let nextId = 0, time = 0, scrollY = 0, measurements = 0, observer;
+  let nextId = 0, time = 0, scrollY = 0, measurements = 0, chapterMeasurements = 0, observer;
   const context = {
     setTransform() {}, clearRect() {}, fillRect() {}, beginPath() {}, moveTo() {},
     lineTo() {}, stroke() {}, arc() {}, fill() {},
     createRadialGradient: () => ({ addColorStop() {} })
   };
+  const visual = {};
   const canvas = {
-    getContext: () => canvasAvailable ? context : null,
+    parentElement: visual,
+    getContext() { if (canvasThrows) throw new Error('Canvas blocked'); return canvasAvailable ? context : null; },
     setAttribute() {},
     getBoundingClientRect() { measurements++; return { width: 600, height: 600 }; }
   };
@@ -41,7 +43,7 @@ function fixture({ reduced = false, touch = false, width = 1440, canvasAvailable
   };
   const chapters = Array.from({ length: 3 }, (_, index) => ({
     classList: classList(),
-    getBoundingClientRect: () => ({ top: 1200 + index * 600 - scrollY, height: 600 })
+    getBoundingClientRect() { chapterMeasurements++; return { top: 1200 + index * 600 - scrollY, height: 600 }; }
   }));
   const container = {
     dataset: {}, style: { setProperty() {} }, classList: classList(),
@@ -53,17 +55,20 @@ function fixture({ reduced = false, touch = false, width = 1440, canvasAvailable
     requestAnimationFrame(fn) { const id = ++nextId; callbacks.set(id, fn); return id; },
     cancelAnimationFrame: id => callbacks.delete(id)
   });
-  const document = eventTarget({ hidden: false, readyState: 'complete', getElementById: () => null });
+  const document = eventTarget({ hidden: false, readyState: 'complete', getElementById: () => namedWindowElement ? container : null });
+  if (namedWindowElement) window.portfolioWorld = container;
   class IntersectionObserver {
     constructor(callback) { this.callback = callback; observer = this; }
-    observe() {}
+    observe(target) { this.target = target; }
     disconnect() { this.disconnected = true; }
   }
   vm.runInNewContext(source, { window, document, IntersectionObserver });
-  const api = window.mountScrollWorld(container);
+  const api = namedWindowElement ? window.portfolioWorld : window.mountScrollWorld(container);
   return {
-    api, window, document, motion, container, canvas,
+    api, window, document, motion, container, canvas, visual,
+    get observedElement() { return observer?.target; },
     get measurements() { return measurements; },
+    get chapterMeasurements() { return chapterMeasurements; },
     get pending() { return callbacks.size; },
     scroll(value) { scrollY = value; window.emit('scroll'); },
     visible(value) { observer.callback([{ isIntersecting: value }]); },
@@ -81,8 +86,15 @@ function fixture({ reduced = false, touch = false, width = 1440, canvasAvailable
 
 const run = fixture();
 assert.equal(run.api.getState().available, true);
+assert.equal(run.observedElement, run.visual, 'visibility follows the canvas wrapper rather than its longer chapter section');
 assert.equal(run.api.getState().running, false, 'initial static frame needs no idle rAF');
 assert.equal(run.canvas.width, 1200, 'desktop DPR is capped at two');
+const beforeBurst = run.chapterMeasurements;
+for (let y = 750; y < 810; y++) run.scroll(y);
+assert.equal(run.pending, 1, 'a burst of scroll events is coalesced into one frame');
+assert.equal(run.chapterMeasurements, beforeBurst, 'scroll events do not synchronously read layout');
+run.settle();
+assert.equal(run.chapterMeasurements, beforeBurst + 3, 'each chapter is measured once for the entire burst');
 let previous = 0;
 for (let y = 744; y <= 2544; y += 30) {
   run.scroll(y); run.settle();
@@ -109,8 +121,10 @@ assert.equal(run.pending, 1, 'scroll schedules only one frame');
 run.visible(false);
 assert.equal(run.pending, 0, 'leaving viewport cancels work immediately');
 const stoppedFrames = run.api.getState().renderedFrames;
+const stoppedMeasurements = run.chapterMeasurements;
 run.scroll(2000); run.settle();
 assert.equal(run.api.getState().renderedFrames, stoppedFrames);
+assert.equal(run.chapterMeasurements, stoppedMeasurements, 'offscreen scroll does not read chapter layout');
 run.visible(true); run.settle();
 assert.ok(run.api.getState().renderedFrames > stoppedFrames);
 
@@ -148,4 +162,14 @@ const fallback = fixture({ canvasAvailable: false });
 assert.equal(fallback.api.getState().available, false);
 assert.equal(fallback.container.classList.contains('world-ready'), false);
 fallback.api.destroy();
-console.log('PASS: scroll direction and seam progress, settling, offscreen/hidden pause, motion preferences, cleanup, mobile resize, static fallback.');
+const blockedCanvas = fixture({ canvasThrows: true });
+assert.equal(blockedCanvas.api.getState().available, false, 'throwing canvas contexts retain the static fallback');
+assert.equal(blockedCanvas.window.listenerCount(), 0, 'unavailable canvas installs no animation listeners');
+blockedCanvas.api.destroy();
+const namedElement = fixture({ namedWindowElement: true });
+assert.notEqual(namedElement.api, namedElement.container, 'a Window named element must not be mistaken for a mounted instance');
+assert.equal(typeof namedElement.api.getState, 'function', 'automatic initialization replaces the named DOM property with the public API');
+assert.equal(namedElement.api.getState().available, true);
+assert.equal(namedElement.container.classList.contains('world-ready'), true);
+namedElement.api.destroy();
+console.log('PASS: scroll direction and seams, coalesced layout reads, settling, offscreen/hidden pause, motion preferences, cleanup, mobile resize, unavailable/blocked canvas fallback.');

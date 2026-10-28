@@ -32,7 +32,8 @@ Sitio web estático profesional y accesible diseñado para presentar:
 - `privacidad.html` – Política de Privacidad y protección de datos personales
 - `terminos.html` – Términos de Uso, aviso legal y atribución de marcas
 - `styles.css` – Sistema visual, tipografía, variables y responsive
-- `script.js` – Lógica de filtros, contadores dinámicos, validación y modal accesible
+- `assets/js/main.js` – Lógica de navegación, temas, filtros, validación y modal accesible
+- `script.js` – Entrada de compatibilidad que carga el módulo principal
 - `assets/css/premium.css` – Dirección visual premium y adaptación responsive
 - `assets/js/scroll-world.js` – Motor local de cámara continua controlada por scroll
 - `scripts/verify-scroll-world.cjs` – Verificaciones del ciclo de vida del motor, sin navegador
@@ -44,9 +45,13 @@ Sitio web estático profesional y accesible diseñado para presentar:
 - `assets/images/` – Retrato, capturas reales, imágenes sociales y credenciales
 - `work/` – Casos de estudio de Machine Learning, CALZATURE y Biblioteca
 
-Las páginas cargan `styles.css` y `script.js` de la raíz, más `premium.css`. Las copias
-anteriores de CSS/JS en `assets/` se conservan por compatibilidad; `assets/js/main.js`
-permanece sincronizado con `script.js`.
+Las páginas cargan `styles.css`, `assets/css/premium.css` y el único módulo de
+interacción `assets/js/main.js`. Las entradas antiguas se conservan como adaptadores
+de compatibilidad, sin duplicar la implementación. La tipografía de las páginas
+principales, legales y casos de estudio comparte Inter y fuentes del sistema.
+
+Los recursos y enlaces internos de `404.html` parten de la raíz del dominio para
+que la recuperación también funcione al visitar una ruta inexistente anidada.
 
 ## Scroll World local
 
@@ -64,7 +69,13 @@ CSS estática; sin JavaScript siguen disponibles contenido y enlaces.
 
 `window.portfolioWorld.getState()` permite inspeccionar el estado en desarrollo;
 `destroy()` limpia eventos, observer y frames pendientes. El recorrido tiene un
-enlace para continuar directamente al perfil y no intercepta el desplazamiento.
+enlace para ir directamente a los proyectos y no intercepta el desplazamiento.
+
+La composición V3 mantiene la fotografía original, los ocho proyectos y las cuatro
+certificaciones. El vidrio se concentra en navegación y controles; las áreas de
+lectura usan superficies sólidas. En móvil la ilustración pasa al flujo normal
+para mantener todos los capítulos libres de superposiciones. Su observer pausa
+el dibujo al salir la ilustración de pantalla, incluso si el texto sigue visible.
 
 Las dos imágenes PNG de IA se sirven ahora como WebP (~249 KB en conjunto frente
 a ~3,18 MB), con las dimensiones originales. Los PNG se conservan.
@@ -74,7 +85,7 @@ a ~3,18 MB), con las dimensiones originales. Los PNG se conservan.
 Con el servidor del puerto 8000 activo:
 
 ```bash
-node --check script.js
+node --check assets/js/main.js
 node --check assets/js/scroll-world.js
 node scripts/verify-scroll-world.cjs
 python scripts/verify-site.py --http

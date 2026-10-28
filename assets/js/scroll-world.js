@@ -15,7 +15,10 @@
   function mountScrollWorld(container, config = {}) {
     if (!container) return null;
     const canvas = container.querySelector('#worldCanvas, canvas');
-    const context = canvas && canvas.getContext('2d');
+    let context = null;
+    // Privacy settings and restricted browsers can throw, rather than return null.
+    // Keep the semantic chapters and CSS illustration available in either case.
+    try { context = canvas && canvas.getContext('2d'); } catch (error) {}
     if (!context) return { destroy() {}, getState: () => ({ available: false, running: false }) };
     canvas.setAttribute('aria-hidden', 'true');
     const chapters = Array.from(container.querySelectorAll('.world-chapter'));
@@ -29,7 +32,63 @@
     const totalWeight = phases.reduce((sum, phase) => sum + (phase.weight || 1), 0);
     let width = 1, height = 1, lastWindowWidth = 0, progress = 0, target = 0;
     let active = 0, frame = 0, renderedFrames = 0, visible = true, destroyed = false;
-    let reducedMotion = motion.matches, previousTime = 0;
+    let reducedMotion = motion.matches, previousTime = 0, needsProgress = false;
+    // Geometry is deterministic: build it once instead of allocating points and
+    // repeating hundreds of trigonometric operations on every scroll frame.
+    const geometry = [];
+    const addLine = (a, b, opacity = 0.36, color = '153,202,239', stroke = 1) => geometry.push({ a, b, opacity, color, stroke });
+    const addDot = (point, size = 2, opacity = 0.8) => geometry.push({ point, size, opacity });
+
+    // The same spatial corridor connects every zone; the camera never jumps or reverses.
+    for (let index = 13; index >= 0; index--) {
+      const z = 450 + index * 390;
+      const span = 340, floor = 205;
+      addLine([-span, floor, z], [span, floor, z], 0.14);
+      if (index < 13) {
+        addLine([-span, floor, z], [-span, floor, z + 390], 0.17);
+        addLine([span, floor, z], [span, floor, z + 390], 0.17);
+      }
+      for (let lane = -2; lane <= 2; lane++) addLine([lane * 110, floor, z], [lane * 110, floor, z + 390], 0.06);
+    }
+    // SOFTWARE: architectural panes and connected layers, rendered back to front.
+    for (let index = 5; index >= 0; index--) {
+      const z = 650 + index * 260, x = index % 2 ? 95 : -105;
+      const corners = [[x - 190, -130, z], [x + 190, -130, z], [x + 190, 130, z], [x - 190, 130, z]];
+      corners.forEach((point, corner) => addLine(point, corners[(corner + 1) % 4], 0.25, '170,209,241'));
+      addLine([x - 190, -85, z], [x + 190, -85, z], 0.19);
+      for (let row = 0; row < 4; row++) {
+        const y = -40 + row * 34;
+        addLine([x - 145, y, z], [x - 45 + (row % 3) * 58, y, z], 0.26);
+        addDot([x - 165, y, z], 2.5, 0.8);
+      }
+      for (let button = 0; button < 3; button++) addDot([x - 164 + button * 18, -108, z], 2, 0.55);
+    }
+    // DATA: one deterministic graph, rather than random particles changing per frame.
+    const nodes = [];
+    for (let index = 0; index < 34; index++) {
+      const angle = index * 2.399963;
+      nodes.push([Math.cos(angle) * (120 + index % 4 * 45), Math.sin(angle) * 155, 2250 + index % 7 * 145]);
+    }
+    nodes.forEach((node, index) => {
+      addLine(node, nodes[(index + 5) % nodes.length], 0.2, '115,187,238');
+      if (index % 3 === 0) addLine(node, nodes[(index + 11) % nodes.length], 0.13);
+      addDot(node, index % 5 === 0 ? 5 : 3, 0.85);
+    });
+    // VISION: fewer segments on touch devices preserve the silhouette at lower cost.
+    const ringSegments = touch ? 32 : 48;
+    for (let ring = 6; ring >= 0; ring--) {
+      const z = 3600 + ring * 250, radius = 175 + ring * 5;
+      for (let index = 0; index < ringSegments; index++) {
+        const a = index / ringSegments * Math.PI * 2, b = (index + 1) / ringSegments * Math.PI * 2;
+        addLine([Math.cos(a) * radius, Math.sin(a) * radius, z], [Math.cos(b) * radius, Math.sin(b) * radius, z], ring % 2 ? 0.16 : 0.38);
+      }
+      [-1, 1].forEach(sign => {
+        addLine([sign * 225, -225, z], [sign * 165, -225, z], 0.5);
+        addLine([sign * 225, -225, z], [sign * 225, -165, z], 0.5);
+        addLine([sign * 225, 225, z], [sign * 165, 225, z], 0.5);
+        addLine([sign * 225, 225, z], [sign * 225, 165, z], 0.5);
+      });
+    }
 
     function measure() {
       const box = canvas.getBoundingClientRect();
@@ -107,55 +166,10 @@
         context.fillStyle = `rgba(190,225,255,${screen.alpha * opacity})`;
         context.beginPath(); context.arc(screen.x, screen.y, Math.max(0.7, size * focal / screen.depth), 0, Math.PI * 2); context.fill();
       }
-      // The same spatial corridor connects every zone; the camera never jumps or reverses.
-      for (let index = 13; index >= 0; index--) {
-        const z = 450 + index * 390;
-        const span = 340, floor = 205;
-        line([-span, floor, z], [span, floor, z], 0.14);
-        if (index < 13) {
-          line([-span, floor, z], [-span, floor, z + 390], 0.17);
-          line([span, floor, z], [span, floor, z + 390], 0.17);
-        }
-        for (let lane = -2; lane <= 2; lane++) line([lane * 110, floor, z], [lane * 110, floor, z + 390], 0.06);
-      }
-      // SOFTWARE: architectural panes and connected layers, rendered back to front.
-      for (let index = 5; index >= 0; index--) {
-        const z = 650 + index * 260, x = index % 2 ? 95 : -105;
-        const corners = [[x - 190, -130, z], [x + 190, -130, z], [x + 190, 130, z], [x - 190, 130, z]];
-        corners.forEach((point, corner) => line(point, corners[(corner + 1) % 4], 0.25, '170,209,241'));
-        line([x - 190, -85, z], [x + 190, -85, z], 0.19);
-        for (let row = 0; row < 4; row++) {
-          const y = -40 + row * 34;
-          line([x - 145, y, z], [x - 45 + (row % 3) * 58, y, z], 0.26);
-          dot([x - 165, y, z], 2.5, 0.8);
-        }
-        for (let button = 0; button < 3; button++) dot([x - 164 + button * 18, -108, z], 2, 0.55);
-      }
-      // DATA: one deterministic graph, rather than random particles changing per frame.
-      const nodes = [];
-      for (let index = 0; index < 34; index++) {
-        const angle = index * 2.399963;
-        nodes.push([Math.cos(angle) * (120 + index % 4 * 45), Math.sin(angle) * 155, 2250 + index % 7 * 145]);
-      }
-      nodes.forEach((node, index) => {
-        line(node, nodes[(index + 5) % nodes.length], 0.2, '115,187,238');
-        if (index % 3 === 0) line(node, nodes[(index + 11) % nodes.length], 0.13);
-        dot(node, index % 5 === 0 ? 5 : 3, 0.85);
+      geometry.forEach(shape => {
+        if (shape.point) dot(shape.point, shape.size, shape.opacity);
+        else line(shape.a, shape.b, shape.opacity, shape.color, shape.stroke);
       });
-      // VISION: a sequence of sensor rings with a shared vanishing point.
-      for (let ring = 6; ring >= 0; ring--) {
-        const z = 3600 + ring * 250, radius = 175 + ring * 5, count = 48;
-        for (let index = 0; index < count; index++) {
-          const a = index / count * Math.PI * 2, b = (index + 1) / count * Math.PI * 2;
-          line([Math.cos(a) * radius, Math.sin(a) * radius, z], [Math.cos(b) * radius, Math.sin(b) * radius, z], ring % 2 ? 0.16 : 0.38);
-        }
-        [-1, 1].forEach(sign => {
-          line([sign * 225, -225, z], [sign * 165, -225, z], 0.5);
-          line([sign * 225, -225, z], [sign * 225, -165, z], 0.5);
-          line([sign * 225, 225, z], [sign * 165, 225, z], 0.5);
-          line([sign * 225, 225, z], [sign * 225, 165, z], 0.5);
-        });
-      }
     }
 
     function cancel() {
@@ -164,7 +178,9 @@
     }
     function tick(time) {
       frame = 0;
-      if (destroyed || !visible || document.hidden || reducedMotion) return;
+      if (destroyed || !visible || document.hidden) return;
+      if (needsProgress) { readProgress(); needsProgress = false; }
+      if (reducedMotion) return;
       const elapsed = previousTime ? Math.min(48, time - previousTime) : 16.7;
       previousTime = time;
       progress += (target - progress) * (1 - Math.exp(-elapsed / 105));
@@ -174,11 +190,11 @@
       else previousTime = 0;
     }
     function schedule() {
-      if (!destroyed && visible && !document.hidden && !reducedMotion && !frame) frame = window.requestAnimationFrame(tick);
+      if (!destroyed && visible && !document.hidden && !frame) frame = window.requestAnimationFrame(tick);
     }
-    function onScroll() { readProgress(); schedule(); }
+    function onScroll() { needsProgress = true; schedule(); }
     function onResize() {
-      if (touch && window.innerWidth === lastWindowWidth) return;
+      if (touch && window.innerWidth === lastWindowWidth) { needsProgress = true; schedule(); return; }
       measure(); readProgress();
       if (reducedMotion) draw(0.13); else schedule();
     }
@@ -187,16 +203,18 @@
       container.dataset.worldMotion = reducedMotion ? 'reduced' : 'full';
       if (reducedMotion) { progress = target; draw(0.13); } else schedule();
     }
-    function onVisibility() { if (document.hidden) cancel(); else { readProgress(); schedule(); } }
+    function onVisibility() { if (document.hidden) cancel(); else { needsProgress = true; schedule(); } }
     const observer = typeof IntersectionObserver === 'function' ? new IntersectionObserver(entries => {
       visible = entries[0].isIntersecting;
-      if (visible) { readProgress(); schedule(); } else cancel();
+      if (visible) { needsProgress = true; schedule(); } else cancel();
     }, { rootMargin: '100px' }) : null;
 
     measure(); readProgress(); draw(reducedMotion ? 0.13 : target); progress = target;
     container.dataset.worldMotion = reducedMotion ? 'reduced' : 'full';
     container.classList.add('world-ready');
-    if (observer) observer.observe(container);
+    // On mobile the illustration is in normal flow; chapters can remain visible
+    // after its canvas has left the screen. Only the illustration needs painting.
+    if (observer) observer.observe(canvas.parentElement || container);
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', onResize, { passive: true });
     window.addEventListener('orientationchange', onResize, { passive: true });
@@ -217,7 +235,11 @@
   window.mountScrollWorld = mountScrollWorld;
   function initialize() {
     const container = document.getElementById('portfolioWorld');
-    if (container && !window.portfolioWorld) window.portfolioWorld = mountScrollWorld(container);
+    // Elements with an id also become named Window properties. The section's
+    // portfolioWorld property is not an existing animation instance.
+    if (container && typeof window.portfolioWorld?.getState !== 'function') {
+      window.portfolioWorld = mountScrollWorld(container);
+    }
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initialize, { once: true });
   else initialize();

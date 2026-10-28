@@ -241,13 +241,6 @@ button, a {
                 border-color var(--duration-normal) var(--ease-apple);
 }
 
-/* Graceful Fallback for Browsers without backdrop-filter */
-@supports not (backdrop-filter: blur(10px)) {
-    .liquid-glass, .liquid-glass-subtle {
-        background: var(--bg-secondary) !important;
-    }
-}
-
 /* --------------------------------------------------------------------------
    4.1 SOLID CARD SYSTEM (HIGH-CONTRAST LEGIBILITY)
    -------------------------------------------------------------------------- */
@@ -2590,6 +2583,8 @@ h3 {
 
 .breadcrumb a {
     color: var(--accent-blue);
+    text-decoration: underline;
+    text-underline-offset: 3px;
 }
 
 .case-hero {

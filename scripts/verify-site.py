@@ -72,7 +72,10 @@ def main():
                 url = urlsplit(value)
                 if url.scheme or url.netloc:
                     continue
-                target = (path.parent / unquote(url.path)).resolve() if url.path else path
+                if url.path.startswith('/'):
+                    target = (ROOT / unquote(url.path).lstrip('/')).resolve()
+                else:
+                    target = (path.parent / unquote(url.path)).resolve() if url.path else path
                 if target.is_dir():
                     target /= 'index.html'
                 checked_links += 1
@@ -84,9 +87,23 @@ def main():
                     target_doc = docs.get(target)
                     if target_doc and unquote(url.fragment) not in target_doc.ids:
                         errors.append(f'{label}: missing fragment {value}')
-            for ref in attrs.get('aria-describedby', '').split():
-                if ref not in doc.ids:
-                    errors.append(f'{label}: missing accessible description {ref}')
+            for attribute in ('aria-describedby', 'aria-controls', 'aria-labelledby'):
+                for ref in attrs.get(attribute, '').split():
+                    if ref not in doc.ids:
+                        errors.append(f'{label}: missing {attribute} target {ref}')
+
+        entrypoints = [attrs.get('src', '').split('?')[0] for tag, attrs in doc.elements if tag == 'script' and attrs.get('src')]
+        if not any(src.endswith('assets/js/main.js') for src in entrypoints):
+            errors.append(f'{label}: missing canonical JavaScript entrypoint assets/js/main.js')
+        if any(src.endswith('/script.js') or src == 'script.js' for src in entrypoints):
+            errors.append(f'{label}: loads legacy JavaScript instead of the canonical entrypoint')
+        if path.name == '404.html':
+            for tag, attrs in doc.elements:
+                for key in ('href', 'src'):
+                    value = attrs.get(key, '')
+                    url = urlsplit(value)
+                    if value and not (url.scheme or url.netloc or value.startswith(('/', '#'))):
+                        errors.append(f'{label}: relative {key} breaks on nested missing routes: {value}')
 
     home = docs[ROOT / 'index.html']
     def count_class(name):
@@ -96,8 +113,6 @@ def main():
             errors.append(f'index.html: expected {expected} {name} elements')
     if not home.json_ld:
         errors.append('index.html: missing structured data')
-    if (ROOT / 'script.js').read_bytes() != (ROOT / 'assets/js/main.js').read_bytes():
-        errors.append('JavaScript compatibility copy is out of sync')
 
     sitemap = ET.parse(ROOT / 'sitemap.xml')
     namespace = {'s': 'http://www.sitemaps.org/schemas/sitemap/0.9'}
@@ -132,7 +147,7 @@ def main():
 
     if errors:
         raise SystemExit('\n'.join(errors))
-    print(f'PASS: {len(pages)} HTML pages, {checked_links} local references, 8 projects, 4 certificates, 3 world chapters, SEO metadata, sitemap and JS mirror.')
+    print(f'PASS: {len(pages)} HTML pages, {checked_links} local references, 8 projects, 4 certificates, 3 world chapters, SEO metadata, sitemap, ARIA targets and canonical JavaScript entrypoint.')
     if args.http:
         print(f'PASS: {len(resources)} local documents/resources served byte-for-byte on localhost:8000.')
     print('These checks do not validate browser rendering, contrast measurements or device performance.')
