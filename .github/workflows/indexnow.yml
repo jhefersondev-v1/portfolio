@@ -1,0 +1,46 @@
+name: IndexNow
+
+on:
+  workflow_run:
+    # GitHub's managed legacy Pages workflow has these API/display names.
+    workflows: [pages-build-deployment, pages build and deployment]
+    types: [completed]
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+  pages: read
+
+concurrency:
+  group: indexnow-production
+  cancel-in-progress: false
+
+jobs:
+  notify:
+    if: >-
+      github.repository == 'jhefersondev-v1/portfolio' &&
+      github.ref == 'refs/heads/main' &&
+      (github.event_name == 'workflow_dispatch' ||
+       (github.event.workflow_run.conclusion == 'success' &&
+        github.event.workflow_run.head_repository.full_name == github.repository))
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out the published commit
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Verify IndexNow logic without network requests
+        run: python3 -B -m unittest discover -s scripts -p 'test_indexnow.py' -v
+
+      # A failure here reports the notification problem without affecting the
+      # already completed Pages deployment or advancing the success checkpoint.
+      - name: Verify production and notify changed canonical HTML pages
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: python3 -B scripts/indexnow.py

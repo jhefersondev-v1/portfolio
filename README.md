@@ -99,6 +99,50 @@ de correo mediante `mailto:`, no envía mensajes por un backend).
 
 La web se publica desde la rama `main` de GitHub Pages en `jrcholan.lat`.
 
+## IndexNow
+
+La clave pública existente se sirve en
+[`653b8ac8c5854295beb8ba981bedf938.txt`](https://jrcholan.lat/653b8ac8c5854295beb8ba981bedf938.txt).
+No es una credencial privada: este archivo permite verificar el dominio.
+
+`.github/workflows/indexnow.yml` se ejecuta al finalizar correctamente el workflow
+administrado de Pages y también admite ejecución manual en `main`. El despliegue
+existente permanece independiente. `scripts/indexnow.py` usa Python 3 y su
+biblioteca estándar; no añade código ni peticiones al navegador del visitante.
+
+Antes del POST JSON a `https://api.indexnow.org/indexnow`, comprueba el commit
+publicado mediante la API de Pages, el HEAD actual de `main`, la clave pública,
+robots y los bytes de los HTML publicados. La primera ejecución toma las URL
+canónicas e indexables del sitemap. Las posteriores comparan los HTML con el
+último run exitoso de IndexNow: detectan altas, modificaciones y eliminaciones,
+incluidos cambios de canonical, noindex y robots. Se excluyen recursos, páginas
+de verificación, aliases y `404.html`. Las páginas eliminadas deben devolver
+404/410; un cambio de directivas de indexación puede seguir devolviendo 200.
+La comparación del HTML normaliza las transformaciones actuales de Cloudflare
+(protección de correo e inserción del beacon) y espacios entre etiquetas, sin
+cambiar la configuración de Cloudflare ni el contenido del sitio.
+
+Los runs exitosos conservan el checkpoint sin caches, archivos de estado ni
+commits automáticos. **Conservar el historial de Actions**: eliminar los runs
+exitosos reinicia el checkpoint y provoca un nuevo envío inicial del sitemap.
+El workflow serializa ejecuciones y no reintenta el POST automáticamente.
+HTTP 200 confirma recepción; HTTP 202 indica validación de clave pendiente.
+Otros códigos hacen fallar únicamente la notificación, conservan el checkpoint
+anterior y aparecen en los logs y el resumen de Actions. Se puede reejecutar
+manualmente tras resolver el problema; el siguiente despliegue también recupera
+los cambios pendientes. La aceptación no garantiza indexación.
+
+```bash
+python -B -m unittest discover -s scripts -p 'test_indexnow.py' -v
+python -B scripts/indexnow.py --dry-run
+python -B scripts/indexnow.py --dry-run --base HEAD
+gh workflow run indexnow.yml --ref main
+```
+
+Las simulaciones son locales, sin red ni envíos. Los envíos reales solo se
+permiten dentro de Actions, después de comprobar la publicación en producción.
+Protocolo: [documentación oficial de IndexNow](https://www.indexnow.org/documentation).
+
 ## Ejecutar localmente
 
 ```bash
