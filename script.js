@@ -2,6 +2,6 @@
 (function () {
     if (document.querySelector('script[src*="assets/js/main.js"]')) return;
     var entrypoint = document.createElement('script');
-    entrypoint.src = new URL('assets/js/main.js?v=20261028-v3', document.currentScript.src).href;
+    entrypoint.src = new URL('assets/js/main.js?v=20261028-ga4', document.currentScript.src).href;
     document.head.appendChild(entrypoint);
 })();

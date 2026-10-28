@@ -113,10 +113,40 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;650;700&display=swap" rel="stylesheet">
 
     <!-- Stylesheet -->
-    <link rel="stylesheet" href="styles.css?v=20261028-v6">
-    <link rel="stylesheet" href="assets/css/premium.css?v=20261028-v6">
+    <link rel="stylesheet" href="styles.css?v=20261028-ga4">
+    <link rel="stylesheet" href="assets/css/premium.css?v=20261028-ga4">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css">
     <script src="https://unpkg.com/lucide@latest" defer></script>
+    <!-- Google Analytics 4 (GA4) with Consent Mode v2 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-PMS2X73B5Q"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+
+        // Google Consent Mode v2: default denied until explicit user consent
+        (function() {
+            var consentState = 'denied';
+            try {
+                if (localStorage.getItem('analytics_consent') === 'granted') {
+                    consentState = 'granted';
+                }
+            } catch (e) {}
+
+            gtag('consent', 'default', {
+                'analytics_storage': consentState,
+                'ad_storage': 'denied',
+                'ad_user_data': 'denied',
+                'ad_personalization': 'denied',
+                'wait_for_update': 500
+            });
+
+            gtag('js', new Date());
+            gtag('config', 'G-PMS2X73B5Q', {
+                'anonymize_ip': true,
+                'send_page_view': true
+            });
+        })();
+    </script>
 </head>
 <body>
     <a href="#main" class="skip-link">Saltar al contenido principal</a>
@@ -1087,7 +1117,7 @@
         </div>
     </footer>
 
-    <script src="assets/js/main.js?v=20261028-v6" defer></script>
-    <script src="assets/js/scroll-world.js?v=20261028-v6" defer></script>
+    <script src="assets/js/main.js?v=20261028-ga4" defer></script>
+    <script src="assets/js/scroll-world.js?v=20261028-ga4" defer></script>
 </body>
 </html>

@@ -22,6 +22,30 @@
     refreshIcons();
 
     // -------------------------------------------------------------------------
+    // GOOGLE ANALYTICS 4 EVENT DISPATCHER & PRIVACY TOOLS
+    // -------------------------------------------------------------------------
+    const trackEvent = (eventName, params = {}) => {
+        try {
+            if (typeof window.gtag === 'function') {
+                window.gtag('event', eventName, params);
+            }
+        } catch (e) {}
+    };
+
+    const clearAnalyticsCookies = () => {
+        try {
+            const cookies = document.cookie.split(';');
+            cookies.forEach((c) => {
+                const name = c.split('=')[0].trim();
+                if (name === '_ga' || name.startsWith('_ga_')) {
+                    document.cookie = `${name}=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT; Domain=${window.location.hostname}; SameSite=Lax`;
+                    document.cookie = `${name}=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT; SameSite=Lax`;
+                }
+            });
+        } catch (e) {}
+    };
+
+    // -------------------------------------------------------------------------
     // 2. SISTEMA DE TEMA APPLE (LIGHT / DARK THEME SWITCHER)
     // -------------------------------------------------------------------------
     const themeToggle = document.getElementById('themeToggle');
@@ -80,6 +104,7 @@
                 // El tema sigue funcionando si el navegador bloquea el almacenamiento.
             }
             applyTheme(newTheme);
+            trackEvent('select_theme', { theme_name: newTheme });
         });
     }
 
@@ -124,6 +149,7 @@
         btn.addEventListener('click', async (e) => {
             e.preventDefault();
             const email = btn.dataset.copyEmail || 'jheferson6666@gmail.com';
+            trackEvent('contact_action', { action_type: 'copy_email' });
             try {
                 if (navigator.clipboard && navigator.clipboard.writeText) {
                     await navigator.clipboard.writeText(email);
@@ -485,6 +511,7 @@
     primaryNavLinks.forEach((link) => {
         link.addEventListener('click', () => {
             updateDroplet(link);
+            trackEvent('navigation_click', { destination: link.getAttribute('href') || '' });
         });
     });
 
@@ -600,6 +627,8 @@
     filterButtons.forEach((button) => {
         button.addEventListener('click', () => {
             const filter = button.dataset.filter;
+
+            trackEvent('filter_projects', { filter_category: filter });
 
             // Actualizar botones y estados ARIA
             filterButtons.forEach((item) => {
@@ -990,6 +1019,7 @@
 
                 lastFocusedElement = button;
                 activeProjectKey = key;
+                trackEvent('select_content', { content_type: 'project', item_id: key });
                 activeImageIndex = 0;
                 renderProject();
 
@@ -1039,4 +1069,119 @@
             }
         });
     }
+
+    // -------------------------------------------------------------------------
+    // 13. GOOGLE ANALYTICS 4 DOWNLOADS & CONSENT MODE MANAGER
+    // -------------------------------------------------------------------------
+    // Seguimiento de descargas de CV y certificados
+    document.querySelectorAll('a[href$=".pdf"]').forEach((link) => {
+        link.addEventListener('click', () => {
+            const href = link.getAttribute('href') || '';
+            const fileName = href.split('/').pop() || 'document.pdf';
+            const isCV = href.toLowerCase().includes('cv');
+            trackEvent('file_download', {
+                file_name: fileName,
+                file_extension: 'pdf',
+                link_text: isCV ? 'CV' : (link.textContent ? link.textContent.trim() : 'Certificado')
+            });
+        });
+    });
+
+    const initCookieConsent = () => {
+        const statusLabel = document.getElementById('consentStatusLabel');
+        const legalAcceptBtn = document.getElementById('legalConsentAcceptBtn');
+        const legalRejectBtn = document.getElementById('legalConsentRejectBtn');
+
+        const updateStatusUI = (status) => {
+            if (!statusLabel) return;
+            if (status === 'granted') {
+                statusLabel.innerHTML = '<span style="color: #30D158;">Concedido (Métricas activas)</span>';
+            } else if (status === 'denied') {
+                statusLabel.innerHTML = '<span style="color: #FF9F0A;">Rechazado (Solo cookies técnicas)</span>';
+            } else {
+                statusLabel.innerHTML = '<span>Sin configurar (Por defecto denegado)</span>';
+            }
+        };
+
+        const currentConsent = (() => {
+            try { return localStorage.getItem('analytics_consent'); } catch (e) { return null; }
+        })();
+
+        updateStatusUI(currentConsent);
+
+        const setConsent = (granted) => {
+            const val = granted ? 'granted' : 'denied';
+            try { localStorage.setItem('analytics_consent', val); } catch (e) {}
+            if (typeof window.gtag === 'function') {
+                window.gtag('consent', 'update', { 'analytics_storage': val });
+            }
+            if (granted) {
+                trackEvent('consent_update', { status: 'granted' });
+            } else {
+                clearAnalyticsCookies();
+            }
+            updateStatusUI(val);
+        };
+
+        legalAcceptBtn?.addEventListener('click', () => setConsent(true));
+        legalRejectBtn?.addEventListener('click', () => setConsent(false));
+
+        // Mostrar banner flotante Liquid Glass si el usuario aún no ha seleccionado preferencia
+        if (currentConsent === null) {
+            setTimeout(() => {
+                if (document.getElementById('cookieBanner')) return;
+                const banner = document.createElement('aside');
+                banner.id = 'cookieBanner';
+                banner.className = 'cookie-banner';
+                banner.setAttribute('role', 'region');
+                banner.setAttribute('aria-label', 'Consentimiento de cookies y privacidad');
+                banner.innerHTML = `
+                    <div class="cookie-banner-glass">
+                        <div class="cookie-banner-content">
+                            <div class="cookie-banner-icon" aria-hidden="true">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M12 2a10 10 0 1 0 10 10 4 4 0 0 1-5-5 4 4 0 0 1-5-5"></path>
+                                    <path d="M8.5 8.5v.01"></path>
+                                    <path d="M16 15.5v.01"></path>
+                                    <path d="M12 12v.01"></path>
+                                    <path d="M11 17v.01"></path>
+                                    <path d="M7 13v.01"></path>
+                                </svg>
+                            </div>
+                            <div class="cookie-banner-text">
+                                <p><strong>Privacidad y Métricas:</strong> Utilizamos Google Analytics 4 de forma anónima para medir visitas y optimizar el portafolio. No recopilamos datos personales. Consulta la <a href="/privacidad.html" class="cookie-banner-link">Política de Privacidad</a>.</p>
+                            </div>
+                        </div>
+                        <div class="cookie-banner-actions">
+                            <button type="button" class="cookie-btn cookie-btn-reject" id="cookieRejectBtn">Solo necesarias</button>
+                            <button type="button" class="cookie-btn cookie-btn-accept" id="cookieAcceptBtn">Aceptar analítica</button>
+                        </div>
+                    </div>
+                `;
+                document.body.appendChild(banner);
+
+                const acceptBtn = banner.querySelector('#cookieAcceptBtn');
+                const rejectBtn = banner.querySelector('#cookieRejectBtn');
+
+                const dismiss = () => {
+                    banner.classList.remove('is-visible');
+                    setTimeout(() => banner.remove(), 400);
+                };
+
+                acceptBtn?.addEventListener('click', () => {
+                    setConsent(true);
+                    dismiss();
+                });
+
+                rejectBtn?.addEventListener('click', () => {
+                    setConsent(false);
+                    dismiss();
+                });
+
+                requestAnimationFrame(() => banner.classList.add('is-visible'));
+            }, 800);
+        }
+    };
+
+    initCookieConsent();
 });

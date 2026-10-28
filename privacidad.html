@@ -47,9 +47,39 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css?v=20261028-v6">
-    <link rel="stylesheet" href="assets/css/premium.css?v=20261028-v3">
+    <link rel="stylesheet" href="styles.css?v=20261028-ga4">
+    <link rel="stylesheet" href="assets/css/premium.css?v=20261028-ga4">
     <script src="https://unpkg.com/lucide@latest" defer></script>
+    <!-- Google Analytics 4 (GA4) with Consent Mode v2 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-PMS2X73B5Q"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+
+        // Google Consent Mode v2: default denied until explicit user consent
+        (function() {
+            var consentState = 'denied';
+            try {
+                if (localStorage.getItem('analytics_consent') === 'granted') {
+                    consentState = 'granted';
+                }
+            } catch (e) {}
+
+            gtag('consent', 'default', {
+                'analytics_storage': consentState,
+                'ad_storage': 'denied',
+                'ad_user_data': 'denied',
+                'ad_personalization': 'denied',
+                'wait_for_update': 500
+            });
+
+            gtag('js', new Date());
+            gtag('config', 'G-PMS2X73B5Q', {
+                'anonymize_ip': true,
+                'send_page_view': true
+            });
+        })();
+    </script>
 </head>
 <body class="legal-page">
     <a href="#main" class="skip-link">Saltar al contenido principal</a>
@@ -90,7 +120,7 @@
             <header class="legal-header">
                 <p class="eyebrow"><span class="eyebrow-dot"></span> INFORMACIÓN LEGAL Y TRANSPARENCIA</p>
                 <h1>Política de Privacidad</h1>
-                <p class="legal-meta">Última actualización: 1 de octubre de 2026 · Ámbito: Perú / Internacional</p>
+                <p class="legal-meta">Última actualización: 28 de octubre de 2026 · Ámbito: Perú / Internacional</p>
             </header>
 
             <div class="legal-content">
@@ -146,13 +176,36 @@
                         <li><strong>Alojamiento web y repositorio:</strong> GitHub Pages / GitHub Inc. (provee el hosting estático y la entrega de archivos del sitio web bajo conexiones seguras HTTPS).</li>
                         <li><strong>Tipografía:</strong> Google Fonts (Google LLC), utilizado para servir fuentes web estándar de alta legibilidad.</li>
                         <li><strong>Iconos y recursos frontend:</strong> jsDelivr (ProspectOne) para hojas de estilo de logotipos tecnológicos (Devicon), y Unpkg para la biblioteca de iconos Lucide.</li>
+                        <li><strong>Métricas y analítica web:</strong> Google Analytics 4 (Google Ireland Limited / Google LLC, ID de medición <code>G-PMS2X73B5Q</code>), empleado exclusivamente para obtener métricas estadísticas agregadas y disociadas de visitas y rendimiento, bajo estricto modo de consentimiento (Google Consent Mode v2) y anonimización de direcciones IP.</li>
                         <li><strong>Enlaces y perfiles profesionales externos:</strong> El sitio incluye enlaces directos a perfiles externos como GitHub (<a href="https://github.com/jhefersondev-v1" target="_blank" rel="noopener noreferrer">jhefersondev-v1</a>) y LinkedIn. Al hacer clic en estos enlaces, el usuario pasa a regirse por las políticas de privacidad de dichas plataformas.</li>
                     </ul>
                 </section>
 
                 <section class="legal-section">
-                    <h2>7. Política de Cookies y Rastreadores</h2>
-                    <p>Este sitio web <strong>no utiliza cookies de seguimiento publicitario, píxeles de remarketing (como Meta Pixel), ni herramientas analíticas intrusivas</strong> (como Google Analytics, Hotjar o Microsoft Clarity). Al tratarse de un sitio web estático meramente informativo, únicamente se cargan recursos técnicos y de estilo necesarios para renderizar el contenido en su navegador.</p>
+                    <h2>7. Política de Cookies y Herramientas Analíticas</h2>
+                    <p>Este sitio web utiliza <strong>Google Analytics 4</strong> (ID: <code>G-PMS2X73B5Q</code>) con fines estrictamente estadísticos y de optimización de la experiencia del usuario. No se emplean píxeles publicitarios, remarketing ni tecnologías de rastreo invasivas.</p>
+
+                    <h3 style="font-size: 1.02rem; margin-top: 18px; margin-bottom: 8px; color: var(--text-primary); font-weight: 650;">Cookies y almacenamiento utilizados</h3>
+                    <ul class="legal-list">
+                        <li><code>_ga</code>: Cookie técnica de Google Analytics empleada para distinguir visitantes únicos de forma anónima y agregada (duración máxima: 2 años o hasta el borrado por el usuario).</li>
+                        <li><code>_ga_PMS2X73B5Q</code>: Cookie de sesión empleada para mantener el estado de la visita (duración máxima: 2 años).</li>
+                        <li><code>analytics_consent</code>: Registro en almacenamiento local (<code>localStorage</code>) que conserva la preferencia de consentimiento del usuario (<code>granted</code> o <code>denied</code>).</li>
+                    </ul>
+
+                    <h3 style="font-size: 1.02rem; margin-top: 18px; margin-bottom: 8px; color: var(--text-primary); font-weight: 650;">Modo de Consentimiento (Google Consent Mode v2)</h3>
+                    <p>En cumplimiento con los más altos estándares de privacidad web, el sitio implementa <strong>Google Consent Mode v2</strong>. El almacenamiento analítico (<code>analytics_storage</code>) se encuentra <strong>deshabilitado por defecto</strong> (estado <em>denied</em>) para los nuevos visitantes. Las cookies analíticas únicamente se activan si usted pulsa voluntariamente en <strong>"Aceptar analítica"</strong>.</p>
+                    <p>Si opta por rechazar el consentimiento, no se instalará ninguna cookie analítica en su navegador y cualquier registro previo será eliminado inmediatamente.</p>
+
+                    <div class="legal-consent-card" id="legalConsentBox">
+                        <div class="legal-consent-info">
+                            <span class="legal-consent-title">Gestión de su consentimiento</span>
+                            <p class="legal-consent-desc">Estado actual en este navegador: <strong id="consentStatusLabel">Cargando...</strong></p>
+                        </div>
+                        <div class="legal-consent-actions">
+                            <button type="button" class="button button-small button-primary button-pill" id="legalConsentAcceptBtn">Aceptar analítica</button>
+                            <button type="button" class="button button-small button-glass button-pill" id="legalConsentRejectBtn">Rechazar analítica</button>
+                        </div>
+                    </div>
                 </section>
 
                 <section class="legal-section">
@@ -220,6 +273,6 @@
         </div>
     </footer>
 
-    <script src="assets/js/main.js?v=20261028-v6"></script>
+    <script src="assets/js/main.js?v=20261028-ga4"></script>
 </body>
 </html>
